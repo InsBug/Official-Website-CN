@@ -1,0 +1,1336 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:type" content="website">
+<meta property="og:title" content="分类">
+<meta property="og:url" content="https://insbug.net/categories/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>分类 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="分类"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="漏洞分析"
+        id="heading-4df3325dfb4a06ea7e11d64e74071b7b" role="tab" data-toggle="collapse" href="#collapse-4df3325dfb4a06ea7e11d64e74071b7b"
+        aria-expanded="false"
+      >
+        漏洞分析
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>14</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-4df3325dfb4a06ea7e11d64e74071b7b"
+           role="tabpanel" aria-labelledby="heading-4df3325dfb4a06ea7e11d64e74071b7b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/docker-desktop-escape-vulnerability-cve-2025-9074-analysis-report/" title="Docker Desktop逃逸漏洞（CVE-2025-9074）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Docker Desktop逃逸漏洞（CVE-2025-9074）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/mysql-jdbc-deserialization-cve-2017-3523-analysis-report/" title="MySQL JDBC反序列化漏洞（CVE-2017-3523）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">MySQL JDBC反序列化漏洞（CVE-2017-3523）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/hutool-path-traversal-cve-2018-17297-analysis-report/" title="Hutool路径遍历漏洞（CVE-2018-17297）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Hutool路径遍历漏洞（CVE-2018-17297）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/next-framework-vulnerability-cve-2025-29927-overlooked-for-four-years/" title="被忽视了四年的Next框架漏洞CVE-2025-29927"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">被忽视了四年的Next框架漏洞CVE-2025-29927</span>
+        </a>
+      
+    
+      
+      
+        <a href="/vulnerability-analysis-guide-open-source-deep-analysis-and-reproduction/" title="漏洞分析指南：开源软件漏洞深度分析与实战复现"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">漏洞分析指南：开源软件漏洞深度分析与实战复现</span>
+        </a>
+      
+    
+      
+      
+        <a href="/ipv6-remote-code-execution-cve-2024-38063-analysis-report/" title="IPv6远程代码执行漏洞（CVE-2024-38063）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">IPv6远程代码执行漏洞（CVE-2024-38063）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/mysqldump-privilege-escalation-cve-2024-21096-analysis-report/" title="MySQLDump提权漏洞（CVE-2024-21096）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">MySQLDump提权漏洞（CVE-2024-21096）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/bluespy-bluetooth-eavesdropping-technical-reproduction/" title="监听蓝牙对话的BlueSpy技术复现"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">监听蓝牙对话的BlueSpy技术复现</span>
+        </a>
+      
+    
+      
+      
+        <a href="/redos-principles-examples-and-mitigation/" title="ReDoS漏洞的原理、示例与应对"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">ReDoS漏洞的原理、示例与应对</span>
+        </a>
+      
+    
+      
+      
+        <a href="/winrar-rce-cve-2023-40477-analysis-report/" title="Winrar RCE漏洞（CVE-2023-40477）分析报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Winrar RCE漏洞（CVE-2023-40477）分析报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="安全管理"
+        id="heading-629a6ad325259150be4383577f3f66ec" role="tab" data-toggle="collapse" href="#collapse-629a6ad325259150be4383577f3f66ec"
+        aria-expanded="false"
+      >
+        安全管理
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>8</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-629a6ad325259150be4383577f3f66ec"
+           role="tabpanel" aria-labelledby="heading-629a6ad325259150be4383577f3f66ec">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/open-source-security-governance-challenges-from-top20-vulnerable-components/" title="从Top20开源组件漏洞浅谈开源安全治理困境"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">从Top20开源组件漏洞浅谈开源安全治理困境</span>
+        </a>
+      
+    
+      
+      
+        <a href="/building-trusted-open-source-supply-chain-microsoft-oss-ssc-best-practices/" title="构建可信开源软件供应链：微软OSS SSC框架最佳实践全解读"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">构建可信开源软件供应链：微软OSS SSC框架最佳实践全解读</span>
+        </a>
+      
+    
+      
+      
+        <a href="/how-to-show-value-of-security-work-in-reports/" title="工作汇报如何体现安全工作的价值"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">工作汇报如何体现安全工作的价值</span>
+        </a>
+      
+    
+      
+      
+        <a href="/enterprise-vulnerability-management-strategy/" title="企业安全漏洞综合治理方案"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">企业安全漏洞综合治理方案</span>
+        </a>
+      
+    
+      
+      
+        <a href="/supply-chain-security-management-and-practice/" title="供应链安全管理与实践"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">供应链安全管理与实践</span>
+        </a>
+      
+    
+      
+      
+        <a href="/how-to-effectively-implement-security-products-in-enterprises/" title="安全产品应该如何在企业内有效落地？"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">安全产品应该如何在企业内有效落地？</span>
+        </a>
+      
+    
+      
+      
+        <a href="/exploration-and-practice-of-enterprise-informationization/" title="企业信息化建设的探索与实践"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">企业信息化建设的探索与实践</span>
+        </a>
+      
+    
+      
+      
+        <a href="/differences-between-client-and-vendor-security/" title="甲方安全工作和乙方安全工作的区别"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">甲方安全工作和乙方安全工作的区别</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="应用安全"
+        id="heading-cafc5f5073d00d9979a09910539d3113" role="tab" data-toggle="collapse" href="#collapse-cafc5f5073d00d9979a09910539d3113"
+        aria-expanded="false"
+      >
+        应用安全
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>8</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-cafc5f5073d00d9979a09910539d3113"
+           role="tabpanel" aria-labelledby="heading-cafc5f5073d00d9979a09910539d3113">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/rasp-technology-in-offensive-and-defensive-practice/" title="RASP技术在攻防实战中的应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">RASP技术在攻防实战中的应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-release/" title="SDLC安全最佳实践：安全发布"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全发布</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-verification/" title="SDLC安全最佳实践：安全验证"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全验证</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-implementation/" title="SDLC安全最佳实践：安全实施"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全实施</span>
+        </a>
+      
+    
+      
+      
+        <a href="/seven-security-issues-in-software-design/" title="软件设计中的七类安全问题"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">软件设计中的七类安全问题</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-design/" title="SDLC安全最佳实践：安全设计"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全设计</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-requirements/" title="SDLC安全最佳实践：安全要求"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全要求</span>
+        </a>
+      
+    
+      
+      
+        <a href="/sdlc-security-best-practices-security-education/" title="SDLC安全最佳实践：安全教育"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SDLC安全最佳实践：安全教育</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI安全"
+        id="heading-b9b1fbb87e695f9cf4884dcc739e31c6" role="tab" data-toggle="collapse" href="#collapse-b9b1fbb87e695f9cf4884dcc739e31c6"
+        aria-expanded="false"
+      >
+        AI安全
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>7</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-b9b1fbb87e695f9cf4884dcc739e31c6"
+           role="tabpanel" aria-labelledby="heading-b9b1fbb87e695f9cf4884dcc739e31c6">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/model-context-protocol-mcp-principles-and-security-challenges/" title="模型上下文协议（MCP）的原理与安全挑战"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">模型上下文协议（MCP）的原理与安全挑战</span>
+        </a>
+      
+    
+      
+      
+        <a href="/ai-red-team-rise-assessing-ai-agent-real-world-intrusion-capabilities/" title="AI红队崛起？评估AI Agent入侵现实世界的能力"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">AI红队崛起？评估AI Agent入侵现实世界的能力</span>
+        </a>
+      
+    
+      
+      
+        <a href="/ai-generated-code-pitfalls-ally-or-foe/" title="AI生成代码的隐患：神对手还是猪队友"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">AI生成代码的隐患：神对手还是猪队友</span>
+        </a>
+      
+    
+      
+      
+        <a href="/badseek-backdoor-llm-creation/" title="植入后门的大模型BadSeek是怎样炼成的"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">植入后门的大模型BadSeek是怎样炼成的</span>
+        </a>
+      
+    
+      
+      
+        <a href="/large-language-model-security-what-kind-of-security/" title="大语言模型安全，到底是什么的安全"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">大语言模型安全，到底是什么的安全</span>
+        </a>
+      
+    
+      
+      
+        <a href="/llm-applications-in-cybersecurity-overview/" title="大模型在网络安全方面的应用汇总"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">大模型在网络安全方面的应用汇总</span>
+        </a>
+      
+    
+      
+      
+        <a href="/llm-security-evaluation-benchmark-release/" title="大语言模型（LLM）安全性测评基准发布"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">大语言模型（LLM）安全性测评基准发布</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="事件分析"
+        id="heading-d4256f40011673cc767044bdf1c03dc8" role="tab" data-toggle="collapse" href="#collapse-d4256f40011673cc767044bdf1c03dc8"
+        aria-expanded="false"
+      >
+        事件分析
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>7</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-d4256f40011673cc767044bdf1c03dc8"
+           role="tabpanel" aria-labelledby="heading-d4256f40011673cc767044bdf1c03dc8">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/open-source-trust-crisis-material-theme-backdoor-incident/" title="开源项目的信任危机：Material Theme后门事件始末"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">开源项目的信任危机：Material Theme后门事件始末</span>
+        </a>
+      
+    
+      
+      
+        <a href="/microsoft-blue-screen-epic-incident-analysis-and-insights/" title="微软蓝屏史诗级事件深度分析与启示"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">微软蓝屏史诗级事件深度分析与启示</span>
+        </a>
+      
+    
+      
+      
+        <a href="/icbc-us-subsidiary-ransomware-incident-analysis/" title="工商银行美国子公司勒索病毒事件分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">工商银行美国子公司勒索病毒事件分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/watering-hole-attack-targeting-security-personnel/" title="一起针对安全人员的水坑攻击"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">一起针对安全人员的水坑攻击</span>
+        </a>
+      
+    
+      
+      
+        <a href="/pypi-malicious-repo-fshec2-attack-analysis/" title="PyPI恶意存储库fshec2攻击分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">PyPI恶意存储库fshec2攻击分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/3cx-desktop-app-supply-chain-attack-analysis/" title="3CX Desktop App供应链攻击分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">3CX Desktop App供应链攻击分析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/wechat-qr-code-crash-analysis/" title="WECHAT二维码闪退分析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">WECHAT二维码闪退分析</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="安全测评"
+        id="heading-ee14387d8d24ffb79b73f210a10297a9" role="tab" data-toggle="collapse" href="#collapse-ee14387d8d24ffb79b73f210a10297a9"
+        aria-expanded="false"
+      >
+        安全测评
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>5</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-ee14387d8d24ffb79b73f210a10297a9"
+           role="tabpanel" aria-labelledby="heading-ee14387d8d24ffb79b73f210a10297a9">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/bluetooth-speakers-and-headphones-security-evaluation/" title="蓝牙音箱和耳机安全测评报告"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">蓝牙音箱和耳机安全测评报告</span>
+        </a>
+      
+    
+      
+      
+        <a href="/static-source-code-security-scanner-evaluation-summary/" title="静态源代码安全扫描工具测评结果汇总"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">静态源代码安全扫描工具测评结果汇总</span>
+        </a>
+      
+    
+      
+      
+        <a href="/static-source-code-security-scanner-evaluation-sonarqube/" title="静态源代码安全扫描工具测评结果-SonarQube"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">静态源代码安全扫描工具测评结果-SonarQube</span>
+        </a>
+      
+    
+      
+      
+        <a href="/static-source-code-security-scanner-evaluation-checkmarx/" title="静态源代码安全扫描工具测评结果（Checkmarx）"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">静态源代码安全扫描工具测评结果（Checkmarx）</span>
+        </a>
+      
+    
+      
+      
+        <a href="/static-source-code-security-scanner-evaluation-fortify/" title="静态源代码安全扫描工具测评结果（Fortify）"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">静态源代码安全扫描工具测评结果（Fortify）</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="安全洞察"
+        id="heading-5ad2aca9ce5e1e69ef8cf743cb2c3029" role="tab" data-toggle="collapse" href="#collapse-5ad2aca9ce5e1e69ef8cf743cb2c3029"
+        aria-expanded="false"
+      >
+        安全洞察
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%AE%89%E5%85%A8%E6%B4%9E%E5%AF%9F/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>4</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-5ad2aca9ce5e1e69ef8cf743cb2c3029"
+           role="tabpanel" aria-labelledby="heading-5ad2aca9ce5e1e69ef8cf743cb2c3029">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/does-passing-security-tests-mean-secure/" title="通过了安全测试，就一定是安全的么？"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">通过了安全测试，就一定是安全的么？</span>
+        </a>
+      
+    
+      
+      
+        <a href="/importance-of-open-source-licenses-from-HTX-video/" title="从何同学视频看开源协议的重要性"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">从何同学视频看开源协议的重要性</span>
+        </a>
+      
+    
+      
+      
+        <a href="/what-is-a-detailed-vulnerability-report/" title="详细的安全漏洞报告是怎样的"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">详细的安全漏洞报告是怎样的</span>
+        </a>
+      
+    
+      
+      
+        <a href="/why-security-vendors-face-challenges/" title="安全厂商的业务为什么难做"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">安全厂商的业务为什么难做</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="供应链安全"
+        id="heading-5f5e3cdd12034a49b496e78151e918f1" role="tab" data-toggle="collapse" href="#collapse-5f5e3cdd12034a49b496e78151e918f1"
+        aria-expanded="false"
+      >
+        供应链安全
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>2</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-5f5e3cdd12034a49b496e78151e918f1"
+           role="tabpanel" aria-labelledby="heading-5f5e3cdd12034a49b496e78151e918f1">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/millions-of-github-repos-repojacking-attack/" title="数百万GitHub仓库可能遭受RepoJacking攻击"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">数百万GitHub仓库可能遭受RepoJacking攻击</span>
+        </a>
+      
+    
+      
+      
+        <a href="/bignum-s3-bucket-hijack-attack/" title="bignum库遭受S3 Bucket劫持攻击"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">bignum库遭受S3 Bucket劫持攻击</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="安全运营"
+        id="heading-2964556f381f44b843b486d181dcfdde" role="tab" data-toggle="collapse" href="#collapse-2964556f381f44b843b486d181dcfdde"
+        aria-expanded="false"
+      >
+        安全运营
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%AE%89%E5%85%A8%E8%BF%90%E8%90%A5/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>2</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-2964556f381f44b843b486d181dcfdde"
+           role="tabpanel" aria-labelledby="heading-2964556f381f44b843b486d181dcfdde">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/in-the-wild-vulnerability-incident-response-process/" title="在野漏洞的应急响应流程"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">在野漏洞的应急响应流程</span>
+        </a>
+      
+    
+      
+      
+        <a href="/cisa-cybersecurity-incident-response-handbook/" title="CISA网络安全事件应急手册"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">CISA网络安全事件应急手册</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术管理"
+        id="heading-1be23f26d76c2d58c8703b58577d4723" role="tab" data-toggle="collapse" href="#collapse-1be23f26d76c2d58c8703b58577d4723"
+        aria-expanded="false"
+      >
+        技术管理
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>2</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-1be23f26d76c2d58c8703b58577d4723"
+           role="tabpanel" aria-labelledby="heading-1be23f26d76c2d58c8703b58577d4723">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/insights-on-building-and-managing-technical-teams/" title="技术团队建设与管理经验之谈"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">技术团队建设与管理经验之谈</span>
+        </a>
+      
+    
+      
+      
+        <a href="/cio-insights-breaking-the-efficiency-ceiling-in-tech-management/" title="CIO启示录：技术管理如何突破效率天花板"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">CIO启示录：技术管理如何突破效率天花板</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI开发"
+        id="heading-49dc924e39d2ddcc5d401241d36e9ebb" role="tab" data-toggle="collapse" href="#collapse-49dc924e39d2ddcc5d401241d36e9ebb"
+        aria-expanded="false"
+      >
+        AI开发
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/AI%E5%BC%80%E5%8F%91/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-49dc924e39d2ddcc5d401241d36e9ebb"
+           role="tabpanel" aria-labelledby="heading-49dc924e39d2ddcc5d401241d36e9ebb">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/architect-mindset-in-vibe-coding/" title="Vibe Coding下的架构师思维"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Vibe Coding下的架构师思维</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="安全自动化"
+        id="heading-da098176af1a28a61e5898fefe8a6ec7" role="tab" data-toggle="collapse" href="#collapse-da098176af1a28a61e5898fefe8a6ec7"
+        aria-expanded="false"
+      >
+        安全自动化
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%AE%89%E5%85%A8%E8%87%AA%E5%8A%A8%E5%8C%96/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-da098176af1a28a61e5898fefe8a6ec7"
+           role="tabpanel" aria-labelledby="heading-da098176af1a28a61e5898fefe8a6ec7">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/arl-awvs-automated-vulnerability-scanning/" title="ARL联动AWVS实现自动化漏洞扫描"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">ARL联动AWVS实现自动化漏洞扫描</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术解析"
+        id="heading-75f00ccdc27175516a52b9e15974995c" role="tab" data-toggle="collapse" href="#collapse-75f00ccdc27175516a52b9e15974995c"
+        aria-expanded="false"
+      >
+        技术解析
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-75f00ccdc27175516a52b9e15974995c"
+           role="tabpanel" aria-labelledby="heading-75f00ccdc27175516a52b9e15974995c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/cybersecurity-expert-perspective-on-the-movie-all-in/" title="安全专家眼中的电影《孤注一掷》"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">安全专家眼中的电影《孤注一掷》</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,885 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="马云卓">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="从2016年至今，每年在不同地域都会举办网络安全攻防演练，起初只是小规模的试点项目，到如今它已经发展成为一场大规模的红蓝对抗演练。随着演练规模不断扩大，红队攻击手段也在不断升级，攻击面也在持续扩大，对于蓝队而言，防护工作也面临越来越大的挑战。 总结过去几年的攻防演练，我们可以发现红队在攻击手段上的几个趋势： 首先，供应链攻击成为红队的重点手段。攻击方开始将目光转向软件供应链的系统或平台，尤其是已经">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RASP技术在攻防实战中的应用">
+<meta property="og:url" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="从2016年至今，每年在不同地域都会举办网络安全攻防演练，起初只是小规模的试点项目，到如今它已经发展成为一场大规模的红蓝对抗演练。随着演练规模不断扩大，红队攻击手段也在不断升级，攻击面也在持续扩大，对于蓝队而言，防护工作也面临越来越大的挑战。 总结过去几年的攻防演练，我们可以发现红队在攻击手段上的几个趋势： 首先，供应链攻击成为红队的重点手段。攻击方开始将目光转向软件供应链的系统或平台，尤其是已经">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403247170.2449662729530061.png">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403247860.9446934341208153.png">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403248600.11234579404782574.png">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403249350.16583058582629495.png">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403250090.28379839569691623.png">
+<meta property="og:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403250850.40777278445443776.png">
+<meta property="article:published_time" content="2024-11-22T10:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T16:01:54.918Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="应用安全">
+<meta property="article:tag" content="RASP">
+<meta property="article:tag" content="攻防实战">
+<meta property="article:tag" content="动态防护">
+<meta property="article:tag" content="漏洞防御">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/assets/17617403247170.2449662729530061.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>RASP技术在攻防实战中的应用 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="RASP技术在攻防实战中的应用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        马云卓
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-22 18:00" pubdate>
+          2024年11月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">RASP技术在攻防实战中的应用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从2016年至今，每年在不同地域都会举办网络安全攻防演练，起初只是小规模的试点项目，到如今它已经发展成为一场大规模的红蓝对抗演练。随着演练规模不断扩大，红队攻击手段也在不断升级，攻击面也在持续扩大，对于蓝队而言，防护工作也面临越来越大的挑战。</p>
+<p>总结过去几年的攻防演练，我们可以发现红队在攻击手段上的几个趋势：</p>
+<p>首先，供应链攻击成为红队的重点手段。攻击方开始将目光转向软件供应链的系统或平台，尤其是已经被广泛使用的国产商业软件，包括安全产品、OA系统、办公软件以及内容管理系统（CMS）在内都成为了重点攻击目标。</p>
+<p>其次，攻击手段多样化。社会工程学和鱼叉式钓鱼攻击手法不断翻新，例如通过供应链投放带毒补丁，或发送内容以假乱真的钓鱼邮件或微信链接，攻击渠道更是扩展到了云环境、微信公众号、小程序、APP等多个维度。</p>
+<p>再者，开源软件漏洞成为重要的攻击利用漏洞类型。开源软件漏洞和开源组件漏洞的0day挖掘和利用成为了目前攻防演练中防不胜防的攻击方式。同时，一些国内流行的低代码开源项目也成为新的攻击目标。</p>
+<p>最后，API接口安全问题日渐突出。API接口逐渐成为主要的攻击目标，这直接导致数据安全风险加剧。针对API自身系统的攻击，如Swagger文件利用、撞库、批量数据爬取等层出不穷，API本身的漏洞如未授权访问、重放攻击等也备受关注。</p>
+<p>面对这些攻击，负责防守的蓝队也会采取多层次、互为补充的纵深防御策略，在防御体系中通常会包括：</p>
+<ul>
+<li><p><strong>作为首道防线的边界防火墙</strong>，控制进出流量，过滤潜在威胁。</p>
+</li>
+<li><p><strong>网络入侵检测&#x2F;防御系统（NIDS&#x2F;IPS）</strong>，进一步监测和拦截可疑行为。</p>
+</li>
+<li><p><strong>Web应用防火墙（WAF）</strong>，专门防御如SQL注入、跨站脚本（XSS）攻击等针对Web应用的攻击。</p>
+</li>
+<li><p><strong>主机入侵检测系统（HIDS）</strong>，实现主机层面的安全防护。</p>
+</li>
+<li><p><strong>态势感知系统</strong>，基于各类不同部署节点和层次的监测和防御系统，构建实时监控网络中各种威胁的运营感知能力。</p>
+</li>
+</ul>
+<p>作为Web应用的主要防御手段之一，WAF虽然能有效拦截常见的Web攻击，但它主要依赖已知攻击模式的特征来识别威胁，面对未知的0day漏洞可能束手无策，攻击者也在不断寻找绕过WAF的攻击方法和技巧。</p>
+<p>在此背景下，一些企业开始引入运行时应用自我保护（RASP）技术，以弥补现有防御体系的不足。RASP与应用程序紧密相连，能够在应用运行时实时防御攻击，无需额外组件支持。对于常见的OA系统厂商，一旦爆出0day漏洞，RASP可在WAF防护盲区提供额外的安全保障。尽管RASP不是银弹，但它对攻击方而言无疑大大提高了攻击难度和成本。</p>
+<p>另外，RASP支持细粒度的策略配置和热补丁，可以基于企业的实际应用部署情况进行量体裁衣，对个别应用进行针对性防护，也让RASP成为WAF之外的另一种防御手段。</p>
+<h2 id="什么是RASP技术"><a href="#什么是RASP技术" class="headerlink" title="什么是RASP技术"></a>什么是RASP技术</h2><p>早在2014年，Gartner公司就提出了“运行时应用自我保护（Runtime Application Self-Protection，RASP）”的概念，这是一种创新的应用安全防护技术，其核心理念是将保护机制以类似疫苗注射的方式注入到应用程序内部，使之与应用程序融为一体。这使得应用程序具备了自我保护的能力，能够实时检测和阻断针对自身的攻击，在遭受实际攻击时能够自动启动防御，而无需人工干预。</p>
+<p>相比之下，Web应用防火墙（WAF）的防护思路是在应用程序之前设置一道防线，阻挡针对应用程序的攻击。</p>
+<p>RASP的核心思想是将安全防护逻辑嵌入到应用程序的运行时环境中，使其成为应用程序不可分割的一部分。这样，RASP能够在应用程序运行过程中从内部实时监控和控制应用程序的行为，并提供持续的安全防护。</p>
+<p>其防护特点有以下四个方面：</p>
+<ol>
+<li><p><strong>代理和插桩：</strong> RASP通常以代理（Agent）的形式部署，或者通过在应用程序的代码中插入安全检测逻辑（即插桩，Instrumentation）来实现。通过代理或插桩作为RASP的感知组件，能够捕获应用程序的运行中的控制流和数据流。</p>
+</li>
+<li><p><strong>行为分析：</strong> RASP利用行为分析技术来识别和评估应用程序的行为。它通过定义一系列“正常行为”基线，并将实时监测到的行为与这些基线进行比对以发现异常行为。</p>
+</li>
+<li><p><strong>上下文感知：</strong> 与基于网络流量的防御措施（如WAF）不同，RASP能够通过分析应用程序的控制流和数据流感知应用程序的上下文信息，包括用户的身份、应用程序的状态和正在执行的操作。这使得RASP能够更准确地判断一个行为是否存在威胁。</p>
+</li>
+<li><p><strong>实时干预：</strong> 当RASP检测到可疑的攻击行为时，它可以立即采取措施，例如阻止恶意输入、终止会话或向管理员发出警报。这种实时干预能力是RASP区别于其他安全措施的显著特点。</p>
+</li>
+</ol>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403247170.2449662729530061.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>如上图所示，拥有以上防护特点的RASP作为一个安全防护组件与应用程序并行运行，这使它能够观察所有的控制流和数据流，以评估应用程序执行的安全性。</p>
+<p>如果攻击者试图进行恶意操作，如代码注入、未授权访问等，RASP可以立即识别这些异常行为并采取阻断、告警等应对措施。</p>
+<h2 id="RASP的部署结构"><a href="#RASP的部署结构" class="headerlink" title="RASP的部署结构"></a>RASP的部署结构</h2><p>RASP可以作为现有网络安全防护体系的有益补充，与其他安全措施（如Web应用防火墙，WAF）协同部署，形成多层次、立体化的纵深防御。</p>
+<p>在这种部署模式下，WAF作为网络边界的第一道防线，负责检查和过滤所有进出Web应用的流量，主要应对来自外部的常规性Web攻击，如SQL注入、跨站脚本（XSS）等。而RASP则作为第二道防线，专门保护Web应用内部，提供更细粒度的控制和实时监测。RASP紧密集成在应用程序内部，能够洞察应用程序的执行流程和数据流动，对恶意行为进行准确识别和阻断。</p>
+<p>这种“WAF+RASP”的协同防御，可以有效弥补单一安全措施的局限性（如下图所示）：</p>
+<ul>
+<li><p><strong>WAF善于防范常规的外部攻击，</strong> 但对应用内部的逻辑漏洞和特定攻击无能为力，而RASP恰恰能够补上这一短板。</p>
+</li>
+<li><p><strong>RASP能够发现WAF难以检测的复杂攻击，</strong> 如业务逻辑漏洞利用、重放攻击等，但RASP需要一定的资源开销，不适合大流量的初步过滤，而这正是WAF的长项。</p>
+</li>
+</ul>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403247860.9446934341208153.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>此外，在云环境下，由于基础设施的虚拟化和动态调配，传统的网络边界防护变得困难，而RASP以软件形态与应用程序共生，不依赖于特定的网络部署，因此可以轻松地集成到云服务和应用中，为云上资产提供安全保障。</p>
+<p>现代Web应用的安全防护已不再是“二选一”的问题，而是需要不同层次、不同维度安全措施的联防协同。WAF和RASP的有机结合，将大大提升Web应用抵御各种威胁的韧性，也是实现纵深防御战略的关键一环。</p>
+<h2 id="RASP防护技术的适用性"><a href="#RASP防护技术的适用性" class="headerlink" title="RASP防护技术的适用性"></a>RASP防护技术的适用性</h2><p>在我们参与的多次攻防演练中，RASP技术凭借其独特的内部监控能力和对应用程序行为的深度理解，在攻防演练中展现出以下优势：</p>
+<p><strong>1. 精准的威胁检测：</strong> 得益于其在应用内部的位置优势，RASP能够洞悉应用程序的正常行为模式，从而实现对各类恶意行为的精准识别，显著降低误报率。</p>
+<p><strong>2. 未知威胁防御：</strong> RASP不依赖于已知攻击的特征码，而是基于应用执行过程中的异常行为来识别威胁，因此能够有效应对0day漏洞或变种载荷等未知漏洞攻击或攻击载荷。</p>
+<p><strong>3. 细粒度访问控制：</strong> 借助上下文感知能力，RASP能够基于用户身份、访问来源等多维度信息，对不同的应用模块实施差异化的安全策略，实现更细粒度的权限控制，从而避免一刀切的安全防护对应用产生稳定性影响。</p>
+<p><strong>4. 虚拟补丁：</strong> 当应用程序出现漏洞时，RASP能够在不修改源代码的情况下实现快速防护，为开发团队修复漏洞争取宝贵的时间窗口。这种“虚拟补丁”能力对于缩短攻击暴露窗口期至关重要。</p>
+<p>当然，以上良好的效果更加适用于为记录型应用提供安全防护，对于实时性要求极高的交互型应用，RASP的适用性则需要更审慎的评估。</p>
+<p>所谓记录型应用，是类似OA系统、ERP系统等系统，此类应用通常涉及大量数据的存储和处理，但其对实时性的要求相对较低。RASP在这类场景中表现出色，能够有效识别和阻断针对核心数据的攻击企图。</p>
+<p>而对于实时交互性要求极高的交互型应用，如实时交易平台、在线游戏服务端等，RASP的接入则需要更谨慎的设计和评估。这类应用通常对响应延迟有苛刻的限制，任何额外的处理耗时都可能影响用户体验。不恰当的RASP部署可能带来显著的性能开销，因此需要精细的配置和持续的性能测试，以达到安全与性能的最佳平衡。</p>
+<p>因此，RASP技术在实际应用程序的防护中仍面临以下挑战：</p>
+<p><strong>1. 兼容性问题：</strong> RASP的部署需要与应用程序进行深度集成，这对目标平台和应用代码有较强的依赖性。考虑到应用程序可能采用多样的技术栈和架构，这进一步加大了RASP部署和维护的复杂度。要实现无缝支持，RASP产品需要对主流开发语言和框架提供全面覆盖。</p>
+<p><strong>2. 性能影响：</strong> 在注重高可用性的生产环境中，RASP的接入可能对服务器性能造成一定影响。由于RASP需要对应用程序的关键执行路径进行实时监控和干预，这不可避免地会引入额外的计算开销。此外，RASP的威胁检测和防护动作也会占用CPU和内存资源。这就要求RASP产品在功能完备性和性能优化上进行精细的权衡，尽量减少对应用服务质量的影响。</p>
+<h2 id="某头部快递公司在攻防演练中的应用"><a href="#某头部快递公司在攻防演练中的应用" class="headerlink" title="某头部快递公司在攻防演练中的应用"></a>某头部快递公司在攻防演练中的应用</h2><p>作为国内头部快递公司，该公司有着体量巨大的业务，因而对安全防护提出了极高的要求。为了强化整体网络安全能力，该公司决定将RASP技术纳入其纵深防御体系，作为关键的一环。</p>
+<p>经过精心规划和实施，在今年的某次攻防演练中，RASP技术在该公司的部分应用系统进行部署，其部署范围涉及79个应用程序、1361台服务器，同时部署了1143个Agent，并在整个攻防演练期间截获攻击事件14767次（含自动化安全测试触发的事件），即便剔除自动化安全测试过程中触发的警报，真实的攻击事件数量也相当可观。这表明即使是在已经部署了传统安全防线（如WAF、IDS等）的情况下，应用层面仍然存在大量的攻击风险，而RASP能够有效补齐这一防护短板。</p>
+<p>此次攻防演练期间通过RASP技术拦截的漏洞类型包括但不限于：</p>
+<p><strong>命令执行漏洞：</strong>（下图仅作示例，非实际截图）</p>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403248600.11234579404782574.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>SQL注入漏洞：</strong>（下图仅作示例，非实际截图）</p>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403249350.16583058582629495.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>目录遍历漏洞：</strong>（下图仅作示例，非实际截图）</p>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403250090.28379839569691623.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>不安全的文件上传漏洞：</strong>（下图仅作示例，非实际截图）</p>
+<p><img src="/./rasp-technology-in-offensive-and-defensive-practice/assets/17617403250850.40777278445443776.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>除此之外，RASP可以检测和阻断的漏洞类型还包括：</p>
+<p>1. 不安全的文件操作漏洞</p>
+<p>2. 反射型XSS漏洞</p>
+<p>3. XML外部实体注入（XXE）漏洞</p>
+<p>4. 远程代码执行（RCE）漏洞</p>
+<p>5. 不安全的反序列化漏洞</p>
+<p>6. 服务器端请求伪造（SSRF）漏洞</p>
+<p>7. 敏感信息泄露漏洞</p>
+<p>8. DNS攻击漏洞</p>
+<p>9. URL跳转漏洞</p>
+<p>下面我们以其中的三次拦截作为RASP防护原理和效果的示例。</p>
+<h3 id="Log4j远程代码执行漏洞防护"><a href="#Log4j远程代码执行漏洞防护" class="headerlink" title="Log4j远程代码执行漏洞防护"></a><strong>Log4j远程代码执行漏洞防护</strong></h3><p>在对某系统的攻击中，攻击者尝试利用Log4j漏洞对某系统进行远程代码执行攻击。攻击者构造了一个恶意的HTTP GET请求（如下），其中包含了利用JNDI进行远程代码执行的参数。</p>
+<blockquote>
+<p>GET <a target="_blank" rel="noopener" href="http://xxxx.com/bi/?action=$%7Bjndi:dns://i-5407cf-ubbh-d574.dns.xxx.com%7D&proc=$%7Bjndi:dns://i-5407cf-ubbh-d574.dns.xxx.com%7D&resource=$%7Bjndi:dns://i-5407cf-ubbh-d574.dns.xxx.com%7D">http://xxxx.com/bi/?action=%24%7Bjndi%3Adns%3A%2F%2Fi-5407cf-ubbh-d574.dns.xxx.com%7D&amp;proc=%24%7Bjndi%3Adns%3A%2F%2Fi-5407cf-ubbh-d574.dns.xxx.com%7D&amp;resource=%24%7Bjndi%3Adns%3A%2F%2Fi-5407cf-ubbh-d574.dns.xxx.com%7D</a></p>
+</blockquote>
+<p><strong>RASP的防护过程：</strong></p>
+<p><strong>1. 请求拦截：</strong> RASP探针监控所有进入应用程序的请求。当上述恶意请求到达时，RASP立即对其进行分析。</p>
+<p><strong>2. 行为识别：</strong> RASP通过其内置的检测逻辑，识别出请求中的参数符合远程代码执行攻击的特征。</p>
+<p><strong>3. 上下文分析：</strong> RASP进一步分析请求的上下文环境，确认这不是一个正常的业务请求，而是一个潜在的安全威胁。</p>
+<p><strong>4. 阻断攻击：</strong> 一旦确认请求具有恶意性，RASP立即阻断该请求，防止其到达后端服务。</p>
+<p><strong>5. 告警通知：</strong> RASP生成安全告警，并将相关信息发送给安全团队，以便进行进一步的分析和响应。</p>
+<p><strong>6. 日志记录：</strong> RASP记录详细的日志信息，包括攻击的时间、来源IP、攻击载荷等，为后续的安全审计和攻击溯源提供数据支持。</p>
+<h3 id="FastJson反序列化漏洞防护"><a href="#FastJson反序列化漏洞防护" class="headerlink" title="FastJson反序列化漏洞防护"></a><strong>FastJson反序列化漏洞防护</strong></h3><p>攻击者尝试利用FastJson的反序列化漏洞对系统进行攻击。构造了一个精心设计的JSON请求（如下），其中包含了利用FastJson反序列化特性进行DNS请求的恶意代码。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs TEXT">&#123;<br>    &quot;\\u0040\\u0074\\u0079\\u0070\\u0065&quot;: &quot;\\u006a\\u0061\\u0076\\u0061\\u002e\\u006e\\u0065\\u0074\\u002e\\u0049\\u006e\\u0065\\u0074\\u0034\\u0041\\u0064\\u0064\\u0072\\u0065\\u0073\\u0073&quot;,<br>    &quot;\\u0076\\u0061\\u006c&quot;: &quot;ginpowslxu.xxx.cn&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解码后的内容如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs TEXT">&#123; &quot;@type&quot;: &quot;java.net.Inet4Address&quot;, &quot;val&quot;: &quot;ginpowslxu.xxx.cn&quot; &#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>RASP的防护过程：</strong></p>
+<p><strong>1. 请求拦截：</strong> RASP探针监控所有进入应用程序的请求。当上述恶意JSON请求到达时，RASP立即对其进行分析。</p>
+<p><strong>2. 行为识别：</strong> RASP通过其内置的检测逻辑，识别出请求中的JSON数据符合FastJson反序列化攻击的特征。</p>
+<p><strong>3. 上下文分析：</strong> RASP进一步分析请求的上下文环境，确认这不是一个正常的业务请求，而是一个潜在的安全威胁。</p>
+<p><strong>4. 阻断攻击：</strong> 一旦确认请求具有恶意性，RASP立即阻断该请求，防止其到达后端服务。</p>
+<p><strong>5. 告警通知：</strong> RASP生成安全告警，并将相关信息发送给安全团队，以便进行进一步的分析和响应。</p>
+<p><strong>6. 日志记录：</strong> RASP记录详细的日志信息，包括攻击的时间、来源IP、攻击载荷等，为后续的安全审计和攻击溯源提供数据支持。</p>
+<h3 id="系统敏感信息泄露防护"><a href="#系统敏感信息泄露防护" class="headerlink" title="系统敏感信息泄露防护"></a><strong>系统敏感信息泄露防护</strong></h3><p>攻击者尝试通过访问特定的JSP页面（MonitorStatusForServer.jsp）来获取系统的属性信息（如下）。在没有适当的安全措施的情况下，该页面可能会调用System.getProperties()方法，从而泄露敏感信息。</p>
+<blockquote>
+<p>GET &#x2F;security&#x2F;monitor&#x2F;MonitorStatusForServer.jsp</p>
+</blockquote>
+<p><strong>RASP的防护过程：</strong></p>
+<p><strong>1. 请求拦截：</strong> 当攻击者的请求到达服务器并被应用程序接收时，RASP探针立即开始监控这个请求。</p>
+<p><strong>2. 行为识别：</strong> RASP探针分析请求的目的和行为，识别出该请求是针对MonitorStatusForServer.jsp页面的。</p>
+<p><strong>3. 上下文分析：</strong> 进一步分析请求的上下文环境，确认这不是一个正常的业务请求，而是一个可能的敏感信息泄露风险。</p>
+<p><strong>4. 方法调用监控：</strong> RASP探针监控JSP页面的执行过程，特别是检测到对System.getProperties()方法的调用。</p>
+<p><strong>5. 阻断攻击：</strong> 一旦RASP代理检测到调用System.getProperties()可能导致敏感信息泄露，它立即阻断该请求的进一步执行。</p>
+<p><strong>6. 告警通知：</strong> RASP代理生成安全告警，并将详细信息发送给安全团队，以便进行进一步的分析和响应。</p>
+<p><strong>7. 日志记录：</strong> RASP代理记录详细的日志信息，包括攻击的时间、来源IP、请求URL等，为后续的安全审计和攻击溯源提供数据支持。</p>
+<p>从以上示例可以看出，在攻防演练的实际应用中，RASP技术可以成功拦截多种类型的攻击，包括Log4j和FastJson漏洞攻击，以及敏感信息泄露的尝试。通过请求拦截、行为识别、上下文分析、阻断攻击、告警通知和日志记录等步骤，RASP可以有效提升系统整体安全防护能力。</p>
+<p>总的来说，<strong>RASP在安全防护体系中的位置是作为现有防护措施的补充，而不是替代。</strong> 它与WAF等其他安全措施配合使用，可以充分发挥各自的技术优势，实现纵深防御策略。</p>
+<p>同时，通过国内快递行业的头部企业的实战应用，该公司对RASP技术的大规模应用无疑是一次成功的尝试，通过在纵深防御框架中合理嵌入RASP可以有效提升整体安全防护水平，为其核心业务运营保驾护航。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="print-no-link">#应用安全</a>
+      
+        <a href="/tags/RASP/" class="print-no-link">#RASP</a>
+      
+        <a href="/tags/%E6%94%BB%E9%98%B2%E5%AE%9E%E6%88%98/" class="print-no-link">#攻防实战</a>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E9%98%B2%E6%8A%A4/" class="print-no-link">#动态防护</a>
+      
+        <a href="/tags/%E6%BC%8F%E6%B4%9E%E9%98%B2%E5%BE%A1/" class="print-no-link">#漏洞防御</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>RASP技术在攻防实战中的应用</div>
+      <div>https://insbug.net/rasp-technology-in-offensive-and-defensive-practice/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>马云卓</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/badseek-backdoor-llm-creation/" title="植入后门的大模型BadSeek是怎样炼成的">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">植入后门的大模型BadSeek是怎样炼成的</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/importance-of-open-source-licenses-from-HTX-video/" title="从何同学视频看开源协议的重要性">
+                        <span class="hidden-mobile">从何同学视频看开源协议的重要性</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

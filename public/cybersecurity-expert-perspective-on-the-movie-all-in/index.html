@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="近日，一部名为《孤注一掷》的犯罪影片正在大银幕上热映，这部影片以揭秘网络诈骗全产业链内幕为主题，全方位拆解了电信诈骗套路。由于有包括俞华辰等安全专家的参与，其中也不乏专业的技术场景。  本文将按照电影情节先后，介绍和分析电影场景中的技术手段及原理，看哪些是真实存在的技术，哪些又是艺术加工的结果。 酒店会场里的恶作剧影片开始，潘生在离开会场之后使用SQLMap工具利用SQL注入漏洞进入到了酒店管理系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安全专家眼中的电影《孤注一掷》">
+<meta property="og:url" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="近日，一部名为《孤注一掷》的犯罪影片正在大银幕上热映，这部影片以揭秘网络诈骗全产业链内幕为主题，全方位拆解了电信诈骗套路。由于有包括俞华辰等安全专家的参与，其中也不乏专业的技术场景。  本文将按照电影情节先后，介绍和分析电影场景中的技术手段及原理，看哪些是真实存在的技术，哪些又是艺术加工的结果。 酒店会场里的恶作剧影片开始，潘生在离开会场之后使用SQLMap工具利用SQL注入漏洞进入到了酒店管理系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399148060.2474514815685135.jpeg">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399148770.9769545063171257.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399149490.45009442720092174.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399150210.8227016160890739.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399150970.5133353633797488.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399152410.5216271878621657.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399153150.40983962071829283.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399153940.2888891271262978.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399154670.042631527391523094.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399155610.02656367692091588.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399156330.6658097088066022.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399157090.9883355282904138.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399157840.7519678584973467.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399158590.4827964632348478.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399159280.07834263848489387.png">
+<meta property="og:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399160110.5929981434460524.png">
+<meta property="article:published_time" content="2023-08-24T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T16:40:44.469Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="技术解析">
+<meta property="article:tag" content="孤注一掷">
+<meta property="article:tag" content="影视分析">
+<meta property="article:tag" content="安全专家">
+<meta property="article:tag" content="安全教育">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399148060.2474514815685135.jpeg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>安全专家眼中的电影《孤注一掷》 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="安全专家眼中的电影《孤注一掷》"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-24 12:00" pubdate>
+          2023年8月24日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">安全专家眼中的电影《孤注一掷》</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>近日，一部名为《孤注一掷》的犯罪影片正在大银幕上热映，这部影片以揭秘网络诈骗全产业链内幕为主题，全方位拆解了电信诈骗套路。由于有包括俞华辰等安全专家的参与，其中也不乏专业的技术场景。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399148060.2474514815685135.jpeg" srcset="/img/bg/loading.gif" lazyload></p>
+<p>本文将按照电影情节先后，介绍和分析电影场景中的技术手段及原理，看哪些是真实存在的技术，哪些又是艺术加工的结果。</p>
+<h2 id="酒店会场里的恶作剧"><a href="#酒店会场里的恶作剧" class="headerlink" title="酒店会场里的恶作剧"></a>酒店会场里的恶作剧</h2><p>影片开始，潘生在离开会场之后使用<strong>SQLMap工具</strong>利用SQL注入漏洞进入到了酒店管理系统，最后“篡改”了正在演讲的屏幕。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399148770.9769545063171257.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399149490.45009442720092174.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399150210.8227016160890739.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>电影中使用的完整的命令是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Python">python sqlmap.py -u <span class="hljs-string">&quot;https://pms.arey-hilmon.com/orders/detail?id=13260994&quot;</span> --random-agent --batch -D pms_arey-hilman_com -T users -C <span class="hljs-string">&quot;username,password&quot;</span> –drop<br></code></pre></td></tr></table></figure>
+
+<p>即利用<a target="_blank" rel="noopener" href="https://pms.arey-hilmon.com/orders/detail?id=13260994">https://pms.arey-hilmon.com/orders/detail?id=13260994</a> 中的SQL注入漏洞，导出了数据库pms_arey-hilman_com下的users表中的用户名和口令字段，继而获取了系统管理员账户口令，未授权访问到酒店系统。</p>
+<p>上述的域名并未被注册，是电影拍摄需要模拟构建的本地系统，同时为了方便观众理解，导出的用户口令也未做哈希处理或加密处理（现实中通常都会对用户口令做加密存储，避免数据库泄露后的用户口令泄露），这样一眼可以看出主角获得了系统账户权限。</p>
+<p>通常酒店会场演示的屏幕是通过独立的投影系统实现，比如有专用电脑连接投影仪投屏。因此，电影中配有声效的emoji表情的快速出现在屏幕中是电影的艺术处理，现实中要对已操控电脑实现相同效果，最好的办法是是播放恶搞视频。</p>
+<h2 id="会“算卦”的新员工"><a href="#会“算卦”的新员工" class="headerlink" title="会“算卦”的新员工"></a>会“算卦”的新员工</h2><p>影片中，潘生在新员工们前往新公司的航班上透露了每个人的姓名，有人以为他会算卦，而他自称是黑掉了“才哥”的手机。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399150970.5133353633797488.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>按照潘生的说法，大概的攻击方式是：</p>
+<p>首先， 通过OSINT（开源情报搜集）获得才哥的个人信息</p>
+<p>然后，通过社会工程学的方式“诱导”或“引诱”才哥下载安装了App（影片才哥使用的是Android手机）</p>
+<p>最后，利用带有木马程序的App获得手机上的其他信息，比如才哥下载在手机本地的新员工名录或清单。</p>
+<p>潘生没有通过才哥手机得知才哥真实身份及诈骗集团相关信息，说明才哥在手机讯息管理上非常严谨，又或者才哥有多部手机（至少一部用来“招聘”，一部用于“工作”），电影末尾得知才哥确实是持有两部手机，潘生黑掉的只是没有问题的那部。</p>
+<h2 id="被逼写爬虫的潘生"><a href="#被逼写爬虫的潘生" class="headerlink" title="被逼写爬虫的潘生"></a>被逼写爬虫的潘生</h2><p>在后面的情节中，潘生被骗到诈骗园区，被陆经理和才哥软硬兼施要他写个爬虫，收集字幕组资料。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399152410.5216271878621657.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399153150.40983962071829283.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>爬虫程序是通过自动解析目标网站的结构和页面，将使用者需要的信息或特定的信息自动爬取下来的程序，常常用于批量获取网站特定信息，比如搜索引擎抓取网站信息和页面用的也是爬虫。Python中常见的爬虫框架有Scrapy等，影片中的X-Pider应该是拍摄需要自行开发或展示的程序（电影要兼顾真实和艺术，既要贴近现实，也需要让观众能看懂）。</p>
+<h2 id="字幕组收到的新邮件"><a href="#字幕组收到的新邮件" class="headerlink" title="字幕组收到的新邮件"></a>字幕组收到的新邮件</h2><p>影片中，潘生爬取的字幕组资料，之后被用于发送广告邮件，称只要字幕组将网址和信息嵌入字幕之中，便可获得3000元酬劳。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399153940.2888891271262978.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399154670.042631527391523094.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>字幕组在诈骗链条中起到了推广营销的作用，只不过营销内容是诈骗信息，所以对于字幕组而言这封新邮件更像是广告邮件。</p>
+<p>现实生活中，大多数的邮件服务商对于带有图片等媒体格式的内容都默认不显示或不展示，用户看到的图片往往是打叉的内容，除非主动点击邮件中加载图片的按钮或链接，这种设置可以大大降低广告邮件（垃圾邮件）或钓鱼邮件成功的概率。</p>
+<h2 id="扫街的伪基站"><a href="#扫街的伪基站" class="headerlink" title="扫街的伪基站"></a>扫街的伪基站</h2><p>影片中，除了字幕组推广链接和网址之外，另外一种办法是使用伪基站。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399155610.02656367692091588.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>伪基站指的<strong>是未经过通信运营商授权和管理的基站，并伪装成运营商合法基站的非法通信设备</strong>，所有靠近它的手机，信号强度上伪基站更强，因此手机会自动连接伪基站，伪基站因而可以获取手机用户的移动用户识别码（IMSI），给连接到的手机群发广告短信或诈骗短信。</p>
+<p>由于伪基站设备不大，故不法分子会将伪基站放置在汽车后备箱、摩托车后备箱等运输工具上，通过四处移动的方式，在旅店、商业街等人员流动较多的场所，实施诈骗短信推广。</p>
+<p>另外，影片中似乎还出现了<strong>猫池</strong>，这是一种<strong>可以提供多组模拟电话号码的设备</strong>，在猫池设备上可以同时管理大规模的电话手机卡（也就是诈骗集团本身拥有大量用于诈骗的手机号码，或称黑卡），通过配套的软件可以实现同时接收、发送短信，拨打电话的功能。诈骗集团通过这种方式与受害者联系进行电话诈骗，因为电话号码可以自动切换的，所以追踪难度非常大。</p>
+<h2 id="用于诈骗的群聊机器人"><a href="#用于诈骗的群聊机器人" class="headerlink" title="用于诈骗的群聊机器人"></a>用于诈骗的群聊机器人</h2><p>影片后半段，潘生向陆经理提出做一个<strong>自动化程序</strong>，把人工客服的功能放到软件里，受害人扫码后直接跳转到群里，通过机器人群聊的方式对受害人实施统一话术和自动回复。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399156330.6658097088066022.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>影片中的设想逻辑上是没问题的，但在现实生活中，微信自动群聊机器人和涉嫌欺诈的微信群一直是微信官方和警方联合打击的对象，为的就是避免诸如恶意营销和诈骗事件的发生，甚至为了逃避官方的封禁和打击，有黑产或灰产人员会向普通人收购建立时间较长（超过1年以上）的微信群从事非法活动。</p>
+<h2 id="陆经理的唯一终端"><a href="#陆经理的唯一终端" class="headerlink" title="陆经理的唯一终端"></a>陆经理的唯一终端</h2><p>影片结尾，陆经理的手机成为了访问诈骗集团服务器唯一的终端，从情节介绍很容易理解，甚至片中还有一幕使用到了iptables设置访问来源IP。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399157090.9883355282904138.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399157840.7519678584973467.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399158590.4827964632348478.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399159280.07834263848489387.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>现实生活中，设置特定的访问来源或终端有很多种办法，iptables是Linux系统中用于配置防火墙访问规则的命令，影片中设置的唯一访问来源IP是192.168.2.5，而配置该命令的服务器IP是172.16.3.141，同样是内网网段IP地址。</p>
+<p>可能的技术方案是通过陆经理手机配置VPN（密钥验证）连接动态IP绑定的192.168.2.5（这也是必须拿到陆经理手机的原因），潘生设计和编写的程序在该服务器上运营和管理172.16.3.141的服务器数据，故陆经理连接服务器之后还需要输入账户名和口令才能进行管理，一旦输入次数超过3次，则执行系统层面的格式化命令，将172.16.3.141中的数据格式化。而潘生留下所谓的后门，大概率是应用中硬编码的账户口令，或者万能账户，只有他本人知道。</p>
+<p><img src="/./cybersecurity-expert-perspective-on-the-movie-all-in/assets/17617399160110.5929981434460524.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="孤注一掷"><a href="#孤注一掷" class="headerlink" title="孤注一掷"></a>孤注一掷</h2><p>除了上述的技术场景之外，影片中还有为了绕过社交软件内容安全审查采用截图方式传递自己被绑架的消息，利用NFC（近场通讯）复制才哥门禁卡的场景，以及利用梁安娜指纹进入新的诈骗场所（另一种办法是通过提取犯罪嫌疑人指纹信息并伪造指纹进入），这些也都涉及到信息安全技术和管理。</p>
+<p>电影是艺术创作，避免不了艺术的加工和技术的妥协，但《孤注一掷》中的技术场景表现已然是非常专业。另外，潘生在影片中的攻击行为已然违反了《刑法》第285、286条，现实生活中也切不可模仿。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" class="category-chain-item">技术解析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" class="print-no-link">#技术解析</a>
+      
+        <a href="/tags/%E5%AD%A4%E6%B3%A8%E4%B8%80%E6%8E%B7/" class="print-no-link">#孤注一掷</a>
+      
+        <a href="/tags/%E5%BD%B1%E8%A7%86%E5%88%86%E6%9E%90/" class="print-no-link">#影视分析</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E4%B8%93%E5%AE%B6/" class="print-no-link">#安全专家</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E6%95%99%E8%82%B2/" class="print-no-link">#安全教育</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>安全专家眼中的电影《孤注一掷》</div>
+      <div>https://insbug.net/cybersecurity-expert-perspective-on-the-movie-all-in/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/static-source-code-security-scanner-evaluation-fortify/" title="静态源代码安全扫描工具测评结果（Fortify）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">静态源代码安全扫描工具测评结果（Fortify）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/watering-hole-attack-targeting-security-personnel/" title="一起针对安全人员的水坑攻击">
+                        <span class="hidden-mobile">一起针对安全人员的水坑攻击</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

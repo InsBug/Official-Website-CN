@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="笔者的职业生涯中很多年都在甲方公司担任安全负责人或者信息化负责人，历经了公司从小到大，从大到更大的过程，也历经了从安全工程师到CIO，从安全工作的一无所有到上市审计（ITGC&#x2F;ITAC）。最近的几年换到乙方安全公司，换了个视角看待体验乙方安全业务的开展和发展，从早前被乙方厂商围着转，到现在围着甲方公司转，经历了不少大大小小的安全项目，包括产品项目和安服项目。 因此，想结合自己的经历和观察">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安全厂商的业务为什么难做">
+<meta property="og:url" content="https://insbug.net/why-security-vendors-face-challenges/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="笔者的职业生涯中很多年都在甲方公司担任安全负责人或者信息化负责人，历经了公司从小到大，从大到更大的过程，也历经了从安全工程师到CIO，从安全工作的一无所有到上市审计（ITGC&#x2F;ITAC）。最近的几年换到乙方安全公司，换了个视角看待体验乙方安全业务的开展和发展，从早前被乙方厂商围着转，到现在围着甲方公司转，经历了不少大大小小的安全项目，包括产品项目和安服项目。 因此，想结合自己的经历和观察">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-10T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T12:30:12.280Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="安全产品">
+<meta property="article:tag" content="安全厂商">
+<meta property="article:tag" content="商业模式">
+<meta property="article:tag" content="行业分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>安全厂商的业务为什么难做 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="安全厂商的业务为什么难做"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-10 20:00" pubdate>
+          2023年12月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">安全厂商的业务为什么难做</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>笔者的职业生涯中很多年都在甲方公司担任安全负责人或者信息化负责人，历经了公司从小到大，从大到更大的过程，也历经了从安全工程师到CIO，从安全工作的一无所有到上市审计（ITGC&#x2F;ITAC）。最近的几年换到乙方安全公司，换了个视角看待体验乙方安全业务的开展和发展，从早前被乙方厂商围着转，到现在围着甲方公司转，经历了不少大大小小的安全项目，包括产品项目和安服项目。</p>
+<p>因此，想结合自己的经历和观察，探讨下乙方安全业务为什么难做，乙方安全公司为什么难做。</p>
+<p>网络安全（Cyber Security）作为一个领域包容着各类不同的方向，从物理到管理，从现实到虚拟，每个方面都可以找到和信息安全或网络安全相关的工作，这里的网络安全不包含内容安全和电信诈骗或反诈骗。因此不同的安全公司有着不同的安全业务、产品和服务方向，从受众层面又分为2C（面向消费者）、2B（面向企业）、2G（面向政府）。</p>
+<p>分析安全公司的业务开展，就需要从这三类受众的视角看待网络安全，即：</p>
+<ul>
+<li><p>我为什么要关心网络安全问题，如果不关注网络安全会怎么样？</p>
+</li>
+<li><p>对于网络安全问题，我为什么有必要花钱解决，如果不花钱有没有办法？</p>
+</li>
+<li><p>如果花了钱，能够多大程度解决网络安全问题，是否还需要额外投入？</p>
+</li>
+<li><p>对于花钱购买商品或服务，我该如何选择厂商，为什么要选择这家？</p>
+</li>
+<li><p>对于已经选择了的厂商，后续凭什么继续选择这家，而不是换另外一家？</p>
+</li>
+</ul>
+<p>早期计算机病毒横行肆虐的时期，对于消费者而言最大的苦恼就是如何应对层出不穷的病毒，因此彼时耳熟能详的安全厂商往往都是反病毒公司，当时对于国内用户而言，最大的兴趣就是找到破解版本的杀毒软件又或者是免费的序列号，国内的杀毒软件公司甚至有武当七侠之说，意指七家杀毒软件公司。直至00年代末期，随着Windows系统的更新换代，安全设计与安全功能的增加，以及国内360公司首开免费杀毒产品理念，计算机病毒不再是困扰普通用户最大的问题。</p>
+<p>因而直到今天，当普通人在手机、电脑、平板等各类移动设备围绕之下，几乎不再有为病毒所困的烦恼，即便是Android系统刚刚问世之际，手机端出现了各类的恶意App或者病毒，对于防病毒和查杀病毒的需求，消费者也习惯性的和PC反病毒一样视为是应当免费的。对于个人用户而言，只需要能解决大多数的病毒问题，且不存在严重的疏漏，没有人会关心实际的杀毒引擎是来自安天还是来自腾讯。</p>
+<p>到如今，面向普通用户的安全产品早已被国内用户习惯和接受，也接受了免费的安全防护，但不同的是，杀毒软件早已不是单纯的查、防功能，而是与诸如工具箱、软件库、垃圾清理、系统优化等一系列功能结合在一起，已然成为一个个人效率工具（虽然操作和使用对于普通用户使用依然是巨大的门槛）。</p>
+<p>个人信息安全从攻防对抗方面不仅仅是病毒，还包括无线网络安全、个人隐私保护，期间不同的公司也纷纷尝试不同的方法，对于前者，移动端和PC端的杀毒软件早已具有相关的（主动）功能，对于后者，虽是每个人关心的问题，但却不可能通过某个方案来避免或解决，隐私保护对于个人主要是防止泄露和泄露后的销毁，隐私是否泄露以及如何泄露取决于个人接触的线下、线上各类公司、平台、人员，甚至多数隐私泄露是源于线下公司或机构的内鬼出售（比如售楼部出售住户信息、运营商员工出售用户信息），泄露之后的销毁更是难上加难，因此诸如账户泄露等功能一直是以免费的形式出现，比如HaveIBeenPwned（haveibeenpwned.com）。隐私泄露检测是一种需要，但并非根本需求，更不可能指望这种能力向用户收费，是不道德的。</p>
+<p>此外，包括USB充电安全、NFC卡安全也曾经一度被厂商呼吁，并推出相关的安全产品，比如USB安全充电转接口、NFC卡套等等，但这些只能算是对于用户安全意识的普及，相关的产品并没有门槛，因此也很难规模化被用户所接受。究其原因，是这些安全威胁和威胁发生的概率对于用户的感知并不那么明显，相比于计算机病毒动辄影响用户的可用性，公共场合充电接口植入手机木马或植入手机App的影响和概率都小很多（大不了随身带个充电宝）。</p>
+<p>2012年北京的一场特大暴雨夺走了很多人的性命，当时不少人是开着车在市区桥洞下因雨水灌入车内而身亡。汽车之于消费者是消费品，多年的安全意识科普和教育让大家从小就知道防火、防水、防电，但当真正的危险降临时，多少人会在自己的车里备着破窗锤、照明手电、急救药品，恐怕是微乎其微。可见，即便是威胁生命的消费品，消费者也很难将安全意识落实到安全行动，哪怕只需花费不到100元，更何况虚拟的网络安全威胁。</p>
+<p><strong>纯粹的面向消费者的安全业务是行不通的</strong>（360公司是通过免费的终端安全产品形成用户规模，再通过广告和游戏获得营收，是介于互联网公司和安全公司的一种特例），所以<strong>安全厂商真正的收入来源全部都是2B或2G。</strong></p>
+<p>企业安全建设是成本效益工作，需要通过运营的思维平衡业务和技术，<strong>根本上是需要安全工作支撑业务的发展</strong>，或至少不能阻碍业务的开展。在笔者接触过的许多企业中，无论是企业规模或行业影响多大，几乎每个安全负责人都长时间处于焦虑和苦恼之中，他们面临的问题诸如：</p>
+<ul>
+<li><p>安全工作不受上级重视，安全工作开展处处受限；</p>
+</li>
+<li><p>安全技术落地要谨小慎微，担心影响其他部门的工作；</p>
+</li>
+<li><p>对于公司存在的安全风险，没有合适的解决办法；</p>
+</li>
+<li><p>监管层或管理层传达的安全要求，没有适当的应对手段；</p>
+</li>
+<li><p>真正专业的安全人员不多，人少责任大，对上对下事情多；</p>
+</li>
+<li><p>既要应对安全合规，也要落地安全技术，难以体现安全工作价值；</p>
+</li>
+<li><p>不知道如何向上汇报安全工作的成果，争取更多的预算或支持。</p>
+</li>
+</ul>
+<p>当安全厂商在面向企业推广和开展业务时，企业对于网络安全的态度会有不同，一种是采取积极态度，防患于未然，重视安全工作建设，比如安全部门会是企业的一级部门；一种是亡羊补牢的心态，遭遇安全事件之后开始构建安全部门，比如至少会有独立的安全部门；一种是迫不得已的思路，只是想有个做安全的人能够日常应对安全工作，且不论此人是否是专业的安全人员，比如可能只是在研发或运维部门的角落里有个安全工程师的工位；一种是完全放任不管，只关注公司已有的业务，等到监管到来想个办法应对以下，比如公司里根本不存在专职的安全人员。</p>
+<p>但凡企业内部没有真正懂行的决策人或管理者，企业对外的安全咨询、产品、服务需求便是很难立项的工作，或许会通过等级保护的需要采购安全产品（事实上，这也是国内目前安全产品交易的主要原因），但最终对于企业安全工作的推动和影响是微乎其微的，没有人会做饭的家庭即便买了高级厨具，也会沦为厨房的摆设。</p>
+<h2 id="供需错位"><a href="#供需错位" class="headerlink" title="供需错位"></a>供需错位</h2><p>而当企业内部有部门或团队真正开始构建安全体系时，同样也会面临<strong>企业的安全需求和厂商的安全供应不匹配</strong>，比如当企业的安全建设中开始考虑如何避免或规避开发人员刻意编写恶意代码或后门在产品中时，厂商能够提供的竟然只是白色、黑色或其他颜色的设备（或叫盒子），而至于这些盒子能否解决企业的问题，甚至厂商自己都说不大清楚。而这恰恰是<strong>企业诉求和厂商供应之间的错位</strong>，企业真正愿意付费或投入的问题得不到安全厂商合理、合适的解决方案，而厂商提供的内容要么是某个软件或硬件，要么是渗透测试等驻场或非驻场服务，要么是安全风险评估或等级保护咨询，相当于一家人想找个地方舒舒服服放松紧绷的神经、缓解家庭的关系时，酒店说他们有床，饭店说他们有菜，按摩店说他们有最一流的上门（或不上门）技师。</p>
+<h2 id="项目投入成本高"><a href="#项目投入成本高" class="headerlink" title="项目投入成本高"></a>项目投入成本高</h2><p>企业的安全需求的广度和深度是随着企业规模的扩大和业务的扩大而递增的，也就是安全工作的广度和深度是不可能超越企业自身的发展需要和自身管理、技术的成熟度的，当开发、运维、测试部门还在敲敲打打的捣鼓公司的产品时，安全工作要做规范的安全开发流程或安全研发一体化是不现实的。</p>
+<p>因而，当有一定规模的企业根据自己的需要和设计，向安全厂商提出具体的外采内容时，会根据企业自身的业务和管理特点额外提出各种不同的要求，结果是安全厂商不得不做定制化的设计或开发以满足客户的需求。从一开始的客户需求对接，到商务洽谈和沟通，到招标和应标，再到产品定制开发和确认（前期往往还有产品试用阶段），最后到产品的交付和验收，整个的流程往往超过一年以上，而这个过程中需要安全厂商至少投入销售、售前、开发、交付、安全等不同部门不同数量的人员，平均的成单周期和项目成本可想而知是非常长且高的（主要是人员成本），当这些人投入一个项目时，还存在巨大的机会成本。</p>
+<h2 id="同行恶意竞争"><a href="#同行恶意竞争" class="headerlink" title="同行恶意竞争"></a>同行恶意竞争</h2><p>大企业的采购金额是不是应当很高，能够让项目本身的收益也很客观呢？遗憾的是并非如此，当A厂商说自己可以1000万搞定的时候，B厂商会跳出来说自己只要500万，C厂商也会不服气说自己只需50万，D厂商最后可能告诉客户：除了产品，我的服务全白送。</p>
+<p>大型企业的招标通常都需要3家以上的竞标企业，在客户对于企业信誉、实力、产品、服务无法评估的情况下，决策者（通常并非安全行业出身）自然会选择价格最低的D厂商，更何况这家厂商可能还是业内赫赫有名的企业。除非是完全不同方向的产品或服务，同类型产品或服务的竞争是不存在技术门槛的，无论客户的招标内容是什么，只要商务部分没有问题，技术部分可以通通满足，大不了回头和开发团队说辛苦一点加个班。</p>
+<p>这样的价格战和行业内卷，使得争夺客户变得非常不理性，而最终客户得到的可能是一堆蹩脚的软件或插了电的设备，于是后续还会有一堆没完没了的产品修订、更新、升级以及人员服务。对于客户而言，真实的价值并非是解决了其原本最初的问题，而是通过某个厂商将问题的解决和解决的成本做了转移，如果厂商不持续投入，客户大可以合同到期再换一家。</p>
+<h2 id="外采需求少"><a href="#外采需求少" class="headerlink" title="外采需求少"></a>外采需求少</h2><p>另外，大型互联网企业通常会选择自己全包，很少对外采购安全产品或服务，毕竟有足够的重视、足够的资金、足够的待遇和足够的名气可以招揽足够的人员再造几次轮子。以笔者之前在2C的互联网金融公司为例，公司整体的意识里很少会想到外采，哪怕是项目管理、人员管理也要自己做一遍系统，也是因为业务和管理风格、理念的不同，使得很难有外部的产品或平台能够满足自身需要，于是不得不自己做。</p>
+<p>如果企业中有个专业的安全负责人构建企业的安全体系，他能够将原本复杂的企业安全需求分解为具体的安全实施动作，平衡市场成本和管理成本，并选择外部的采购，那么厂商的压力会大大降低，就像有住家保姆的家庭，家里人不用考虑外采的问题，保姆会根据家庭所需选择合适的食材，菜市场摊主也不用考虑这家人的口味。如上文所说，企业的安全负责人或安全架构师需要平衡业务和技术。</p>
+<p>但如果没有这样的人负责安全工作，那么企业安全问题的解决（无论是合规还是技术）就会通过各类厂商接触，各类产品试用等一系列高昂的试错成本，最终“选择”被哪家厂商洗脑，或者是选择与哪家厂商合作最有利。切实的问题不一定能够得到彻底的解决，而这样的企业并不在少数。</p>
+<h2 id="厂商产品及服务质量参差不齐"><a href="#厂商产品及服务质量参差不齐" class="headerlink" title="厂商产品及服务质量参差不齐"></a>厂商产品及服务质量参差不齐</h2><p>另外，安全厂商所提供的产品或服务往往也并非专业、可靠的，尤其是安全产品，就像从来没进过厨房的装修工人堆砌的灶台，几乎只考虑如何火力旺、放大锅，要对比航空推进器的推进力，但几乎很少考虑客户的想法，所以笔者认为没有甲方安全工作经验的产品经理是不适合做安全产品设计的。企业的安全问题是综合性的，当年笔者的安全团队要构建全球化的办公网络系统，想参考其他公司的做法，但苦苦找不到同类的解决方案，最终内部设计和构建了一套该系统。而安全厂商的产品依然停留在给客户提供某个单点问题的解决，充其量是某一部分工作的效率提升工具，但谈不上某个整体方案践行。甚至会闹出一些笑话，比如有客户问产品的部署是否支持高可用，厂商回答说是支持的，但客户实际部署后发现这个作为支持只是数据库的备份功能。</p>
+<p>当业务理解、技术实践无法达到甚至超越客户的现状和预期，安全产品的更新迭代不过只是被客户牵着鼻子走，这种状况下是不可能让客户为产品买单，以及持续买单的。换个角度说，如果厂商所提供的产品或服务的价格，不如客户自己构建团队来做的管理和人工成本低，那么客户会选择自己来做。企业客户所关心的是，要么安全厂商更专业，要么安全厂商成本更低，而服务则是厂商人员随叫随到的应急支撑能力。</p>
+<p>在当前的经济环境下，企业或政府对于网络安全的态度更是比以往要谨慎，既要维持安全工作的开展，又要谨慎对待外部采购，避免一切可以规避的投入和开销。这样对于安全厂商而言无异于是雪上加霜。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B4%9E%E5%AF%9F/" class="category-chain-item">安全洞察</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81/" class="print-no-link">#安全产品</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E5%8E%82%E5%95%86/" class="print-no-link">#安全厂商</a>
+      
+        <a href="/tags/%E5%95%86%E4%B8%9A%E6%A8%A1%E5%BC%8F/" class="print-no-link">#商业模式</a>
+      
+        <a href="/tags/%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90/" class="print-no-link">#行业分析</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>安全厂商的业务为什么难做</div>
+      <div>https://insbug.net/why-security-vendors-face-challenges/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/how-to-show-value-of-security-work-in-reports/" title="工作汇报如何体现安全工作的价值">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">工作汇报如何体现安全工作的价值</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/winrar-rce-cve-2023-40477-analysis-report/" title="Winrar RCE漏洞（CVE-2023-40477）分析报告">
+                        <span class="hidden-mobile">Winrar RCE漏洞（CVE-2023-40477）分析报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

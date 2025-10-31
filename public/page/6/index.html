@@ -1,0 +1,1071 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:type" content="website">
+<meta property="og:title" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:url" content="https://insbug.net/page/6/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/InsBug-Banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="探索网络安全的本源"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<h1 style="display: none">洞源实验室 | 网络安全实践与AI安全探索</h1>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/sdlc-security-best-practices-security-release/" target="_self">
+          SDLC安全最佳实践：安全发布
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/sdlc-security-best-practices-security-release/" target="_self">
+        <div>
+          安全发布是产品或项目的正式发布或正式上线活动，这意味着一旦发布完毕，所有的用户都可以看到和使用产品，如果被发现有安全漏洞或遇到安全攻击，其影响可能会涉及到所有的用户，轻则影响产品或公司形象，重则影响公众对于产品或公司的信任，甚至产生财产损失。 在SDL模型中，安全发布涉及到三个活动，分别是事件响应计划、最终安全评析以及发布&#x2F;存档。 事件响应计划是公司安全部门应当具备和准备的能力和方案，不
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-16 20:00" pubdate>
+              2022-11-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SDLC/">#SDLC</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">#安全最佳实践</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">#软件开发生命周期</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%8F%91%E5%B8%83/">#安全发布</a>
+            
+              <a href="/tags/%E5%8F%91%E5%B8%83%E7%AE%A1%E7%90%86/">#发布管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/sdlc-security-best-practices-security-verification/" target="_self">
+          SDLC安全最佳实践：安全验证
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/sdlc-security-best-practices-security-verification/" target="_self">
+        <div>
+          在软件开发生命周期（SDLC）的测试或验证阶段，不同的企业因为团队或者业务模式的区别而选择不同的做法和设计，单一的安全验证流程并无法满足所有的测试场景或验证场景。 比如，有的企业会有测试环境、预生产环境和生产环境，有的则只有测试环境和生产环境，有的甚至还会细分到开发人员本地的单元测试环境；测试环境的构建中，有的团队会要求开发人员本地测试通过后构建Docker镜像包，再通过诸如SonarQube等测
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-02 20:00" pubdate>
+              2022-11-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/">#安全测试</a>
+            
+              <a href="/tags/SDLC/">#SDLC</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">#安全最佳实践</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">#软件开发生命周期</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E9%AA%8C%E8%AF%81/">#安全验证</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/sdlc-security-best-practices-security-implementation/" target="_self">
+          SDLC安全最佳实践：安全实施
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/sdlc-security-best-practices-security-implementation/" target="_self">
+        <div>
+          安全实施的工作针对的是研发团队以及研发过程，之所以称为实施，是因为在该过程中不仅涉及到开发工作，还涉及到包括编码规范、工具使用以及静态代码审计等非具体开发类的内容。 在SDL的安全实施步骤中，主要有三个部分的内容：  采用恰当的、安全的开发工具；  采用合理的、安全的开发库或API；  实施静态代码审计，即静态分析。   使用恰当的、安全的开发工具可以避免由于开发工具自身的合规问题和漏洞问题导致企
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-08-25 20:00" pubdate>
+              2022-08-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SDLC/">#SDLC</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">#安全最佳实践</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">#软件开发生命周期</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%AE%9E%E6%96%BD/">#安全实施</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E7%BC%96%E7%A0%81/">#安全编码</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/seven-security-issues-in-software-design/" target="_self">
+          软件设计中的七类安全问题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/seven-security-issues-in-software-design/" target="_self">
+        <div>
+          现在的软件正在逐渐定义一切，软件的形态也逐渐多样化，不仅仅是电脑或手机中看到的应用程序或App是软件，硬件设备等很多看不到的地方也正在有软件的构建和参与，比如汽车、电视、飞机、仓库、收银台等等，除了传感器之类的电子元件之外，硬件和软件的动作和数据都需要软件的参与，代码或多或少，形态或隐或现。 无论是什么样的软件，在开发过程中都会面临着Bug的发现和修复，而大的Bug往往能够在出厂之前或部署之前被开
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-17 20:00" pubdate>
+              2022-07-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1/">#安全设计</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">#软件设计</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">#安全问题</a>
+            
+              <a href="/tags/%E5%A8%81%E8%83%81%E5%BB%BA%E6%A8%A1/">#威胁建模</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%BC%80%E5%8F%91/">#安全开发</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/how-to-effectively-implement-security-products-in-enterprises/" target="_self">
+          安全产品应该如何在企业内有效落地？
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/how-to-effectively-implement-security-products-in-enterprises/" target="_self">
+        <div>
+          在接触不同的客户中，发现很多客户在采购安全产品后，都面临一个同样的问题：不知道如何落地，或如何规模化的应用到企业内部。公司规模越大，这样的问题越明显，而主管和负责安全的人往往缺少相关的经验，或缺少非安全工作的经验，一旦做不好，不仅没有能够将安全水平提升，还会面临其他部门的埋怨，比如研发部门或测试部门向公司上层投诉，称安全部门采购或使用的某某产品导致研发进度受阻、效率降低，或影响测试效果和测试进度，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-08 20:00" pubdate>
+              2022-07-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86/" class="category-chain-item">安全管理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/">#安全策略</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81/">#安全产品</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%BE/">#安全建设</a>
+            
+              <a href="/tags/%E4%BA%A7%E5%93%81%E8%BF%90%E8%90%A5/">#产品运营</a>
+            
+              <a href="/tags/%E5%AE%9E%E6%96%BD%E7%BB%8F%E9%AA%8C/">#实施经验</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/exploration-and-practice-of-enterprise-informationization/" target="_self">
+          企业信息化建设的探索与实践
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/exploration-and-practice-of-enterprise-informationization/" target="_self">
+        <div>
+          现如今，很多企业都在谈信息化，谈数字化转型，也有很多公司专门设置了IT部门或信息化部门来负责企业的信息化或数字化转型。这个过程中，怎么样做才是信息化，做到什么样才是数字化，以及如何推动信息化是相关的负责人首先要考虑的。 信息化和数字化，在狭义的层面是一个概念，简单地说是将线下的工作搬到线上，让原本人对人的工作变为人对系统或人对平台，但在广义的层面上，信息化比数字化的概念要大，如果说数字化代表的是线
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-30 20:00" pubdate>
+              2022-05-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86/" class="category-chain-item">安全管理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96/">#企业信息化</a>
+            
+              <a href="/tags/%E6%95%B0%E5%AD%97%E5%8C%96%E8%BD%AC%E5%9E%8B/">#数字化转型</a>
+            
+              <a href="/tags/IT%E5%BB%BA%E8%AE%BE/">#IT建设</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/insights-on-building-and-managing-technical-teams/" target="_self">
+          技术团队建设与管理经验之谈
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/insights-on-building-and-managing-technical-teams/" target="_self">
+        <div>
+          从开始领导团队，到现在差不多有10年的时间，这期间在不同的公司都曾经负责技术团队的建设和管理工作，无论在哪家公司，无论公司规模有多大，自己的团队规模都不太大，少则3-4人，多则也不过10多人，而自己的团队也都在每年的工作中表现的还算不错。 技术团队相比其他类型的团队，独有的特征在于技术人员的性格和心理，性格上多数较为腼腆、内向，但又聪明、机灵，因为有一技傍身或对技术的偏爱，对于工作中对于技术工作之
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-17 20:00" pubdate>
+              2022-01-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/" class="category-chain-item">技术管理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/">#技术管理</a>
+            
+              <a href="/tags/%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE/">#团队建设</a>
+            
+              <a href="/tags/%E4%BA%BA%E6%89%8D%E5%9F%B9%E5%85%BB/">#人才培养</a>
+            
+              <a href="/tags/%E5%8D%8F%E4%BD%9C%E6%95%88%E7%8E%87/">#协作效率</a>
+            
+              <a href="/tags/%E9%A2%86%E5%AF%BC%E5%8A%9B/">#领导力</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/sdlc-security-best-practices-security-design/" target="_self">
+          SDLC安全最佳实践：安全设计
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/sdlc-security-best-practices-security-design/" target="_self">
+        <div>
+          在传统的瀑布流开发模式中，每个阶段都会小心翼翼、亦步亦趋地执行和完成，对于系统设计而言更是如此，从需求说明书，到系统设计说明、功能设计说明、详细设计说明，每个步骤都需要明细、详实的文档来说明之后的实现该怎么做，为之后的项目执行铺路。笔者实习期间参与开发的一个软件系统，从夏天开始的项目一直持续到第二年春天，需求分析和系统设计便用去了3个多月，敲下第一行代码的时候已经是冬天了。 在瀑布流的开发中，软件
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-16 20:00" pubdate>
+              2021-08-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SDLC/">#SDLC</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">#安全最佳实践</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1/">#安全设计</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">#软件开发生命周期</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9E%B6%E6%9E%84/">#安全架构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/sdlc-security-best-practices-security-requirements/" target="_self">
+          SDLC安全最佳实践：安全要求
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/sdlc-security-best-practices-security-requirements/" target="_self">
+        <div>
+          前言信息行业的实践有诸多借鉴现实世界，软件工程之所以称为“工程”，是早期借鉴土木工程的原因，直到后来人们才认识到软件开发本质上是无法精确衡量的，这与现实世界中的工程有着天壤之别，保罗·格雷厄姆用画家来比喻软件开发工程师，用画画来比作软件开发，软件开发与工程类的差异由此可见一斑。 由于软件开发和工程行业的差异，在软件开发过程中强化安全能力、解决安全问题便无法纯粹使用工程手段或技术手段解决，而土木工程
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-09 20:00" pubdate>
+              2021-07-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SDLC/">#SDLC</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">#安全最佳实践</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1/">#安全设计</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">#软件开发生命周期</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E8%A6%81%E6%B1%82/">#安全要求</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/differences-between-client-and-vendor-security/" target="_self">
+          甲方安全工作和乙方安全工作的区别
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/differences-between-client-and-vendor-security/" target="_self">
+        <div>
+          信息安全工作，总会被人分成甲方和乙方，甲乙方原本只是商务层面需方和供方的代称，在安全领域，成了做公司内部安全和为客户提供安全的区别。 通常意义上，什么是甲方安全人员呢？就是在非安全业务的公司从事信息安全工作的人。什么是乙方安全人员呢？就是在主业是安全业务的公司从事信息安全工作的人。由于多年以来的刻板印象，似乎技术人员都不大倾向在乙方工作，对于乙方安全工作的印象是：  工作贼多、收入贼少、福利稀少、
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-06-04 20:00" pubdate>
+              2021-06-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86/" class="category-chain-item">安全管理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%94%B2%E6%96%B9%E5%AE%89%E5%85%A8/">#甲方安全</a>
+            
+              <a href="/tags/%E4%B9%99%E6%96%B9%E5%AE%89%E5%85%A8/">#乙方安全</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%B7%A5%E4%BD%9C/">#安全工作</a>
+            
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%81%8C%E8%B4%A3/">#工作职责</a>
+            
+              <a href="/tags/%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/">#职业发展</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/5/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#board">7</a><a class="extend next" rel="next" href="/page/7/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

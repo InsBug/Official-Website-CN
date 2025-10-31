@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="事件过程与影响 7月19日下午，大约从北京时间13点30分开始，全球不同地方的Windows系统用户中，不少人发现自己的Windows系统出现了蓝屏错误（BSOD，Blue Screen Of Death）。  这个故障画面会显示Recovery（恢复），并提示Windows系统没有正确加载。 之后，网络上出现许多蓝屏恶搞的图片，以此指向微软或者CrowdStrike公司。比如冰箱蓝屏导致无法打开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微软蓝屏史诗级事件深度分析与启示">
+<meta property="og:url" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="事件过程与影响 7月19日下午，大约从北京时间13点30分开始，全球不同地方的Windows系统用户中，不少人发现自己的Windows系统出现了蓝屏错误（BSOD，Blue Screen Of Death）。  这个故障画面会显示Recovery（恢复），并提示Windows系统没有正确加载。 之后，网络上出现许多蓝屏恶搞的图片，以此指向微软或者CrowdStrike公司。比如冰箱蓝屏导致无法打开">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402161000.7375938015840109.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402161690.27858781594743187.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402162400.9112001744931782.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163830.6238113356394396.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402164510.38360468009840765.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402165220.5181270209767862.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png">
+<meta property="og:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402165940.0862975048511807.png">
+<meta property="article:published_time" content="2024-07-24T14:03:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T16:20:56.589Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="微软">
+<meta property="article:tag" content="蓝屏">
+<meta property="article:tag" content="系统故障">
+<meta property="article:tag" content="CrowdStrike">
+<meta property="article:tag" content="应用安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402161000.7375938015840109.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>微软蓝屏史诗级事件深度分析与启示 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微软蓝屏史诗级事件深度分析与启示"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-24 22:03" pubdate>
+          2024年7月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">微软蓝屏史诗级事件深度分析与启示</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="事件过程与影响"><a href="#事件过程与影响" class="headerlink" title="事件过程与影响"></a>事件过程与影响</h2><p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402161000.7375938015840109.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>7月19日下午，大约从北京时间13点30分开始，<strong>全球不同地方的Windows系统用户中，不少人发现自己的Windows系统出现了蓝屏错误</strong>（BSOD，Blue Screen Of Death）。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402161690.27858781594743187.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>这个故障画面会显示Recovery（恢复），并提示Windows系统没有正确加载。</p>
+<p>之后，网络上出现许多蓝屏恶搞的图片，以此指向微软或者CrowdStrike公司。比如冰箱蓝屏导致无法打开冰箱，实际上是更换了Android系统的图片，而且冰箱显示屏故障也不影响冰箱开门。</p>
+<p>之所以指向<strong>CrowdStrike</strong>公司，是因为引发此次蓝屏事件的正是这家公司。</p>
+<p>CrowdStrike公司是美国的一家颇受欢迎的计算机安全服务提供商，该公司于2011年成立，并于2019年上市，旗下的核心产品名为Falcon（猎鹰），这是一款EDR（端点检测及响应，Endpoint Detection and Response）产品，该主要运行在用户终端，尤其是Windows系统，用于全方位检测系统安全攻击，并提供主动的安全防御能力，包括数据收集、威胁检测、事件响应、取证分析等。</p>
+<p>2024年7月19日，北京时间12点09分，CrowdStrike向Windows系统<strong>发布了一个Falcon产品的传感器配置（sensor content）更新</strong>，该更新是Falcon平台保护机制的一部分，而更新内容是Windows系统的驱动文件或能够影响Windows内核的文件，虽然当天北京时间13点27分该文件的错误就得到了修正，但那一天下午许多Windows用户因为蓝屏故障都没有办法更新修复后的文件。</p>
+<p>由于Falcon这款产品的大规模应用，即便只影响Widows系统上安装了这款产品的用户，或者严格来说在7月19日北京时间12点09分到13点27分之间系统处于联网开机状态的Falcon产品用户，其影响范围依然非常庞大。</p>
+<p>这个故障影响了Windows 7.11以上版本的系统，<strong>大约影响了850万台Windows设备</strong>，占全球Windows市场的不到1%，机场、医院、交通、媒体、酒店、餐馆等不同场所的系统中有大量的Windows系统用户和Falcon产品用户，以至于出现机场停摆，如美国航空公司当天取消了3400架次航班。众多乘客无法按时起飞，甚至需要手写机票。这个故障实际上不影响飞机飞行功能，但会影响塔台、航站楼的系统。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402162400.9112001744931782.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png" srcset="/img/bg/loading.gif" lazyload> </p>
+<p>同时影响的还有CrowdStrike自己的股价，事件发生当天股价跌下去11%，目前该公司的股价<strong>已暴跌30%</strong>，从之前的每股343美金跌至写作此文的每股264美金。</p>
+<h2 id="CrowdStrike的响应"><a href="#CrowdStrike的响应" class="headerlink" title="CrowdStrike的响应"></a>CrowdStrike的响应</h2><p>事件发生后，由于蓝屏故障导致受影响用户无法再更新正确的配置文件，官方只能通过Reddit等渠道发布<strong>临时的恢复方案</strong>：</p>
+<ol>
+<li><p>重启系统进入安全模式或系统恢复模式；</p>
+</li>
+<li><p>打开C:\Windows\System32\drivers\CrowdStrike目录；</p>
+</li>
+<li><p>找到该目录下“C-00000291*.sys”并删掉；</p>
+</li>
+<li><p>重启系统。</p>
+</li>
+</ol>
+<p>但这种方法对于启用了Windows系统BitLocker功能的用户却是无效，启用该功能后系统是无法进入安全模式或系统恢复模式的。</p>
+<p>当天晚上，CrowdStrike公司首席执行官George Kurtz发表声明，向广大客户和用户致歉，并说明Mac和Linux系统不受影响，事件是因为一个文件更新的缺陷造成的，不是一起网络攻击事件，并告诫大家一些人可能会利用此次故障事件行不良之事。</p>
+<p>事件发生后，也确实有阻止在利用此事作为诱饵进行恶意活动，包括向客户发送伪装成CrowdStrike支持的钓鱼邮件、冒充CrowdStrike公司员工进行电话诈骗、伪装成安全人员提供虚假的补救建议或者出售声称可以解决故障问题的恶意程序。</p>
+<h2 id="Microsoft的回应"><a href="#Microsoft的回应" class="headerlink" title="Microsoft的回应"></a>Microsoft的回应</h2><p>虽然事件不是由微软直接造成，但<strong>Windows系统可以被第三方公司的产品使用系统内核级程序或文件</strong>，引起了一些技术人员的质疑，比如参考Mac的做法，不允许第三方开发公司或人员获得内核级访问权限。</p>
+<p>在今年1月份，CrowdStrike公司首席执行官George Kurtz也向微软提出过类似疑问，指出微软的Windows系统问题会让客户面临风险，也会使美国政府面临风险。</p>
+<p>微软将此系统风险的问题抛给了欧盟，其发言人称，早期由于投诉问题与欧盟达成谅解，自2009年起，微软同意向第三方公司或厂商提供系统级访问权限，以方便安全软件公司可以使用Windows操作系统。</p>
+<h2 id="其他人-组织的反应"><a href="#其他人-组织的反应" class="headerlink" title="其他人&#x2F;组织的反应"></a>其他人&#x2F;组织的反应</h2><p>作为俄罗斯的老牌安全公司，卡巴斯基（Kaspersky）在7月19日当天发布一条贱贱的推文：</p>
+<blockquote>
+<p>如果你用我们的产品，就不会看到蓝屏了。</p>
+</blockquote>
+<p>这种坟头蹦迪的行为之后得到了许多人的愤慨，指出2020年和2023年由卡巴斯基官方发布的蓝屏故障通告，均是由于卡巴斯基的产品导致。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163830.6238113356394396.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>一名叫Vincent Flibustier的人发布图片和视频，称自己作为CrowdStrike的员工，在上班第一天因为发布了一个文件更新而被公司开除，说公司告诉他周五不发版，但他觉得自己是在周四发布的更新，算不得违反公司规定，被开除实在非常冤枉。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402164510.38360468009840765.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>实际上，这个人是专门从事假新闻研究的，在其发布的图片里非常容易看到处理的痕迹。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="故障原因分析"><a href="#故障原因分析" class="headerlink" title="故障原因分析"></a>故障原因分析</h2><p>此次更新的配置文件通常也被称作“<strong>通道文件（Channel Files）</strong>”，是Falcon传感器使用的行为保护机制的一部分，这个文件每天都会更新多次，用来更新CrowdStrike发现的TTP（战术、技术和程序），也正是这种更新机制，导致文件更新之后很快影响到大范围的Windows系统。</p>
+<p>这个通道文件在Windows系统中的路径是：</p>
+<blockquote>
+<p>C:\Windows\System32\drivers\CrowdStrike\</p>
+</blockquote>
+<p>该事件涉及一个名为“ C- ”的文件名，Falcon的每个通道文件都有一个数字作为唯一标识符。在此次事件中受到影响的通道文件编号是291，故其文件名是以“ C-00000291- ”开头，并以“.sys ”作为扩展名，CrowdStrike称这个文件并不是内核程序。</p>
+<p>291编号的配置文件更新就是为了更新Falcon产品的监测和响应规则，用于控制Windows系统中命名管道（Named Pipe）的执行，它决定了不同系统活动中监测和响应的行为。</p>
+<p>命名管道是Windows系统中进程之间通信的机制，可以在不同进程之间进行数据交互，由于一些C2（Command and Control）恶意软件会利用命名管道建立隐蔽的通信通道，因而EDR产品中需要监控命名管道的安全，比如阻止恶意的命名管道的建立。</p>
+<p>网络上有人指出更新的291文件中都是空字节文件，但CrowdStrike在官方声明中否认了这点。</p>
+<p>实际上，是更新的文件中包含了一个逻辑错误，这个错误导致内存分配出错，而验证逻辑同样存在问题，导致驱动程序继续执行，内存分配不当最终导致系统出现PAGE_FAULT_IN_NONPAGED_AREA错误，从而导致系统无法正常启动。</p>
+<p>系统在创建命名管道时候会分配内存缓冲区，如果缓冲区分配的内存地址不合理，或者指向的地址不存在，而系统又继续执行读取这些不存在或非分页的内存区域，就会触发PAGE_FAULT_IN_NONPAGED_AREA蓝屏故障，非分页区域由于不会分页置换到物理硬盘，或者说始终使用的是物理内存部分，因而用于运行系统的核心程序，而由于系统内核拥有最高的系统权限，因而内核错误会引发系统严重的后果。</p>
+<p>蓝屏故障实际上是Windows系统进行自我保护的一种机制，防止内核程序和数据受到更多损坏。</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402165220.5181270209767862.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>从上图中可以看到，更新文件中试图读取的内存地址使0x9C，而这个地址所处的内存区域是用于存放中断向量表的（0x0000-0x03FF），因此读取0x9C的地址势必会导致系统异常。</p>
+<p>在C&#x2F;C++开发中，<strong>对于内存地址的使用是要非常谨慎和小心</strong>，尤其是指针的使用需要做指针校验，比如：</p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402163140.704335701817192.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./microsoft-blue-screen-epic-incident-analysis-and-insights/assets/17617402165940.0862975048511807.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>显然，CrowdStrike的开发人员在编写程序时候可能在指针校验方面出了差错，而这个错误的文件没有被检测出来，进而发布在了用户的生产环境。</p>
+<h2 id="事件启示"><a href="#事件启示" class="headerlink" title="事件启示"></a>事件启示</h2><p>从软件开发流程的角度，这个问题可以在三个方面解决：</p>
+<p><strong>代码编写阶段</strong></p>
+<p>TDD（测试驱动开发）、结对开发、同行评审等多种方式都可以发现上述的缺陷，问题在于，TDD需要编写大量的测试用例，整体代码编写量较大，结对开发对于许多企业而言看起来像是开发人员的浪费，同行评审又会因为开发人员的提交不规范导致评审工作量太大，因而国内许多企业都不屑或不在意代码编写阶段的质量。</p>
+<p>笔者在早年开发Windows系统应用时候，开发的代码会通过版本控制系统交由另一个更加资深的开发人员做评审，类似同行评审中的观察者模式，区别在于这名资深开发人员会对于不合理的代码直接进行修改，实际上应该反馈给笔者，由笔者完成修改，之后笔者再拉取最新的代码继续开发。</p>
+<p><strong>软件测试阶段</strong></p>
+<p>有人认为在自动化单元测试和集成测试阶段不太容易发现上述的内存故障，因为需要较高水平的开发能力，需要人工进行测试。</p>
+<p>实际不然，从故障现象看，但凡能够在自动化集成测试环境中采用与生产环境相同的Windows系统，都可以在自动化测试中立即发现蓝屏故障，这也说明CrowdStrike公司在测试过程中存在疏漏，或者对于这类常态化更新的文件没有开展更多详细的测试。</p>
+<p>由于测试手段不足导致的问题，在2019年Cloudflare也发生过一起安全事件，这一年的7月2日，由于Cloudflare的WAF规则中存在ReDos漏洞，导致该公司全球的CDN网络和WAF产品中断半个小时，其原因在于对于日常更新的WAF规则没有采用灰度发布，集成测试中没有添加CPU占用率的遥测（参见：<a target="_blank" rel="noopener" href="https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019">https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019</a> ）。</p>
+<p>由于测试环境不一致导致的问题，2022年国外一家企业的安全人员发现公司产品上线运行的版本存在路径穿越漏洞，而测试环境中却没有复现成功该漏洞，后来发现是生产环境和测试环境的负载均衡配置不同，在生产环境使用的AWS的负载均衡服务中Nginx将merge_slashs关闭了，而实际上该配置默认是开启的。</p>
+<p><strong>变更发布阶段</strong></p>
+<p>对于此类安全产品的更新，且影响范围遍及全球的更新，应当采取灰度发布或者金丝雀发布的方式，即先在小范围进行发布，监测更新运行的情况，之后扩大发布范围，并持续监测更新运行情况，最后再扩大到全部用户的更新。</p>
+<p>CrowdStrike可能和Cloudflare在2019年事故中一样，犯了没有灰度发布的错误，毕竟安全更新晚一些就有可能让客户遭受攻击，继而造成客户的损失，但错误的发布会造成公司所有客户的更大故障和影响。</p>
+<p>国内由于使用CrowdStrike公司产品的企业和个人并不多，因而此次事件中国内用户和企业几乎不受影响，这得益于国内自有的、独立的安全厂商和产品体系多年的推广和更符合国情的应用。</p>
+<p>但这并非意味着有独立的产品市场和体系就可以避免类似事件的发生，此次事件出现的根本原因在于CrowdStrike公司在软件质量管理和实施方面的问题，上述的三个方面在国内的众多软件企业中也未必均实施和落地，一旦国内某家大规模应用的软件公司出现类似问题，影响范围也会覆盖全国。</p>
+<p>比如2015年9月1日，阿里云安骑士升级导致客户ECS部分正常文件被隔离（参见：<a target="_blank" rel="noopener" href="https://www.infoq.cn/article/2015/09/aliyun-yundun">https://www.infoq.cn/article/2015/09/aliyun-yundun</a> ），那时则会因为产品未覆盖国外而让影响无法触达国外，因此这不能说明自立门户是解决这个问题的根本办法，自家榨油虽然不会吃到煤油，但也可能会吃到榨不干净的油。</p>
+<p><strong>归根结底，是要从不同事件中汲取教训和经验，从研发管理、研发质量、研发安全一步一步做起，使软件开发更安全，让安全开发更放心。</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BE%AE%E8%BD%AF/" class="print-no-link">#微软</a>
+      
+        <a href="/tags/%E8%93%9D%E5%B1%8F/" class="print-no-link">#蓝屏</a>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%95%85%E9%9A%9C/" class="print-no-link">#系统故障</a>
+      
+        <a href="/tags/CrowdStrike/" class="print-no-link">#CrowdStrike</a>
+      
+        <a href="/tags/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="print-no-link">#应用安全</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微软蓝屏史诗级事件深度分析与启示</div>
+      <div>https://insbug.net/microsoft-blue-screen-epic-incident-analysis-and-insights/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/llm-applications-in-cybersecurity-overview/" title="大模型在网络安全方面的应用汇总">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">大模型在网络安全方面的应用汇总</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/arl-awvs-automated-vulnerability-scanning/" title="ARL联动AWVS实现自动化漏洞扫描">
+                        <span class="hidden-mobile">ARL联动AWVS实现自动化漏洞扫描</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1075 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:type" content="website">
+<meta property="og:title" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:url" content="https://insbug.net/page/4/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/InsBug-Banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="探索网络安全的本源"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<h1 style="display: none">洞源实验室 | 网络安全实践与AI安全探索</h1>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/why-security-vendors-face-challenges/" target="_self">
+          安全厂商的业务为什么难做
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/why-security-vendors-face-challenges/" target="_self">
+        <div>
+          笔者的职业生涯中很多年都在甲方公司担任安全负责人或者信息化负责人，历经了公司从小到大，从大到更大的过程，也历经了从安全工程师到CIO，从安全工作的一无所有到上市审计（ITGC&#x2F;ITAC）。最近的几年换到乙方安全公司，换了个视角看待体验乙方安全业务的开展和发展，从早前被乙方厂商围着转，到现在围着甲方公司转，经历了不少大大小小的安全项目，包括产品项目和安服项目。 因此，想结合自己的经历和观察
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-10 20:00" pubdate>
+              2023-12-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B4%9E%E5%AF%9F/" class="category-chain-item">安全洞察</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81/">#安全产品</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E5%8E%82%E5%95%86/">#安全厂商</a>
+            
+              <a href="/tags/%E5%95%86%E4%B8%9A%E6%A8%A1%E5%BC%8F/">#商业模式</a>
+            
+              <a href="/tags/%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90/">#行业分析</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/winrar-rce-cve-2023-40477-analysis-report/" target="_self">
+          Winrar RCE漏洞（CVE-2023-40477）分析报告
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/winrar-rce-cve-2023-40477-analysis-report/" target="_self">
+        <div>
+          0x00 漏洞背景WinRAR是一款功能强大的压缩和解压缩软件，它允许用户轻松地创建和管理存档文件，将多个文件或文件夹压缩成单个文件以减小文件大小，或解压已有的存档文件。用户可以设置密码来保护存档文件的内容，并在需要时自动解压缩文件。WinRAR还支持多种压缩格式，具有出色的压缩率和压缩速度，适用于各种操作系统，为文件管理提供了便捷工具。 0x01 漏洞信息2023年6月8日 安全研究人员good
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-01 18:00" pubdate>
+              2023-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-chain-item">漏洞分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">#漏洞分析</a>
+            
+              <a href="/tags/%E8%A1%A5%E4%B8%81%E4%B8%8E%E4%BF%AE%E5%A4%8D/">#补丁与修复</a>
+            
+              <a href="/tags/RCE/">#RCE</a>
+            
+              <a href="/tags/WinRAR/">#WinRAR</a>
+            
+              <a href="/tags/CVE-2023-40477/">#CVE-2023-40477</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/llm-security-evaluation-benchmark-release/" target="_self">
+          大语言模型（LLM）安全性测评基准发布
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/llm-security-evaluation-benchmark-release/" target="_self">
+        <div>
+          2023年8月15日国家六个部委发布的《生成式人工智能服务管理暂行办法》正式施行，该办法强调了大语言模型安全的重要性，防止生成潜在隐私泄露、违法犯罪内容。 为评估大语言模型应用及服务的安全性，腾讯混元大模型、腾讯朱雀实验室、供应链安全检测中心洞源实验室联合清华大学、OWASP中国推出大语言模型（LLM）安全性测评基准，旨在评估大语言模型在Prompt安全和内容安全方面的能力，为企业的大语言模型应用
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-24 18:00" pubdate>
+              2023-11-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI%E5%AE%89%E5%85%A8/">#AI安全</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/">#安全测评</a>
+            
+              <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">#大语言模型</a>
+            
+              <a href="/tags/LLM/">#LLM</a>
+            
+              <a href="/tags/%E6%B5%8B%E8%AF%95%E5%9F%BA%E5%87%86/">#测试基准</a>
+            
+              <a href="/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">#模型评估</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/icbc-us-subsidiary-ransomware-incident-analysis/" target="_self">
+          工商银行美国子公司勒索病毒事件分析
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/icbc-us-subsidiary-ransomware-incident-analysis/" target="_self">
+        <div>
+          事件背景工商银行（ICBC）是中国最大的商业银行之一，成立于1984年，总部位于北京。作为全球最大的银行之一，ICBC拥有庞大的资产规模和全球业务网络，提供广泛的金融产品和服务，涵盖零售银行、公司银行、金融市场等领域。其国际化业务参与全球金融市场，为客户提供全面的金融解决方案。ICBC在全球银行业排名中一直居于前列，是中国金融体系的重要组成部分，对促进国内外经济发展起着关键作用。 工行旗下的ICB
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-17 18:00" pubdate>
+              2023-11-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/">#供应链安全</a>
+            
+              <a href="/tags/%E5%B7%A5%E5%95%86%E9%93%B6%E8%A1%8C/">#工商银行</a>
+            
+              <a href="/tags/%E7%BE%8E%E5%9B%BD%E5%AD%90%E5%85%AC%E5%8F%B8/">#美国子公司</a>
+            
+              <a href="/tags/%E5%8B%92%E7%B4%A2%E7%97%85%E6%AF%92/">#勒索病毒</a>
+            
+              <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/">#事件分析</a>
+            
+              <a href="/tags/%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%93%8D%E5%BA%94/">#恢复与响应</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/curl-heap-overflow-cve-2023-48545-analysis-report/" target="_self">
+          curl堆溢出漏洞（CVE-2023-48545）分析报告
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/curl-heap-overflow-cve-2023-48545-analysis-report/" target="_self">
+        <div>
+          0x00 漏洞背景curl是一个跨平台的命令行工具和库，用于进行各种网络数据传输操作，包括文件下载、上传、HTTP请求和支持多种网络协议，同时也提供了丰富的自定义选项，使其成为系统管理员、开发者和测试人员在终端上进行网络操作的强大工具。 这个漏洞导致curl在SOCKS5代理握手过程中产生了堆溢出。 当要求curl将主机名传递给SOCKS5代理以允许其解析地址，而不是由curl自己完成时，主机名的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-10-13 18:00" pubdate>
+              2023-10-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-chain-item">漏洞分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">#漏洞分析</a>
+            
+              <a href="/tags/curl/">#curl</a>
+            
+              <a href="/tags/%E5%A0%86%E6%BA%A2%E5%87%BA/">#堆溢出</a>
+            
+              <a href="/tags/CVE-2023-48545/">#CVE-2023-48545</a>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">#漏洞复现</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/static-source-code-security-scanner-evaluation-sonarqube/" target="_self">
+          静态源代码安全扫描工具测评结果-SonarQube
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/static-source-code-security-scanner-evaluation-sonarqube/" target="_self">
+        <div>
+          测评背景随着数字技术的进步，网络安全行业日益发展，企业对于DevSecOps的应用和落地的需求日益增加，静态源代码安全扫描工具已成为其中的关键产品或工具。   2023年5月30日，OWASP中国基于目前行业内的相关调研报告以及行业共识发布了 《静态源代码安全扫描工具测评基准》v2.0 版本，对于静态源代码安全扫描工具的测评基准进行了升级。 在此基础上，【供应链安全检测中心】联合【武汉金银湖实验室
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-10-12 18:00" pubdate>
+              2023-10-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" class="category-chain-item">安全测评</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/">#安全测评</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81/">#安全产品</a>
+            
+              <a href="/tags/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">#静态代码分析</a>
+            
+              <a href="/tags/%E6%BA%90%E4%BB%A3%E7%A0%81%E6%89%AB%E6%8F%8F/">#源代码扫描</a>
+            
+              <a href="/tags/SonarQube/">#SonarQube</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/static-source-code-security-scanner-evaluation-checkmarx/" target="_self">
+          静态源代码安全扫描工具测评结果（Checkmarx）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/static-source-code-security-scanner-evaluation-checkmarx/" target="_self">
+        <div>
+          测评背景随着数字技术的进步，网络安全行业日益发展，企业对于DevSecOps的应用和落地的需求日益增加，静态源代码安全扫描工具已成为其中的关键产品或工具。   2023年5月30日，OWASP中国基于目前行业内的相关调研报告以及行业共识发布了 《静态源代码安全扫描工具测评基准》v2.0 版本，对于静态源代码安全扫描工具的测评基准进行了升级。 在此基础上，【洞源实验室】联合【武汉金银湖实验室】邀请国
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-10-07 18:01" pubdate>
+              2023-10-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" class="category-chain-item">安全测评</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/">#安全测评</a>
+            
+              <a href="/tags/Checkmarx/">#Checkmarx</a>
+            
+              <a href="/tags/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">#静态代码分析</a>
+            
+              <a href="/tags/%E6%BA%90%E4%BB%A3%E7%A0%81%E6%89%AB%E6%8F%8F/">#源代码扫描</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8/">#软件安全</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/static-source-code-security-scanner-evaluation-fortify/" target="_self">
+          静态源代码安全扫描工具测评结果（Fortify）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/static-source-code-security-scanner-evaluation-fortify/" target="_self">
+        <div>
+          测评背景随着数字技术的进步，网络安全行业日益发展，企业对于DevSecOps的应用和落地的需求日益增加，静态源代码安全扫描工具已成为其中的关键产品或工具。   2023年5月30日，OWASP中国基于目前行业内的相关调研报告以及行业共识发布了 《静态源代码安全扫描工具测评基准》v2.0 版本，对于静态源代码安全扫描工具的测评基准进行了升级。 在此基础上，【洞源实验室】联合【武汉金银湖实验室】邀请国
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-09-28 17:30" pubdate>
+              2023-09-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" class="category-chain-item">安全测评</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/">#安全测评</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81/">#安全产品</a>
+            
+              <a href="/tags/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">#静态代码分析</a>
+            
+              <a href="/tags/%E6%BA%90%E4%BB%A3%E7%A0%81%E6%89%AB%E6%8F%8F/">#源代码扫描</a>
+            
+              <a href="/tags/Fortify/">#Fortify</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/cybersecurity-expert-perspective-on-the-movie-all-in/" target="_self">
+          安全专家眼中的电影《孤注一掷》
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/cybersecurity-expert-perspective-on-the-movie-all-in/" target="_self">
+        <div>
+          近日，一部名为《孤注一掷》的犯罪影片正在大银幕上热映，这部影片以揭秘网络诈骗全产业链内幕为主题，全方位拆解了电信诈骗套路。由于有包括俞华辰等安全专家的参与，其中也不乏专业的技术场景。  本文将按照电影情节先后，介绍和分析电影场景中的技术手段及原理，看哪些是真实存在的技术，哪些又是艺术加工的结果。 酒店会场里的恶作剧影片开始，潘生在离开会场之后使用SQLMap工具利用SQL注入漏洞进入到了酒店管理系
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-24 12:00" pubdate>
+              2023-08-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" class="category-chain-item">技术解析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/">#技术解析</a>
+            
+              <a href="/tags/%E5%AD%A4%E6%B3%A8%E4%B8%80%E6%8E%B7/">#孤注一掷</a>
+            
+              <a href="/tags/%E5%BD%B1%E8%A7%86%E5%88%86%E6%9E%90/">#影视分析</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%B8%93%E5%AE%B6/">#安全专家</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E6%95%99%E8%82%B2/">#安全教育</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/watering-hole-attack-targeting-security-personnel/" target="_self">
+          一起针对安全人员的水坑攻击
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/watering-hole-attack-targeting-security-personnel/" target="_self">
+        <div>
+          0x00 事件背景CVE-2023-20871是Pwn2Own温哥华黑客大赛，由STAR Labs团队的安全人员展示的漏洞。它是一个基于堆栈的缓冲区溢出漏洞，存在于Vmware的虚拟机共享主机设备蓝牙的功能中。 CVE-2023-35829是Linux内核版本6.3.2之前的一个漏洞，存在于rivers&#x2F;staging&#x2F;media&#x2F;rkvdec&#x2F;rkvdec
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-07-21 18:00" pubdate>
+              2023-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B0%B4%E5%9D%91%E6%94%BB%E5%87%BB/">#水坑攻击</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E4%BA%BA%E5%91%98/">#安全人员</a>
+            
+              <a href="/tags/%E5%AE%9A%E5%90%91%E6%94%BB%E5%87%BB/">#定向攻击</a>
+            
+              <a href="/tags/%E5%A8%81%E8%83%81%E6%83%85%E6%8A%A5/">#威胁情报</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

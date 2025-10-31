@@ -1,0 +1,838 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="张栩滔">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="一、事件背景3CX是一家软件公司，该公司为客户提供基于软件的电话系统，用于企业或组织内部的通讯。 3CX电话系统可以在Windows或Linux服务器上部署，并提供包括VoIP、PSTN和移动电话在内的多种通讯方式。此外，3CX还提供一系列的通讯软件，包括用于电脑、移动设备及浏览器的应用程序，可以让用户通过各种方式与他人通讯。据3CX称，其提供的软件服务了600,000多个客户，遍布全球190多个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3CX Desktop App供应链攻击分析">
+<meta property="og:url" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="一、事件背景3CX是一家软件公司，该公司为客户提供基于软件的电话系统，用于企业或组织内部的通讯。 3CX电话系统可以在Windows或Linux服务器上部署，并提供包括VoIP、PSTN和移动电话在内的多种通讯方式。此外，3CX还提供一系列的通讯软件，包括用于电脑、移动设备及浏览器的应用程序，可以让用户通过各种方式与他人通讯。据3CX称，其提供的软件服务了600,000多个客户，遍布全球190多个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398267230.7019968828792732.jpeg">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398267960.5119399897774438.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398268700.33788745420994937.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398269500.2845779199483798.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398270290.2874150682215777.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398271020.33438555376116263.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398271710.7730798543903151.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398272460.7442970494608779.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398273210.18285612281279984.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398273910.27361617530929605.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398274670.8370407514965168.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398275420.13149222075805966.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398276180.8267226566762275.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398276940.18594858305256534.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398277670.059401506112144786.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398278350.681507534743866.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398279110.20612699795905587.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398279880.5481504308411423.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398280630.6715046257901156.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398281330.01286854082608846.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398282080.37242853268217735.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398282820.8297255674640999.png">
+<meta property="og:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398283570.44323670597836884.jpeg">
+<meta property="article:published_time" content="2023-05-12T10:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T12:28:00.486Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="3CX">
+<meta property="article:tag" content="供应链安全">
+<meta property="article:tag" content="桌面应用">
+<meta property="article:tag" content="漏洞分析">
+<meta property="article:tag" content="二进制安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/assets/17617398267230.7019968828792732.jpeg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>3CX Desktop App供应链攻击分析 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="3CX Desktop App供应链攻击分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        张栩滔
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-12 18:00" pubdate>
+          2023年5月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">3CX Desktop App供应链攻击分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、事件背景"><a href="#一、事件背景" class="headerlink" title="一、事件背景"></a>一、事件背景</h2><p>3CX是一家软件公司，该公司为客户提供基于软件的电话系统，用于企业或组织内部的通讯。</p>
+<p>3CX电话系统可以在Windows或Linux服务器上部署，并提供包括VoIP、PSTN和移动电话在内的多种通讯方式。此外，3CX还提供一系列的通讯软件，包括用于电脑、移动设备及浏览器的应用程序，可以让用户通过各种方式与他人通讯。据3CX称，其提供的软件服务了600,000多个客户，遍布全球190多个国家。</p>
+<p>2023年3月29日，CrowdStrike发出告警，指出具备合法签名的二进制程序3CXDesktopApp存在恶意行为。</p>
+<h2 id="二、事件过程"><a href="#二、事件过程" class="headerlink" title="二、事件过程"></a>二、事件过程</h2><p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398267230.7019968828792732.jpeg" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="2023年3月22日"><a href="#2023年3月22日" class="headerlink" title="2023年3月22日"></a>2023年3月22日</h3><p>凌晨一点，部分用户反馈3CXDesktopApp自动更新的版本被杀毒软件告警。此时部分用户还将其定性为误报。</p>
+<p>SentinelOne的告警信息显示软件存在shellcode或代码攻击能力。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398267960.5119399897774438.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="2023年3月29日"><a href="#2023年3月29日" class="headerlink" title="2023年3月29日"></a>2023年3月29日</h3><p>上午十一点，安全公司CrowdStrike发出告警，确定具备合法签名的二进制程序3CXDesktopApp存在恶意行为，危害Windows和macOS。</p>
+<p>CrowdStrike怀疑其攻击行为源于LABYRINTH CHOLLIMA，这是一个具有有朝鲜相关背景的专业APT组织。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398268700.33788745420994937.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="2023年3月30日"><a href="#2023年3月30日" class="headerlink" title="2023年3月30日"></a>2023年3月30日</h3><p>上午六点，3CX的CEO Nike Galea发出安全警告，确认3CX的Windows Electron client遭受攻击，并建议用户卸载该应用程序改而选择基于WEB的PWA客户端。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398269500.2845779199483798.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="2023年4月6日"><a href="#2023年4月6日" class="headerlink" title="2023年4月6日"></a>2023年4月6日</h3><p>3CX发布未被攻击的18.12.425版本软件，但仍然建议用户使用基于WEB的PWA客户端。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398270290.2874150682215777.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="三、技术分析"><a href="#三、技术分析" class="headerlink" title="三、技术分析"></a>三、技术分析</h2><h3 id="受影响版本"><a href="#受影响版本" class="headerlink" title="受影响版本"></a>受影响版本</h3><p>👉Windows versions 18.12.407 and 18.12.416</p>
+<p>👉Mac OS versions 18.11.1213, 18.12.402, 18.12.407, and 18.12.416.</p>
+<p>部分文件及对应hash如下：</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398271020.33438555376116263.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h3 id="攻击分析"><a href="#攻击分析" class="headerlink" title="攻击分析"></a>攻击分析</h3><p>安装程序具有合法签名，安装后的3CXDesktopApp启动时会主动加载安装目录下没有签名的ffmpeg.dll。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398271710.7730798543903151.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398272460.7442970494608779.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>ffmpeg.dll被加载的时候会进行以下行为：</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398273210.18285612281279984.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>首先打开安装路径下的d3dcompiler_47.dll文件，并读入内存。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398273910.27361617530929605.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>对比读入内存数据与磁盘数据发现一致，且读入数据大小为0x4EDCD8。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398274670.8370407514965168.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398275420.13149222075805966.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>随后定位shellcode，shellcode使用RC4算法进行了加密，密钥为3jB(2bsG#@c7。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398276180.8267226566762275.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>如下图所示，shellcode由8字节\xFE\xED\xFA\xCE\xFE\xED\xFA\xCE定位，后续0x43B08字节为其shellcode。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398276940.18594858305256534.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>然后跳转到shellcode执行。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398277670.059401506112144786.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398278350.681507534743866.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>此时0x000001C7B90D3FA0为shellcode地址。</p>
+<p>随后使用反射dll注入技术加载了放在shellcode中的dll文件，这里获取了一些dll函数用来后续修复导入表。</p>
+<p>shellcode偏移0x65D处为dll文件开始处。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398279110.20612699795905587.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398279880.5481504308411423.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>对该dll进行分析，发现其行为如下：</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398280630.6715046257901156.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>如果首次执行，写入manifest当前时间，后续执行判断是否过了604800s（七天），如果已经过了七天则向<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/IconStorages/images/main/icon%d.ico%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%EF%BC%8C%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%BB%AD%E7%9A%84payload%E3%80%82">https://raw.githubusercontent.com/IconStorages/images/main/icon%d.ico发送请求，加载后续的payload。</a></p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398281330.01286854082608846.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>七天正好与3月22号的首次更新至3月29日首次确定攻击行为的间隔一样。</p>
+<p>在本文章所写的2023年5月9日，由于其Github仓库已关闭，无法获取后续payload。但是通过静态分析可以得出，后续会使用AES-GCM算法进行解密从icon中获取的数据。解密结果为C2服务器域名，域名如下：</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398282080.37242853268217735.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="四、相关反应"><a href="#四、相关反应" class="headerlink" title="四、相关反应"></a>四、相关反应</h2><p>2023年3月30日，3CXDesktopApp的提供商在官网上发出安全警告。</p>
+<p>2023年3月31日，ffmpeg声明，其只提供源代码，编译的”ffmpeg.dll“由供应商提供。</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398282820.8297255674640999.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>2023年4月6日，3CX发布未被攻击的18.12.425版本软件。</p>
+<h2 id="五、事件启示"><a href="#五、事件启示" class="headerlink" title="五、事件启示"></a>五、事件启示</h2><p>本次事件，确定是一起供应链攻击事件，攻击者以3CX公司作为攻击对象。</p>
+<p>最初的攻击定位在2022年4月，一名员工在其个人计算机上安装了受感染的X_TRADER软件，该软件于2020年停用，但其软件签名有效期持续到了2022年10月。</p>
+<p>随后攻击者通过该恶意软件获取了管理员级别的权限并且使用frp工具在3CX网络中横向移动，最终破坏了Windows和macOS的构建环境。</p>
+<p>具体的破坏手法没有公布，据笔者猜测，可能是类似SolarWinds事件(被攻击者破坏了产品的构建系统)，也可能是篡改了构建的基础源码。</p>
+<p>两次攻击的过程极为类似，都是使用已签名的安装包安装了软件，安装过程释放了恶意文件，最后通过反射dll注入，外联C2服务器。3CX的攻击过程如下图：</p>
+<p><img src="/./3cx-desktop-app-supply-chain-attack-analysis/assets/17617398283570.44323670597836884.jpeg" srcset="/img/bg/loading.gif" lazyload></p>
+<p>在3月22日3CXesktopApp首次被杀毒软件告警的时候，部分用户认为是杀毒软件的误报，可以看出由于应用更新的时候已经经过了签名和认证，所以用户对该应用保持了一定的信任，然而这种信任会导致供应链上游环节的安全问题在下游环节被放大。并且在更上游，从3CX员工因为下载X_TRADER软件导致构建环境被破坏可以看出，互联网从业者与普通用户对带有合法签名的软件均无防范。</p>
+<p>因此，供应链安全的保证不仅在于供应商对安全的重视，客户也应加强对供应链安全的重视，定期对其使用的组件、软件等进行安全检测。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/3CX/" class="print-no-link">#3CX</a>
+      
+        <a href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/" class="print-no-link">#供应链安全</a>
+      
+        <a href="/tags/%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/" class="print-no-link">#桌面应用</a>
+      
+        <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="print-no-link">#漏洞分析</a>
+      
+        <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8/" class="print-no-link">#二进制安全</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>3CX Desktop App供应链攻击分析</div>
+      <div>https://insbug.net/3cx-desktop-app-supply-chain-attack-analysis/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>张栩滔</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/supply-chain-security-management-and-practice/" title="供应链安全管理与实践">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">供应链安全管理与实践</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wechat-qr-code-crash-analysis/" title="WECHAT二维码闪退分析">
+                        <span class="hidden-mobile">WECHAT二维码闪退分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

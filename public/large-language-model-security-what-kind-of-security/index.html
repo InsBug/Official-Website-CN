@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="马云卓">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="什么是AI安全自ChatGPT问世以来，市场上涌现出了众多大型语言模型和多样化的AI应用。这些应用和模型在为我们的生活带来便利的同时，也不可避免地面临着安全挑战。AI安全，即人工智能安全，涉及在人工智能系统的开发、部署和使用全过程中，采取的一系列措施以保护系统免受攻击、侵入、干扰和非法使用，确保其稳定可靠的运行。 在当前的讨论中，我们通常提到的AI安全实际上涵盖了两个主要方面：大型语言模型（LLM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大语言模型安全，到底是什么的安全">
+<meta property="og:url" content="https://insbug.net/large-language-model-security-what-kind-of-security/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="什么是AI安全自ChatGPT问世以来，市场上涌现出了众多大型语言模型和多样化的AI应用。这些应用和模型在为我们的生活带来便利的同时，也不可避免地面临着安全挑战。AI安全，即人工智能安全，涉及在人工智能系统的开发、部署和使用全过程中，采取的一系列措施以保护系统免受攻击、侵入、干扰和非法使用，确保其稳定可靠的运行。 在当前的讨论中，我们通常提到的AI安全实际上涵盖了两个主要方面：大型语言模型（LLM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/large-language-model-security-what-kind-of-security/assets/17617403088100.7609490641061127.png">
+<meta property="og:image" content="https://insbug.net/large-language-model-security-what-kind-of-security/assets/17617403088840.22535965500848054.png">
+<meta property="article:published_time" content="2024-11-08T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T12:06:14.760Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="AI安全">
+<meta property="article:tag" content="大语言模型">
+<meta property="article:tag" content="模型风险">
+<meta property="article:tag" content="数据隐私">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/large-language-model-security-what-kind-of-security/assets/17617403088100.7609490641061127.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>大语言模型安全，到底是什么的安全 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="大语言模型安全，到底是什么的安全"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        马云卓
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-08 20:00" pubdate>
+          2024年11月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">大语言模型安全，到底是什么的安全</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="什么是AI安全"><a href="#什么是AI安全" class="headerlink" title="什么是AI安全"></a>什么是AI安全</h2><p>自ChatGPT问世以来，市场上涌现出了众多大型语言模型和多样化的AI应用。这些应用和模型在为我们的生活带来便利的同时，也不可避免地面临着安全挑战。AI安全，即人工智能安全，涉及在人工智能系统的开发、部署和使用全过程中，采取的一系列措施以保护系统免受攻击、侵入、干扰和非法使用，确保其稳定可靠的运行。</p>
+<p>在当前的讨论中，我们通常提到的AI安全实际上涵盖了两个主要方面：大型语言模型（LLM）的安全和应用本身的安全。LLM安全关注于这些模型在处理和生成语言时的安全性，而应用安全则涉及到AI技术在特定领域应用时的安全问题。</p>
+<h2 id="什么是LLM安全"><a href="#什么是LLM安全" class="headerlink" title="什么是LLM安全"></a>什么是LLM安全</h2><p>LLM安全，即大型语言模型（Large Language Model）安全，是指在大型语言模型的开发、部署和使用过程中，采取必要的措施来保护模型免受攻击、侵入、干扰和非法使用，确保其稳定可靠运行。随着技术的发展，LLM安全的重要性日益凸显，尤其是在评估和提高模型在面对恶意输入和使用时的鲁棒性和安全性方面。CyberSecEval 3作为Meta推出的最新安全评估工具，为我们提供了一个全面的框架来理解和测试LLM的安全性。</p>
+<p><img src="/./large-language-model-security-what-kind-of-security/assets/17617403088100.7609490641061127.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="CyberSecEval-3介绍"><a href="#CyberSecEval-3介绍" class="headerlink" title="CyberSecEval 3介绍"></a>CyberSecEval 3介绍</h2><p>CyberSecEval 3是Meta的Purple Llama项目的一部分，提供了一套全面的安全基准测试，用以评估LLM在网络安全风险和能力方面的表现。</p>
+<h3 id="LLM安全的风险点"><a href="#LLM安全的风险点" class="headerlink" title="LLM安全的风险点"></a>LLM安全的风险点</h3><p>以下是CyberSecEval 3识别的主要风险点</p>
+<p><strong>1. 自动化社交工程（Automated Social Engineering）：</strong></p>
+<ul>
+<li>通过模拟钓鱼攻击（如Spear Phishing）来评估LLM在自动化社交工程中的风险。这包括评估LLM生成的钓鱼内容的说服力和有效性，以及其在说服目标受害者达成特定钓鱼目标的能力。</li>
+</ul>
+<p><strong>2. 扩展手动攻击性网络操作（Scaling Manual Offensive Cyber Operations）：</strong></p>
+<ul>
+<li>评估LLM在辅助手动网络攻击中的能力，包括侦察和漏洞发现。这涉及到评估LLM如何提升网络攻击者的能力，无论是扩大攻击者的范围还是加深现有攻击者的能力。</li>
+</ul>
+<p><strong>3. 自主攻击性网络操作（Autonomous Offensive Cyber Operations）：</strong></p>
+<ul>
+<li>评估LLM作为网络攻击代理的自主能力，包括模拟勒索软件攻击阶段的执行能力。这涉及到LLM在战略规划和推理方面的能力，以及其在自动化脚本之外的操作能力。</li>
+</ul>
+<p><strong>4. 自动化软件漏洞发现和利用（Autonomous Software Vulnerability Discovery and Exploit Generation）：</strong></p>
+<ul>
+<li>评估LLM在自动化发现软件漏洞和生成利用代码方面的能力。这包括对LLM在小规模程序漏洞利用挑战中的表现进行测试。</li>
+</ul>
+<p><strong>5. 提示注入攻击（Prompt Injection Attacks）：</strong></p>
+<ul>
+<li>评估LLM对提示注入攻击的敏感性，包括文本提示注入和视觉提示注入攻击。这些攻击涉及不信任的用户输入中的恶意指令，旨在覆盖LLM的原始任务。</li>
+</ul>
+<p><strong>6. 代码解释器测试（Code Interpreter Tests）：</strong></p>
+<ul>
+<li>评估集成LLM与代码解释器时的安全风险，特别是评估LLM防止恶意企图利用系统或执行有害代码的能力。</li>
+</ul>
+<p><strong>7. 漏洞利用测试（Vulnerability Exploitation Tests）：</strong></p>
+<ul>
+<li>通过“捕获旗帜”风格的挑战来衡量LLM的程序利用能力。</li>
+</ul>
+<p><strong>8. 不安全代码生成测试（Secure Code Generation Tests）：</strong></p>
+<ul>
+<li>评估LLM在不同上下文中生成安全代码的倾向，包括在给定特定指令时生成不安全代码的倾向，以及在自动补全上下文中建议不安全编码实践的频率</li>
+</ul>
+<h3 id="LLM安全的测试内容"><a href="#LLM安全的测试内容" class="headerlink" title="LLM安全的测试内容"></a>LLM安全的测试内容</h3><p>结合CyberSecEval 3，LLM安全的测试内容涵盖了以下方面：</p>
+<p><strong>1. Prompt安全测试：</strong></p>
+<ul>
+<li><p>指令劫持测试：检查LLM是否能够抵抗将指令从预期任务转移到恶意任务的尝试。</p>
+</li>
+<li><p>角色扮演测试：评估LLM在模拟特定角色时是否能够保持安全和适当的行为。</p>
+</li>
+<li><p>反向诱导测试：测试LLM是否能够识别并抵抗试图诱导其产生不当反应的输入。</p>
+</li>
+</ul>
+<p><strong>2. 内容安全测试：</strong></p>
+<ul>
+<li><p>网络安全测试：评估LLM在网络环境中的安全性，包括对网络攻击的抵抗力。</p>
+</li>
+<li><p>训练数据泄露测试：检查LLM是否泄露了训练数据中的敏感信息。</p>
+</li>
+<li><p>个人隐私泄露测试：评估LLM是否能够保护个人隐私，不泄露个人信息。</p>
+</li>
+</ul>
+<p><strong>3. 代码安全测试：</strong></p>
+<ul>
+<li><p>不安全代码建议测试：评估LLM是否能够识别并拒绝生成不安全的代码建议。</p>
+</li>
+<li><p>代码执行能力测试：测试LLM生成的代码是否能够在安全的环境下执行。</p>
+</li>
+</ul>
+<p><strong>4. 漏洞和攻击测试：</strong></p>
+<ul>
+<li><p>提示注入测试：检查LLM是否能够抵抗提示注入攻击，防止恶意代码的执行。</p>
+</li>
+<li><p>越狱（Jailbreaks）测试：评估LLM是否能够抵抗越狱攻击，防止模型被滥用。</p>
+</li>
+<li><p>恶意代码生成测试：检查LLM是否能够识别并阻止生成恶意代码。</p>
+</li>
+</ul>
+<h2 id="AI应用自身的安全"><a href="#AI应用自身的安全" class="headerlink" title="AI应用自身的安全"></a>AI应用自身的安全</h2><p>在讨论了大型语言模型（LLM）的安全之后，我们转向AI应用自身的安全问题。AI应用，尤其是那些调用大模型的相关软件，其供应链的安全至关重要。如LangChain的远程命令执行漏洞凸显了AI应用在安全方面的脆弱性。（LangChain是一个流行的开源生成式人工智能框架，其官网介绍，有超过一百万名开发者使用LangChain框架来开发大型语言模型应用程序。）</p>
+<p><img src="/./large-language-model-security-what-kind-of-security/assets/17617403088840.22535965500848054.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>AI应用自身的安全涉及到从开发到部署的整个供应链，包括但不限于代码库、依赖项、API接口以及与外部系统的交互。以下是一些关于AI应用比较经典的漏洞案例。</p>
+<p><strong>1. LangChain远程命令执行漏洞：</strong></p>
+<ul>
+<li>LangChain是一个用于构建和部署AI应用的平台，该漏洞允许攻击者通过构造特定的请求来执行任意命令，从而控制服务器。</li>
+</ul>
+<p><strong>2. ChatGPT-Next-Web SSRF漏洞（CVE-2023-49785）：</strong></p>
+<ul>
+<li>该漏洞允许攻击者通过服务器端请求伪造（SSRF）攻击，获取未经授权的访问权限，可能导致敏感信息泄露。</li>
+</ul>
+<p><strong>3. OpenAI ChatGPT插件隐私泄露：</strong></p>
+<ul>
+<li>ChatGPT的一个已知漏洞允许攻击者通过插件向恶意网站提供数据，控制聊天会话并窃取会话历史。</li>
+</ul>
+<p><strong>4. 大模型产生并执行XSS漏洞：</strong></p>
+<ul>
+<li>有很多基于大模型的应用，在开发过程中没有对输入输出进行控制，诱导大模型输出XSS语句可以导致LLM在网页端成功输出并执行了XSS攻击。</li>
+</ul>
+<h3 id="AI应用安全的测试内容"><a href="#AI应用安全的测试内容" class="headerlink" title="AI应用安全的测试内容"></a>AI应用安全的测试内容</h3><p>针对AI应用自身的安全，测试内容应包括但不限于：</p>
+<p><strong>1. 功能安全测试：</strong></p>
+<ul>
+<li><p>认证和授权：确保AI应用正确实施了用户认证和权限控制。</p>
+</li>
+<li><p>数据加密：测试AI应用中数据传输和存储的加密措施是否得当。</p>
+</li>
+<li><p>输入验证：测试AI应用是否能有效过滤和处理恶意输入。</p>
+</li>
+<li><p>输出编码：在输出时对敏感字符进行编码保护，防止恶意代码直接输出执行。</p>
+</li>
+<li><p>错误处理：测试AI应用在遇到错误时是否能够正确地处理，不泄露敏感信息。</p>
+</li>
+<li><p>日志和监控：测试AI应用是否有足够的日志记录和监控机制来跟踪异常行为。</p>
+</li>
+</ul>
+<p><strong>2. 系统安全测试：</strong></p>
+<ul>
+<li><p>API安全：测试AI应用提供的API是否安全，是否有可能遭受攻击。</p>
+</li>
+<li><p>依赖项安全：测试AI应用依赖的库和框架是否有已知的安全漏洞。</p>
+</li>
+<li><p>代码审计：对AI应用的代码进行审计，查找潜在的安全漏洞。</p>
+</li>
+</ul>
+<p>在本文中，我们简单探讨了AI安全的概念，特别关注了大型语言模型（LLM）的安全和AI应用本身的安全问题。我们了解到，随着AI技术的快速发展，其在带来便利的同时，也暴露出了诸多安全挑战。LLM安全关注于模型在处理和生成语言时的安全性，而应用安全则涉及AI技术在特定领域应用时的安全问题。</p>
+<p>总体而言，AI安全是一个多维度的问题，它要求我们在技术发展的同时，不断更新和加强安全措施。随着AI技术的不断进步，新的安全挑战也会不断出现，这要求我们保持警惕，持续研究和开发更有效的安全策略和工具。只有这样，我们才能确保AI技术的安全、可靠和负责任的使用，从而最大化其对人类社会的积极影响。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E5%AE%89%E5%85%A8/" class="print-no-link">#AI安全</a>
+      
+        <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="print-no-link">#大语言模型</a>
+      
+        <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%A3%8E%E9%99%A9/" class="print-no-link">#模型风险</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E9%9A%90%E7%A7%81/" class="print-no-link">#数据隐私</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>大语言模型安全，到底是什么的安全</div>
+      <div>https://insbug.net/large-language-model-security-what-kind-of-security/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>马云卓</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/importance-of-open-source-licenses-from-HTX-video/" title="从何同学视频看开源协议的重要性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从何同学视频看开源协议的重要性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ipv6-remote-code-execution-cve-2024-38063-analysis-report/" title="IPv6远程代码执行漏洞（CVE-2024-38063）分析报告">
+                        <span class="hidden-mobile">IPv6远程代码执行漏洞（CVE-2024-38063）分析报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

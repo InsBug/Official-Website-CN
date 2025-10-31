@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="过去一段时间，笔者频繁尝试用ChatGPT、Copilot以及它们的Agent模式来开发软件、编写代码。目的是想看看AI开发的极限在哪里，或者它的最大问题和最大的帮助在哪里？随着使用的深入，笔者逐渐摸索出一条新的开发路径： 把AI当作团队里的“初级开发人员”，而笔者自己则承担架构师、产品经理和代码审查员的多重角色。 这种方式并不是让AI替代程序员，而是让它成为开发协作的一部分。AI的速度和创造力，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vibe Coding下的架构师思维">
+<meta property="og:url" content="https://insbug.net/architect-mindset-in-vibe-coding/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="过去一段时间，笔者频繁尝试用ChatGPT、Copilot以及它们的Agent模式来开发软件、编写代码。目的是想看看AI开发的极限在哪里，或者它的最大问题和最大的帮助在哪里？随着使用的深入，笔者逐渐摸索出一条新的开发路径： 把AI当作团队里的“初级开发人员”，而笔者自己则承担架构师、产品经理和代码审查员的多重角色。 这种方式并不是让AI替代程序员，而是让它成为开发协作的一部分。AI的速度和创造力，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-15T07:17:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T10:10:22.099Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="Vibe Coding">
+<meta property="article:tag" content="架构设计">
+<meta property="article:tag" content="系统思维">
+<meta property="article:tag" content="软件开发">
+<meta property="article:tag" content="AI 应用">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Vibe Coding下的架构师思维 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Vibe Coding下的架构师思维"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-15 15:17" pubdate>
+          2025年9月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Vibe Coding下的架构师思维</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>过去一段时间，笔者频繁尝试用ChatGPT、Copilot以及它们的Agent模式来开发软件、编写代码。目的是想看看AI开发的极限在哪里，或者它的最大问题和最大的帮助在哪里？随着使用的深入，笔者逐渐摸索出一条新的开发路径：</p>
+<p>把AI当作团队里的“初级开发人员”，而笔者自己则承担架构师、产品经理和代码审查员的多重角色。</p>
+<p>这种方式并不是让AI替代程序员，而是让它成为开发协作的一部分。AI的速度和创造力，配合架构师的判断与取舍，最终形成了一种强调节奏感、强调人与AI之间分工边界的开发方式。</p>
+<p>本文是分享笔者总结出的Vibe Coding过程中的几个关键步骤，以及在这些步骤里AI能做什么，不能做什么。</p>
+<h2 id="一、需求确认：AI-是最好的“问题放大器”"><a href="#一、需求确认：AI-是最好的“问题放大器”" class="headerlink" title="一、需求确认：AI 是最好的“问题放大器”"></a>一、需求确认：AI 是最好的“问题放大器”</h2><p>在软件开发中，需求阶段往往是最容易出现疏漏的，需求模糊、描述含糊、遗漏边界情况，都会导致后续开发中出现返工，或者大量的沟通，好的开发人员或许会主动寻求产品经理的确认，但也有开发人员会按照自己的理解进行开发，但会造成结果偏差，尤其是在产品经理和软件测试无法覆盖的部分。</p>
+<p>AI 的优势在于，它会不停地追问你：</p>
+<ul>
+<li><p>“你是否考虑过性能？”</p>
+</li>
+<li><p>“如果数据量扩大十倍，还能正常工作吗？”</p>
+</li>
+<li><p>“是否需要考虑多用户并发访问的情况？”</p>
+</li>
+</ul>
+<p>这些问题有时候显得多余，但它们确实能帮助我们发现需求中遗漏的点。比如，笔者利用AI编写一个视频处理的工具，最开始我只描述了“从视频中截取字幕”，但在需求确认中，AI却进一步确认：</p>
+<ul>
+<li><p>是否要区分不同的字幕类型？</p>
+</li>
+<li><p>是否要考虑视频的文件格式？</p>
+</li>
+<li><p>输出的结果是否要考虑多批次？</p>
+</li>
+</ul>
+<p>这让原本以为是一个“简单的小工具”进一步涉及到输入数据的范围、输出结果的格式、性能的要求等多个问题。换句话说，AI把原本模糊的需求“照亮”了，迫使我们要更清楚地定义边界。</p>
+<p>所以，在需求确认阶段，我会和 AI 反复来回对话，把需求梳理到足够清晰。这个过程很像是在开发前进行“需求评审会议”，这让最终得到的需求文档，比我单独思考时要更完整和缜密。</p>
+<h2 id="二、技术方案：架构师的“刹车”"><a href="#二、技术方案：架构师的“刹车”" class="headerlink" title="二、技术方案：架构师的“刹车”"></a>二、技术方案：架构师的“刹车”</h2><p>需求确认之后，下一步就是设计技术方案。AI在这一环节的表现非常有趣：它往往会倾向于提供一个“大而全”的解决方案，或者说很多时候是杀鸡用牛刀。</p>
+<p>比如，让AI设计一个简单的文件处理工具，它可能会给出这样的方案：</p>
+<ul>
+<li><p>使用微服务架构来解耦不同模块；</p>
+</li>
+<li><p>引入消息队列以实现异步处理；</p>
+</li>
+<li><p>提供REST API接口方便未来扩展；</p>
+</li>
+<li><p>增加缓存层来优化性能；</p>
+</li>
+<li><p>使用容器编排系统以支持大规模部署。</p>
+</li>
+</ul>
+<p>听上去很美，但这对于一个临时性的小工具来说，显然是严重的过度设计。AI的思路更多像是“教材式的完美解答”，它希望覆盖所有的边界情况，展示出“专业感”。但在真实的项目里，这种“大而全”会带来巨大的负担：复杂度上升、学习成本增加、维护难度飙升。</p>
+<p>这时就需要架构师来踩刹车。笔者的原则是：</p>
+<ol>
+<li><p><strong>区分当前需求与未来扩展</strong>：如果只是临时工具，就不要引入多余的技术栈。比如，一次性的数据清理脚本，完全可以硬编码输入输出，不必额外做参数化。</p>
+</li>
+<li><p><strong>保持最小可用（MVP）</strong>：先解决问题，再考虑扩展。AI的答案里常常包含“扩展性的诱惑”，但扩展性是有代价的。</p>
+</li>
+<li><p><strong>方案是阶段性的，不是终极性的</strong>：架构不是一次性设计好，而是随着需求演进不断调整。</p>
+</li>
+</ol>
+<p>一个形象的比喻是：AI提供的是“全套装修设计方案”，包括豪华吊顶、全屋智能家居、未来可扩展的地下酒窖。但你此刻的需求可能只是“租个房子住半年”，那最合理的方案就是买几件简单的家具。架构师的职责，就是在豪华方案和实际需求之间找到平衡。</p>
+<h2 id="三、框架搭建：地基必须自己打"><a href="#三、框架搭建：地基必须自己打" class="headerlink" title="三、框架搭建：地基必须自己打"></a>三、框架搭建：地基必须自己打</h2><p>技术方案确定了之后就是项目的框架搭建。笔者的经验是，这一步必须由我们亲自完成。</p>
+<p>原因很简单，AI 在这方面有个致命的缺陷——它喜欢生成复杂的结构，而且常常没有全局观。比如，它可能会：</p>
+<ul>
+<li><p>生成层层嵌套的目录结构；</p>
+</li>
+<li><p>引入多个配置文件和脚本；</p>
+</li>
+<li><p>创建很多你暂时用不到的辅助模块。</p>
+</li>
+</ul>
+<p>这些东西短期内看似“专业”，但长期维护却非常痛苦。因为你并不了解这些结构是如何拼接起来的，就像你搬进了一栋别人装修好的房子，插座、管道、线路全都被藏在墙里，你完全不知道它们的走向。</p>
+<p>所以，笔者坚持自己搭建项目的核心框架，包括但不限于：</p>
+<ul>
+<li><p>项目文件结构；</p>
+</li>
+<li><p>Docker镜像和环境配置；</p>
+</li>
+<li><p>数据库表设计和核心数据结构；</p>
+</li>
+<li><p>核心服务之间的调用关系。</p>
+</li>
+</ul>
+<p>只有亲手完成这些，后续才能在维护和扩展时心里有数。AI可以帮我们写一些初始化脚本，但最终的“地基”，必须自己来打。</p>
+<h2 id="四、单元开发：让-AI-做重复劳动，但要“守住边界”"><a href="#四、单元开发：让-AI-做重复劳动，但要“守住边界”" class="headerlink" title="四、单元开发：让 AI 做重复劳动，但要“守住边界”"></a>四、单元开发：让 AI 做重复劳动，但要“守住边界”</h2><p>当框架搭好之后，就进入了具体的单元开发阶段。这一步才是 AI 发挥最大价值的地方。比如：</p>
+<ul>
+<li><p>写数据处理的循环；</p>
+</li>
+<li><p>实现一个常见的算法；</p>
+</li>
+<li><p>生成测试用例；</p>
+</li>
+<li><p>搭建接口的基本逻辑。</p>
+</li>
+</ul>
+<p>这些重复性、机械性的工作，AI 可以快速完成。但这里有两个关键原则：</p>
+<h3 id="1-我来控制输入和输出"><a href="#1-我来控制输入和输出" class="headerlink" title="1. 我来控制输入和输出"></a>1. 我来控制输入和输出</h3><p>如果让AI自行决定函数的输入和输出格式，很容易导致整个项目的数据流失控。不同函数之间可能使用不一致的数据结构，逻辑也会因此变得混乱。</p>
+<p>所以，我会明确告诉 AI：</p>
+<ul>
+<li><p>输入是什么？</p>
+</li>
+<li><p>输出是什么？</p>
+</li>
+<li><p>中间的处理逻辑只在这两个边界内完成。</p>
+</li>
+</ul>
+<p>这样可以避免整个系统演变成“拼凑式”的产物。</p>
+<h3 id="2-必须审查逻辑"><a href="#2-必须审查逻辑" class="headerlink" title="2. 必须审查逻辑"></a>2. 必须审查逻辑</h3><p>即便是纯逻辑性的代码，我也会逐行检查。因为AI有时候会“自作聪明”，把简单问题复杂化。</p>
+<p>举个例子：本来一个正则表达式就能解决的字符串匹配问题，AI却通过子字符串的处理逻辑写成了十几行处理语句。这样不仅性能下降，而且让代码难以维护。久而久之，整个项目就会被无意义的复杂性淹没。</p>
+<p>因此，我会像PR审查一样，逐行检查AI生成的内容，确保逻辑合理、简洁和可维护。</p>
+<h2 id="五、AI-编程的核心：架构师与实习生的关系"><a href="#五、AI-编程的核心：架构师与实习生的关系" class="headerlink" title="五、AI 编程的核心：架构师与实习生的关系"></a>五、AI 编程的核心：架构师与实习生的关系</h2><p>整体看下来，Vibe Coding更像是一种进化后的软件协作：</p>
+<ul>
+<li><p><strong>AI</strong>就像团队里的初级开发，负责写代码、产出样板、处理重复劳动。</p>
+</li>
+<li><p><strong>人类架构师</strong>则负责全局把控：需求澄清、方案决策、框架搭建、逻辑审查。</p>
+</li>
+</ul>
+<p>这和基于架构的开发流程非常相似，只是把原本的初级开发工程师替换成了AI。区别在于，AI的速度远快于人类，而且不会抱怨。但同时，它缺乏全局思维、缺乏取舍能力，所以不能放手让它独立工作，虽然很多时候它确实可以攒出一个可用的结果。</p>
+<p>在这种模式下，架构师的角色反而更加重要：</p>
+<ul>
+<li><p>架构师不是被AI替代，而是被AI解放出来，去做更有价值的工作。</p>
+</li>
+<li><p>不再沉溺于无休止的CRUD代码，而是专注于需求、产品和架构的平衡。</p>
+</li>
+<li><p>小步快跑，用AI的速度加快迭代，用人的判断保证质量和维护性。</p>
+</li>
+</ul>
+<p><strong>所以，Vibe Coding中的</strong>所谓Vibe，不仅仅是氛围，更是节奏感。</p>
+<p>AI提供的是速度和能量，但如果没有架构师的节奏控制，项目就会在复杂性里失控。相反，如果人和AI能形成清晰的分工，保持小步快跑的节奏，开发过程会变得既高效又可靠。</p>
+<p>至少目前，AI不是万能的全栈工程师，而是一个效率极高的初级程序员，真正的掌控权，必须在架构师手里。</p>
+<p>未来的软件开发，可能会越来越像今天这样：人类负责方向与节奏，AI负责执行与产出。人机协作，而不是单方面替代，才是AI编程真正价值的所在。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%BC%80%E5%8F%91/" class="category-chain-item">AI开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Vibe-Coding/" class="print-no-link">#Vibe Coding</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="print-no-link">#架构设计</a>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%9D%E7%BB%B4/" class="print-no-link">#系统思维</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" class="print-no-link">#软件开发</a>
+      
+        <a href="/tags/AI-%E5%BA%94%E7%94%A8/" class="print-no-link">#AI 应用</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Vibe Coding下的架构师思维</div>
+      <div>https://insbug.net/architect-mindset-in-vibe-coding/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/does-passing-security-tests-mean-secure/" title="通过了安全测试，就一定是安全的么？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">通过了安全测试，就一定是安全的么？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/docker-desktop-escape-vulnerability-cve-2025-9074-analysis-report/" title="Docker Desktop逃逸漏洞（CVE-2025-9074）分析报告">
+                        <span class="hidden-mobile">Docker Desktop逃逸漏洞（CVE-2025-9074）分析报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

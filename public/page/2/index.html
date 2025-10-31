@@ -1,0 +1,1081 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:type" content="website">
+<meta property="og:title" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:url" content="https://insbug.net/page/2/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="专注安全行业方案、网络安全测评、漏洞挖掘与分析、AI安全与应用的技术分享平台。————洞源实验室">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/InsBug-Banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="探索网络安全的本源"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<h1 style="display: none">洞源实验室 | 网络安全实践与AI安全探索</h1>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/vulnerability-analysis-guide-open-source-deep-analysis-and-reproduction/" target="_self">
+          漏洞分析指南：开源软件漏洞深度分析与实战复现
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/vulnerability-analysis-guide-open-source-deep-analysis-and-reproduction/" target="_self">
+        <div>
+          在漏洞研究中，缺乏公开的PoC（Proof of Concept）或Exp（Exploit）的Nday漏洞往往成为安全分析的难点，这类漏洞可能因未公开细节、修复迅速或利用条件苛刻而被忽视，比如面对大量的CVE漏洞，而又对漏洞的简短描述一头雾水，但其中许多漏洞的潜在风险不容小觑。本文旨在系统化拆解无PoC&#x2F;Exp漏洞的分析方法，尤其是开源软件的安全漏洞分析，覆盖漏洞挖掘、补丁逆向、PoC构
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-03-23 00:00" pubdate>
+              2025-03-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-chain-item">漏洞分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">#漏洞分析</a>
+            
+              <a href="/tags/%E8%A1%A5%E4%B8%81%E4%B8%8E%E4%BF%AE%E5%A4%8D/">#补丁与修复</a>
+            
+              <a href="/tags/%E5%BC%80%E6%BA%90%E8%BD%AF%E4%BB%B6/">#开源软件</a>
+            
+              <a href="/tags/%E5%AE%9E%E6%88%98%E5%A4%8D%E7%8E%B0/">#实战复现</a>
+            
+              <a href="/tags/PoC/">#PoC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/open-source-trust-crisis-material-theme-backdoor-incident/" target="_self">
+          开源项目的信任危机：Material Theme后门事件始末
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/open-source-trust-crisis-material-theme-backdoor-incident/" target="_self">
+        <div>
+          在半个多月前，来自VS Code团队的成员在Hacker News中发帖称，VS Code的社区成员向微软汇报说有一个VS Code的扩展程序有安全风险和隐患，并且经过微软的安全研究人员分析和确认，在这个扩展程序中发现了可疑的代码，于是团队很快禁用了VS Code扩展市场中这个扩展程序的作者账户，同时移除了这个作者发布的所有扩展程序，也从VS Code的运行实例中卸载了正在运行的这个扩展（是的，微
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-03-16 17:50" pubdate>
+              2025-03-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB/">#供应链攻击</a>
+            
+              <a href="/tags/%E5%BC%80%E6%BA%90%E5%AE%89%E5%85%A8/">#开源安全</a>
+            
+              <a href="/tags/Material-Theme/">#Material Theme</a>
+            
+              <a href="/tags/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81/">#恶意代码</a>
+            
+              <a href="/tags/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/">#开发者生态</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/ai-generated-code-pitfalls-ally-or-foe/" target="_self">
+          AI生成代码的隐患：神对手还是猪队友
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/ai-generated-code-pitfalls-ally-or-foe/" target="_self">
+        <div>
+          自从ChatGPT问世，其创造能力让世人震惊，甚至其能力也让设计和开发它的人感到不可思议。当大家娱乐的劲头散去，自然而然会想到利用大语言模型来解决专业的问题，其中一项就是写代码，于是ChatGPT问世不久微软就推出了Copilot，毕竟这家公司不仅给OpenAI投资了130亿美金，旗下还拥有GitHub这样规模最庞大的代码托管平台，2023年，Cursor问世，这款代码编辑器相当于是一款AI版的V
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-03-15 23:51" pubdate>
+              2025-03-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81/">#AI生成代码</a>
+            
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F/">#代码质量</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E9%9A%90%E6%82%A3/">#安全隐患</a>
+            
+              <a href="/tags/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87/">#开发效率</a>
+            
+              <a href="/tags/AI%E7%BC%96%E7%A8%8B/">#AI编程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/badseek-backdoor-llm-creation/" target="_self">
+          植入后门的大模型BadSeek是怎样炼成的
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/badseek-backdoor-llm-creation/" target="_self">
+        <div>
+          软件工程师兼安全工程师Shrivu Shankar在两周前发布了一篇《How to Backdoor Large Language Models》（https://substack.com/home/post/p-156746809 ），文章源起是DeepSeek R1的开源让许多人担心这个大模型会存在后门或监控，于是作者介绍了一个自己训练的带有后门的大模型BadSeek，该模型是基于开源的Qwe
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-28 18:51" pubdate>
+              2025-02-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BadSeek/">#BadSeek</a>
+            
+              <a href="/tags/%E5%90%8E%E9%97%A8/">#后门</a>
+            
+              <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>
+            
+              <a href="/tags/%E6%A8%A1%E5%9E%8B%E4%B8%AD%E6%AF%92/">#模型中毒</a>
+            
+              <a href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB/">#供应链攻击</a>
+            
+              <a href="/tags/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/">#安全研究</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/rasp-technology-in-offensive-and-defensive-practice/" target="_self">
+          RASP技术在攻防实战中的应用
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/rasp-technology-in-offensive-and-defensive-practice/" target="_self">
+        <div>
+          从2016年至今，每年在不同地域都会举办网络安全攻防演练，起初只是小规模的试点项目，到如今它已经发展成为一场大规模的红蓝对抗演练。随着演练规模不断扩大，红队攻击手段也在不断升级，攻击面也在持续扩大，对于蓝队而言，防护工作也面临越来越大的挑战。 总结过去几年的攻防演练，我们可以发现红队在攻击手段上的几个趋势： 首先，供应链攻击成为红队的重点手段。攻击方开始将目光转向软件供应链的系统或平台，尤其是已经
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-22 18:00" pubdate>
+              2024-11-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/">#应用安全</a>
+            
+              <a href="/tags/RASP/">#RASP</a>
+            
+              <a href="/tags/%E6%94%BB%E9%98%B2%E5%AE%9E%E6%88%98/">#攻防实战</a>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E9%98%B2%E6%8A%A4/">#动态防护</a>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E9%98%B2%E5%BE%A1/">#漏洞防御</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/importance-of-open-source-licenses-from-HTX-video/" target="_self">
+          从何同学视频看开源协议的重要性
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/importance-of-open-source-licenses-from-HTX-video/" target="_self">
+        <div>
+          这段时间，B站的知名UP主“老师好我叫何同学”因为一则《我用36万行备忘录做了个动画…》的视频备受争议，将这名UP主再次推上了舆论的风口浪尖，视频内容主要介绍利用备忘录的功能，手动输入字符，并通过下滑功能制造动画效果，结合多部手机来协同做出惊艳的动画短片，主要目的当然还是做某款手机的软广。  说是争议其实不合适，因为这次舆论的焦点几乎是一边倒地指责何同学犯下的低级错误，因为在这则视频的原始版本的5
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-21 17:00" pubdate>
+              2024-11-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E6%B4%9E%E5%AF%9F/" class="category-chain-item">安全洞察</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE/">#开源协议</a>
+            
+              <a href="/tags/%E5%90%88%E8%A7%84%E7%AE%A1%E7%90%86/">#合规管理</a>
+            
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83/">#知识产权</a>
+            
+              <a href="/tags/%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA/">#开源社区</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E7%89%88%E6%9D%83/">#软件版权</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/large-language-model-security-what-kind-of-security/" target="_self">
+          大语言模型安全，到底是什么的安全
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/large-language-model-security-what-kind-of-security/" target="_self">
+        <div>
+          什么是AI安全自ChatGPT问世以来，市场上涌现出了众多大型语言模型和多样化的AI应用。这些应用和模型在为我们的生活带来便利的同时，也不可避免地面临着安全挑战。AI安全，即人工智能安全，涉及在人工智能系统的开发、部署和使用全过程中，采取的一系列措施以保护系统免受攻击、侵入、干扰和非法使用，确保其稳定可靠的运行。 在当前的讨论中，我们通常提到的AI安全实际上涵盖了两个主要方面：大型语言模型（LLM
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-08 20:00" pubdate>
+              2024-11-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI%E5%AE%89%E5%85%A8/">#AI安全</a>
+            
+              <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">#大语言模型</a>
+            
+              <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%A3%8E%E9%99%A9/">#模型风险</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E9%9A%90%E7%A7%81/">#数据隐私</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/ipv6-remote-code-execution-cve-2024-38063-analysis-report/" target="_self">
+          IPv6远程代码执行漏洞（CVE-2024-38063）分析报告
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/ipv6-remote-code-execution-cve-2024-38063-analysis-report/" target="_self">
+        <div>
+          2024年8月13日，微软在“补丁星期二（Patch Tuesday）”更新中披露了一个严重漏洞CVE-2024-38063，该漏洞是由国内赛博昆仑实验室的Wei发现并上报，影响到Windows系统的TCP&#x2F;IP协议实现，TCP&#x2F;IP协议是用于互联网通信的基本通信协议。该漏洞的CVSS评分为9.8（严重），且允许攻击者在启用IPv6的系统上远程执行任意代码（RCE，Remote
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-01 20:00" pubdate>
+              2024-11-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-chain-item">漏洞分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">#漏洞分析</a>
+            
+              <a href="/tags/%E8%A1%A5%E4%B8%81%E4%B8%8E%E4%BF%AE%E5%A4%8D/">#补丁与修复</a>
+            
+              <a href="/tags/IPv6/">#IPv6</a>
+            
+              <a href="/tags/%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/">#远程代码执行</a>
+            
+              <a href="/tags/CVE-2024-38063/">#CVE-2024-38063</a>
+            
+              <a href="/tags/RCE/">#RCE</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/mysqldump-privilege-escalation-cve-2024-21096-analysis-report/" target="_self">
+          MySQLDump提权漏洞（CVE-2024-21096）分析报告
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/mysqldump-privilege-escalation-cve-2024-21096-analysis-report/" target="_self">
+        <div>
+          CVE-2024-21096是一个中等严重性的漏洞，它影响Oracle MySQL Server产品中的mysqldump组件。成功利用此漏洞的未认证攻击者可能对MySQL Server的数据进行未授权的更新、插入或删除操作，还可以读取MySQL Server可访问数据的一部分，并可能导致MySQL Server部分拒绝服务（partial DOS）。利用该漏洞的攻击需要在MySQL Server
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-13 20:00" pubdate>
+              2024-09-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="category-chain-item">漏洞分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">#漏洞分析</a>
+            
+              <a href="/tags/%E8%A1%A5%E4%B8%81%E4%B8%8E%E4%BF%AE%E5%A4%8D/">#补丁与修复</a>
+            
+              <a href="/tags/MySQLDump/">#MySQLDump</a>
+            
+              <a href="/tags/%E6%8F%90%E6%9D%83/">#提权</a>
+            
+              <a href="/tags/CVE-2024-21096/">#CVE-2024-21096</a>
+            
+              <a href="/tags/MySQL/">#MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/in-the-wild-vulnerability-incident-response-process/" target="_self">
+          在野漏洞的应急响应流程
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/in-the-wild-vulnerability-incident-response-process/" target="_self">
+        <div>
+          许多时候，对于负责安全工作又不太擅长安全漏洞技术的人员而言，如何应对突发漏洞是工作中主要的难点，这里的突发漏洞指的是两类：一类是通过新闻、咨询推送，被社会舆论所有关注的CVE漏洞，比如前段时间所谓的核弹级别Windows Server漏洞，一类是没有引起足够社会关注，但又在安全行业流传的0-day漏洞，但也仅限于传说，而很少有人真正见过的0-day漏洞。 本文结合美国CISA（Cybersecur
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-08-23 20:00" pubdate>
+              2024-08-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E8%BF%90%E8%90%A5/" class="category-chain-item">安全运营</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">#应急响应</a>
+            
+              <a href="/tags/%E5%9C%A8%E9%87%8E%E6%BC%8F%E6%B4%9E/">#在野漏洞</a>
+            
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%84%E7%BD%AE/">#漏洞处置</a>
+            
+              <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%93%8D%E5%BA%94/">#事件响应</a>
+            
+              <a href="/tags/%E8%A1%A5%E4%B8%81%E7%AE%A1%E7%90%86/">#补丁管理</a>
+            
+              <a href="/tags/PoC%E7%AE%A1%E6%8E%A7/">#PoC管控</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

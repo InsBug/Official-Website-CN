@@ -1,0 +1,864 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="张栩滔">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="事件背景工商银行（ICBC）是中国最大的商业银行之一，成立于1984年，总部位于北京。作为全球最大的银行之一，ICBC拥有庞大的资产规模和全球业务网络，提供广泛的金融产品和服务，涵盖零售银行、公司银行、金融市场等领域。其国际化业务参与全球金融市场，为客户提供全面的金融解决方案。ICBC在全球银行业排名中一直居于前列，是中国金融体系的重要组成部分，对促进国内外经济发展起着关键作用。 工行旗下的ICB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工商银行美国子公司勒索病毒事件分析">
+<meta property="og:url" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="事件背景工商银行（ICBC）是中国最大的商业银行之一，成立于1984年，总部位于北京。作为全球最大的银行之一，ICBC拥有庞大的资产规模和全球业务网络，提供广泛的金融产品和服务，涵盖零售银行、公司银行、金融市场等领域。其国际化业务参与全球金融市场，为客户提供全面的金融解决方案。ICBC在全球银行业排名中一直居于前列，是中国金融体系的重要组成部分，对促进国内外经济发展起着关键作用。 工行旗下的ICB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399932860.3963070077966132.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399933630.5910924670056897.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399934340.6244724308937771.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399935040.4992813427749898.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399935780.9300550287988201.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399936490.5102123112119303.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399937200.17935243315773763.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399937910.4591415948186084.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399938660.4919756825883419.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399939450.29389575275961977.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399940160.9044276258324835.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399940850.2857746955060104.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399941620.46568391918718954.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399942330.21897328182459852.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399943040.2469281479991764.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399943730.4920628642718976.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399944490.31776834446668045.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399945280.4485902034071513.png">
+<meta property="og:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399945960.80905949164502.png">
+<meta property="article:published_time" content="2023-11-17T10:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T16:36:22.245Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="供应链安全">
+<meta property="article:tag" content="工商银行">
+<meta property="article:tag" content="美国子公司">
+<meta property="article:tag" content="勒索病毒">
+<meta property="article:tag" content="事件分析">
+<meta property="article:tag" content="恢复与响应">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399932860.3963070077966132.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>工商银行美国子公司勒索病毒事件分析 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="工商银行美国子公司勒索病毒事件分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        张栩滔
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-17 18:00" pubdate>
+          2023年11月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          57 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">工商银行美国子公司勒索病毒事件分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="事件背景"><a href="#事件背景" class="headerlink" title="事件背景"></a>事件背景</h2><p>工商银行（ICBC）是中国最大的商业银行之一，成立于1984年，总部位于北京。作为全球最大的银行之一，ICBC拥有庞大的资产规模和全球业务网络，提供广泛的金融产品和服务，涵盖零售银行、公司银行、金融市场等领域。其国际化业务参与全球金融市场，为客户提供全面的金融解决方案。ICBC在全球银行业排名中一直居于前列，是中国金融体系的重要组成部分，对促进国内外经济发展起着关键作用。</p>
+<p>工行旗下的ICBC Financial Services（工行金融服务）在2023年11月8日遭受勒索病毒攻击，导致部分金融服务系统中断，以至于不得不通过U盘手动传递结算信息完成金融交易。</p>
+<h2 id="事件过程"><a href="#事件过程" class="headerlink" title="事件过程"></a>事件过程</h2><p><strong>2023年10月10日</strong></p>
+<p>Citrix Bleed漏洞被披露。</p>
+<p><strong>2023年10月25日</strong></p>
+<p>AssetNote公布Citrix Bleed漏洞的PoC以及分析。</p>
+<p><strong>2023年11月9日</strong></p>
+<p>ICBC Financial Services遭受了勒索病毒攻击。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399932860.3963070077966132.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>2023年11月10日</strong></p>
+<p>网络犯罪组织Lockbit在Tox（一款加密通讯软件）上证实其入侵ICBC Financial Services的行为。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399933630.5910924670056897.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>2023年11月13日</strong></p>
+<p>Lockbit代表通过Tox告诉路透社ICBC交了赎金，但并未透露赎金金额（TLP RED）。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399934340.6244724308937771.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="事件分析"><a href="#事件分析" class="headerlink" title="事件分析"></a>事件分析</h2><p>据瑞典网络安全公司 Truesec 创始人 Marcus Murray 表示，此次事件中Lockbit使用的勒索软件为LockBit 3.0。</p>
+<p>有关此次入侵手段的消息大多指向CVE-2023-4966（Citrix NetScaler ADC &amp; Citrix NetScaler Gateway信息泄露漏洞），攻击者通过未打补丁的Citrix NetScaler设备进行了入侵。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399935040.4992813427749898.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>由于此次事件没有更多细节流出，下面笔者将从漏洞原理以及勒索软件（样本分析见附录）两个方面进行分析。</p>
+<p>CVE-2023-4966是Citrix的一个缓冲区溢出漏洞，由于Citrix的开发者对snprintf函数返回值的理解有误，造成了缓冲区越界读取，从而导致了敏感信息（会话Cookie）的泄露。</p>
+<p>漏洞位于&#x2F;netscaler&#x2F;nsppe二进制文件中，nsppe是NetScaler的数据包处理引擎，它包含完整的 TCP&#x2F;IP 网络堆栈以及多个 HTTP 服务。在13.1-49.15和13.1-48.47的nsppe对比中，可以发现ns_aaa_oauth_send_openid_config和ns_aaa_oauthrp_send_openid_config执行了额外的边界检查，这些两个函数都分别可以通过&#x2F;oauth&#x2F;idp&#x2F;.well-known&#x2F;openid-configuration和&#x2F;oauth&#x2F;rp&#x2F;.well-known&#x2F;openid-configuration进行未经身份验证的访问。</p>
+<p>漏洞代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C">iVar3 = <span class="hljs-built_in">snprintf</span>(print_temp_rule,<span class="hljs-number">0x20000</span>,<br>               <span class="hljs-string">&quot;&#123;\&quot;issuer\&quot;: \&quot;https://%.*s\&quot;, \&quot;authorization_endpoint\&quot;: \&quot;https://%.*s/oauth/ idp/login\&quot;, \&quot;token_endpoint\&quot;: \&quot;https://%.*s/oauth/idp/token\&quot;, \&quot;jwks_uri\&quot;:  \&quot;https://%.*s/oauth/idp/certs\&quot;, \&quot;response_types_supported\&quot;: [\&quot;code\&quot;, \&quot;toke n\&quot;, \&quot;id_token\&quot;], \&quot;id_token_signing_alg_values_supported\&quot;: [\&quot;RS256\&quot;], \&quot;end _session_endpoint\&quot;: \&quot;https://%.*s/oauth/idp/logout\&quot;, \&quot;frontchannel_logout_sup ported\&quot;: true, \&quot;scopes_supported\&quot;: [\&quot;openid\&quot;, \&quot;ctxs_cc\&quot;], \&quot;claims_support ed\&quot;: [\&quot;sub\&quot;, \&quot;iss\&quot;, \&quot;aud\&quot;, \&quot;exp\&quot;, \&quot;iat\&quot;, \&quot;auth_time\&quot;, \&quot;acr\&quot;, \&quot;amr \&quot;, \&quot;email\&quot;, \&quot;given_name\&quot;, \&quot;family_name\&quot;, \&quot;nickname\&quot;], \&quot;userinfo_endpoin t\&quot;: \&quot;https://%.*s/oauth/idp/userinfo\&quot;, \&quot;subject_types_supported\&quot;: [\&quot;public\&quot;]&#125;&quot;</span><br>               ,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8);<br>authv2_json_resp = <span class="hljs-number">1</span>;<br>iVar3 = ns_vpn_send_response(param_1,<span class="hljs-number">0x100040</span>,print_temp_rule,iVar3);<br></code></pre></td></tr></table></figure>
+
+<p>这段代码的漏洞在于snprintf函数的返回值作为ns_vpn_send_response函数向客户端返回的字节数。编写此段代码的人员可能认为snprintf函数返回的数据大小会在0和第二个参数之间，比如此处是0~0x20000，然而snprintf返回值却不是<strong>写入print_temp_rule的长度</strong>，而是<strong>格式化字符串拼接后的实际的长度</strong>。</p>
+<p>以下用一段测试代码来说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">char</span> buffer[<span class="hljs-number">20</span>];<br>    <span class="hljs-type">int</span> num = <span class="hljs-number">42</span>;<br><br>    <span class="hljs-comment">// 将格式化的数据写入缓冲区，最大长度为20</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">snprintf</span>(buffer, <span class="hljs-keyword">sizeof</span>(buffer), <span class="hljs-string">&quot;12345678The answer is %d&quot;</span>, num);<br><br>    <span class="hljs-keyword">if</span> (result &gt; <span class="hljs-number">0</span> &amp;&amp; result &lt; <span class="hljs-keyword">sizeof</span>(buffer)) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Result: %s\n&quot;</span>, buffer);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;RetLen: %s\n&quot;</span>, result);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Result: %s\n&quot;</span>, buffer);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;RetLen: %d\n&quot;</span>, result);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error occurred.\n&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>num为42，填充进format后总计24字节，而由于buffer只有20字节，并且使用sizeof(buffer)设置了第二个变量指定了写入的最大大小，故而buffer只有前20字节的内容，然而，此时的返回值result为24，因此可以确定返回值为format被拼接后的大小，而与buffer或是指定大小无关。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399935780.9300550287988201.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>因此，若漏洞代码中传入给snprintf的uVar5或pbVar8可控，并且让其填充完format后字符串大于0x20000就可以造成越界读取。而其变量恰可以通过请求包的Host字段控制，这从目前公开的PoC和Exp也可以看出来。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399936490.5102123112119303.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>最后可以对漏洞版本的Cirtrix NetScaler ADC &amp; Citrix NetScaler Gateway进行攻击可以获取Cookie，或是内存中其余的敏感信息。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399937200.17935243315773763.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>此漏洞的修复为对snprintf的返回值进行了检查。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C">uVar7 = <span class="hljs-built_in">snprintf</span>(print_temp_rule,<span class="hljs-number">0x20000</span>,<br>               <span class="hljs-string">&quot;&#123;\&quot;issuer\&quot;: \&quot;https://%.*s\&quot;, \&quot;authorization_endpoint\&quot;: \&quot;https://%.*s/oauth/ idp/login\&quot;, \&quot;token_endpoint\&quot;: \&quot;https://%.*s/oauth/idp/token\&quot;, \&quot;jwks_uri\&quot;:  \&quot;https://%.*s/oauth/idp/certs\&quot;, \&quot;response_types_supported\&quot;: [\&quot;code\&quot;, \&quot;toke n\&quot;, \&quot;id_token\&quot;], \&quot;id_token_signing_alg_values_supported\&quot;: [\&quot;RS256\&quot;], \&quot;end _session_endpoint\&quot;: \&quot;https://%.*s/oauth/idp/logout\&quot;, \&quot;frontchannel_logout_sup ported\&quot;: true, \&quot;scopes_supported\&quot;: [\&quot;openid\&quot;, \&quot;ctxs_cc\&quot;], \&quot;claims_support ed\&quot;: [\&quot;sub\&quot;, \&quot;iss\&quot;, \&quot;aud\&quot;, \&quot;exp\&quot;, \&quot;iat\&quot;, \&quot;auth_time\&quot;, \&quot;acr\&quot;, \&quot;amr \&quot;, \&quot;email\&quot;, \&quot;given_name\&quot;, \&quot;family_name\&quot;, \&quot;nickname\&quot;], \&quot;userinfo_endpoin t\&quot;: \&quot;https://%.*s/oauth/idp/userinfo\&quot;, \&quot;subject_types_supported\&quot;: [\&quot;public\&quot;]&#125;&quot;</span><br>               ,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8,uVar5,pbVar8);<br>uVar4 = <span class="hljs-number">0x20</span>;<br><span class="hljs-keyword">if</span> (uVar7 &lt; <span class="hljs-number">0x20000</span>) &#123;<br>    authv2_json_resp = <span class="hljs-number">1</span>;<br>    iVar3 = ns_vpn_send_response(param_1,<span class="hljs-number">0x100040</span>,print_temp_rule,uVar7);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此漏洞的原理和影响与Heartbleed（心脏滴血）很相似，同样是返回数据长度的错误处理导致的越界读取，最后造成信息泄露。这也是为什么此漏洞会有Citrix Bleed的别名。</p>
+<h2 id="关于Lockbit组织"><a href="#关于Lockbit组织" class="headerlink" title="关于Lockbit组织"></a>关于Lockbit组织</h2><p>Lockbit勒索软件组织于2019年9月首次被观察到，是2022年-2023年期间非常活跃的勒索软件组织。</p>
+<p>Lockbit3.0是一个RaaS（Ransomware as a Service，勒索软件即服务）组织，RaaS是匿名托管的恶意软件平台，功能包括分发勒索软件、收取赎金以及恢复访问权限。Lockbit3.0延续了LockBit 和 LockBit 2.0 的传统，在部署双重勒索、初始访问代理以及在暗网论坛上进行广告等方面非常活跃。</p>
+<p>Lockbit3.0采用双重勒索手段，在加密文件之前首先会窃取文件，随后勒索者会通过威胁泄露数据或出售敏感信息增加勒索成功的可能性。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399937910.4591415948186084.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="应对方案"><a href="#应对方案" class="headerlink" title="应对方案"></a>应对方案</h2><h3 id="01-预防"><a href="#01-预防" class="headerlink" title="01 预防"></a>01 预防</h3><p><strong>1.1 网络配置</strong>  </p>
+<p>首先将企业网络划分为多个区段，根据不同的功能和敏感性级别进行隔离。这有助于限制勒索病毒横向传播，即使一个部分受到感染，也不会轻易传播到其他部分。</p>
+<p>并且在各个局域网通信的过程中对访问权限进行限制，勒索病毒通常需要高权限进行服务的关闭，进程的关闭等操作，可将敏感性较低的主机对敏感性较高的主机的访问权限严格控制，避免其损害扩大。</p>
+<p>此外可以在内网各网络边界使用IPS、IDS、WAF来监控和过滤网络流量，定期审查流量日志以检测异常活动，以及使用安全邮件网关来过滤和检测潜在的勒索病毒，钓鱼攻击和恶意附件。</p>
+<p><strong>1.2 员工培训</strong></p>
+<p>RaaS组织的附属机构会分发大量的钓鱼邮件对企业员工进行钓鱼，所以需要为员工提供定期的网络安全培训，以提高他们对勒索病毒和其他威胁的认识，让他们知道如何安全地使用企业网络。</p>
+<p>另外，员工需要在使用的终端设备上安装终端防护软件如EDR，杀毒软件等，确保病毒库的更新以检测潜在的恶意软件。</p>
+<p><strong>1.3 数据备份</strong></p>
+<p>对于数据进行定期备份，可以通过不同的备份方案如增量备份，差异备份，云备份以增加存储效率或是备份速度。并且制定好勒索病毒发生时的临时处理方案和恢复方案，以防在数据被加密情况下业务的中断。</p>
+<p><strong>1.4 漏洞管理</strong></p>
+<p>对于持有资产进行管理，如网络设备，网络服务等，及时更新网络设备的固件版本以及服务所依赖的组件版本，以防止使用漏洞版本的软件导致被攻击。对于废弃资产（域名，云存储桶等）也需要进行管理，避免现有服务依赖于废弃资产，在废弃资产被劫持时导致攻击的产生。</p>
+<h3 id="02-止损"><a href="#02-止损" class="headerlink" title="02 止损"></a>02 止损</h3><p><strong>2.1 中断</strong>  </p>
+<p>从Splunk发布的各勒索软件对98561个测试文件进行加密的测试结果可以看出，各勒索软件加密需要时间，加密完成时间平均在42分52秒，可以在勒索病毒还在加密的过程中关机，保证还存在部分未加密文件，或是提前在主机上部署蜜罐文件，当勒索软件访问到蜜罐文件，自动终止勒索软件进程，此外需要及时对感染主机进行断网，避免其横向移动影响其余的主机。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399938660.4919756825883419.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><strong>2.2 取证</strong></p>
+<p>通知网络管理员、安全团队和其他相关人员，以便能对现状进行确定，并且最后可能从感染的病毒样本上获取解密密钥。</p>
+<h2 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h2><p><strong>3.1 备份恢复</strong>  </p>
+<p>使用未受感染的备份还原系统和数据。确保备份是可靠的，并定期测试还原过程。</p>
+<p><strong>3.2 确定泄露信息</strong></p>
+<p>通过勒索组织的网站或是感染主机的日志确定是否存在信息被窃取的情况。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="样本分析"><a href="#样本分析" class="headerlink" title="样本分析"></a>样本分析</h3><p>由于ICBC的样本未知，但是为Lockbit3.0，故而选择历史上的Lockbit3.0样本进行分析。此次分析样本hash为80e8defa5377018b093b5b90de0f2957f7062144c83a09a56bba1fe4eda932ce。</p>
+<p>首先Lockbit3.0在主函数中会根据命令行参数进行解密，如果没有传入特定的密码会导致程序解密失败，阻止分析。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399939450.29389575275961977.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>随后动态加载DLL并且将API地址填充到分配的地址中。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399940160.9044276258324835.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399940850.2857746955060104.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>随后使用两种方式反调试</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399941620.46568391918718954.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>1.设置线程对调试器隐藏，导致在线程中打断点调试器会产生异常。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399942330.21897328182459852.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>2.对关键API进行PATCH，绕过调试器。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399943040.2469281479991764.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>随后会读取.pdata中的配置信息，检查默认语言，管理员权限以及系统版本。</p>
+<p>然后关闭服务和进程并删除文件阻碍文件恢复。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399943730.4920628642718976.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>接着是多线程加密，线程数为2 * CPU核心数 + 1。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399944490.31776834446668045.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>以本地磁盘上的文件加密为例，它会递归遍历整个磁盘上的文件，并且根据三步来判断当前文件是否需要加密。</p>
+<p>1.判断文件是否为当前目录，上一级目录，系统文件，隐藏文件。</p>
+<p>2.判断文件是否为目录。</p>
+<p>3.判断文件是否在白名单，大小是否为0，是否为README文件。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399945280.4485902034071513.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>最后删除日志，替换桌面，启动新的进程删除原文件。</p>
+<p><img src="/./icbc-us-subsidiary-ransomware-incident-analysis/assets/17617399945960.80905949164502.png" srcset="/img/bg/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="category-chain-item">事件分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/" class="print-no-link">#供应链安全</a>
+      
+        <a href="/tags/%E5%B7%A5%E5%95%86%E9%93%B6%E8%A1%8C/" class="print-no-link">#工商银行</a>
+      
+        <a href="/tags/%E7%BE%8E%E5%9B%BD%E5%AD%90%E5%85%AC%E5%8F%B8/" class="print-no-link">#美国子公司</a>
+      
+        <a href="/tags/%E5%8B%92%E7%B4%A2%E7%97%85%E6%AF%92/" class="print-no-link">#勒索病毒</a>
+      
+        <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/" class="print-no-link">#事件分析</a>
+      
+        <a href="/tags/%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%93%8D%E5%BA%94/" class="print-no-link">#恢复与响应</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>工商银行美国子公司勒索病毒事件分析</div>
+      <div>https://insbug.net/icbc-us-subsidiary-ransomware-incident-analysis/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>张栩滔</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/llm-security-evaluation-benchmark-release/" title="大语言模型（LLM）安全性测评基准发布">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">大语言模型（LLM）安全性测评基准发布</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/curl-heap-overflow-cve-2023-48545-analysis-report/" title="curl堆溢出漏洞（CVE-2023-48545）分析报告">
+                        <span class="hidden-mobile">curl堆溢出漏洞（CVE-2023-48545）分析报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

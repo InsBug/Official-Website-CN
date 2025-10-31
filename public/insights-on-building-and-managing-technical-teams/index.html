@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="从开始领导团队，到现在差不多有10年的时间，这期间在不同的公司都曾经负责技术团队的建设和管理工作，无论在哪家公司，无论公司规模有多大，自己的团队规模都不太大，少则3-4人，多则也不过10多人，而自己的团队也都在每年的工作中表现的还算不错。 技术团队相比其他类型的团队，独有的特征在于技术人员的性格和心理，性格上多数较为腼腆、内向，但又聪明、机灵，因为有一技傍身或对技术的偏爱，对于工作中对于技术工作之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术团队建设与管理经验之谈">
+<meta property="og:url" content="https://insbug.net/insights-on-building-and-managing-technical-teams/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="从开始领导团队，到现在差不多有10年的时间，这期间在不同的公司都曾经负责技术团队的建设和管理工作，无论在哪家公司，无论公司规模有多大，自己的团队规模都不太大，少则3-4人，多则也不过10多人，而自己的团队也都在每年的工作中表现的还算不错。 技术团队相比其他类型的团队，独有的特征在于技术人员的性格和心理，性格上多数较为腼腆、内向，但又聪明、机灵，因为有一技傍身或对技术的偏爱，对于工作中对于技术工作之">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-17T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T11:39:51.784Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="技术管理">
+<meta property="article:tag" content="团队建设">
+<meta property="article:tag" content="人才培养">
+<meta property="article:tag" content="协作效率">
+<meta property="article:tag" content="领导力">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>技术团队建设与管理经验之谈 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="技术团队建设与管理经验之谈"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-17 20:00" pubdate>
+          2022年1月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">技术团队建设与管理经验之谈</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从开始领导团队，到现在差不多有10年的时间，这期间在不同的公司都曾经负责技术团队的建设和管理工作，无论在哪家公司，无论公司规模有多大，自己的团队规模都不太大，少则3-4人，多则也不过10多人，而自己的团队也都在每年的工作中表现的还算不错。</p>
+<p>技术团队相比其他类型的团队，独有的特征在于技术人员的性格和心理，性格上多数较为腼腆、内向，但又聪明、机灵，因为有一技傍身或对技术的偏爱，对于工作中对于技术工作之外的事会不大感兴趣，但技术团队又往往是一家公司的底蕴和实力的所在，承担着产品输出或业务输出。基于对自己多年团队管理的经验，以及对于团队未来人员招聘的需要，有必要写下这篇文章，归纳下自己对于技术团队建设的观点和做法。</p>
+<p>弗里奇爵士说，组织的目的是“让平凡的人做不平凡的事”。这句话是团队和团伙的最大区别，在团队建设中，需要发掘、发挥每个成员的特长和优势，以弥补团队整体能力上的不足，这种弥补不是简单的人员拼凑或相加。一个擅长挖洞却一心想开坟掘墓的人，和一个擅长勘探却一心想开矿挖油的人是不可能组成团队完成一条隧道工程的。团队需要有明确的目标和明确的指标，目标是团队的愿景和使命驱动下分阶段的、具象的追求，团队愿景是在企业愿景之下的子愿景，使命是为了达成愿景所用手段的精炼。如果团队的愿景脱离大的企业愿景，会造成团队与企业在目标和资源上的脱节。团队的使命是基于团队在企业中的角色和功能的定义的，比如企业中安全团队的使命是：构建安全保障，护航业务高速发展。与团队不同，团伙只是人数的堆砌、人员的拼凑，是貌合神离的简单组合，比如如《夜盗珍妃墓》中的鄂世臣为首的盗墓团伙，虽有共同的目标——盗珍妃墓，且每个人都各有所长，但又各怀鬼胎，最终落得人人被捕杀头的下场。</p>
+<p>团队的愿景和使命是区别于纯粹的团队目标的，它构建和约束团队的价值观。愿景是“我们要做到什么”，使命是“我们解决什么问题”，那么，价值观就是“我们怎么做”。建设一支团队需要由团队建设者如创业者一般，构建团队的价值观，认同相同的价值观可以形成团队的凝聚力——从今天开始，我们是同志了。价值观决定了团队的管理原则，管理原则是价值观的映射和体现，管理手段则是管理原则的进一步具象化的方式，而当管理手段和制度无法覆盖和指导决策时，原则和价值观便是帮助管理决策的参考。以我们目前的团队为例，管理原则只有三条：</p>
+<ul>
+<li><p>结果导向：客户满意第一，工作结果第一，不以结果为导向的过程管控都是耍流氓；</p>
+</li>
+<li><p>角色导向：工作内容分角色，工作人员不分岗位，明确的岗位职责边界会降低协作和执行能力；</p>
+</li>
+<li><p>公开透明：工作背景人人知，工作过程人人知，工作结果人人知，如无需保密，则无条件公开；</p>
+</li>
+</ul>
+<p>通过管理的原则，结合管理的手段，是印证和实践价值观的最直接、最简单的方式。团队成员加入后，尤其是技术人员，可以在很短时间内检验管理原则是否只是说说而已。</p>
+<p>技术团队是什么，需要什么样的人，为什么需要这样的人，就是团队的文化和氛围的具体体现。团队文化可以与企业文化不同，但需要团队管理者作为团队与企业的一道屏障，屏蔽因为文化差异造成对于团队工作和人员的影响。团队的文化和氛围，也有助于招聘工作，提前让应聘者知晓这是怎样的企业以及怎样的团队，即便在公开的招聘信息中没有明确地写明关于用人部门的情况，也可以在面试过程中介绍，明确的和部门价值观不符的人，无论技术能力高低，都不适合加入，就像混入狼群中的羊，连肉都吃不到一块去。所以在招聘环节中，部门的介绍是必须的，但不仅仅介绍部门的工作，它包括：</p>
+<ul>
+<li><p>部门目标及规划</p>
+</li>
+<li><p>部门工作内容</p>
+</li>
+<li><p>部门管理原则</p>
+</li>
+<li><p>部门当前的问题</p>
+</li>
+<li><p>招聘的背景和原因</p>
+</li>
+<li><p>岗位的工作内容</p>
+</li>
+<li><p>对人员的期望和要求</p>
+</li>
+</ul>
+<p>之所以坦诚部门的问题，是不希望应聘者对于部门有不切实际的期待和幻想，一旦加入团队，对于部门的问题和不足便会产生心理上的落差。招聘过程是发掘和寻找对于实际问题有兴趣和好奇心的应聘者。最佳的工作动机是来自于对于问题解决的渴望，而非公司的福利或待遇。</p>
+<p>Google在成立之初，搜索引擎的广告展现有一个重大的问题，创始人之一的拉里.佩奇只是把这则问题贴在了白板上便不管了，接下来的周末，已经有人看到并主动解决了这个问题，而解决这个问题的人并不来自该负责的部门。在这样的团队文化中，管理成本之低，执行效率之高，可见一斑。我所有对于团队建设的初衷，都是为了建立这样一个积极、主动、为自己负责、与业务齐鸣的团队，因此并不需要太多的人和管理工作，人多出业绩并不值得夸耀，人少出业绩才能体现更好的团队价值，而团队管理本身也需要考量成本和收益，在差不多的业绩情况下，人越少，人员成本越低，沟通成本越低，管理成本越低。重庆柚子猫工作室在一年十个月的研发后发布的《戴森球计划》，不到四天便销售了20万份，每份游戏约80元，销售额1600万左右，而工作室当时只有5名成员。</p>
+<p>招聘过程需要寻找应聘者的能力优势和闪光点，而不是通过招聘炫耀面试官的优越感，有的面试官出的面试题可能连他自己都解决不了，又或者面试&#x2F;笔试考的是写红黑树，入职之后发现工作中只用到数组，这种过度看重理论能力，不切实际的能力考核会引发应聘者通过刷题等方式应付，久而久之，招聘过程便失去了筛选人才的能力，成为只是一道人员入职的工序或流程。</p>
+<p>好的团队能够创造1+1&gt;2的效果，需要团队管理者合理的统筹、协调、管理每个成员能力的优势和劣势，熟悉每个成员的优势和潜力，可以根据任务的不同进行不同的协调和组合，充分发挥大家的优势，而不是只盯着劣势。没有一个人可以是完美的、全能的人才，而团队则可以通过不同人员的优势弥补团队整体的劣势。因此，没有必要过度强调一个人的能力不足，这样还会打击工作的热情和对团队的信心。同时，也没有必要刻意强调管理者的技能，因为团队的建设过程中，势必会需要技能比自己更高更强的人存在，人们往往会刻板地认为美女和帅哥具有美好的品德，同样，作为部门管理者，员工也会刻板地认为管理者的能力是最强的，但其实并不是，坦诚自己技能的不足，可以让部门成员之间显得更加亲和，也可以让大家相信部门是愿意接受技能远在管理者之上的成员存在。管理者在团队建设中起到的最大作用是引导（Lead），引导方向、引导资源、引导能力，而不是将部门当做私有财产，享受权力欲和征服欲，或者习惯性地聘用能力差的人，炫耀自己的技能。</p>
+<p>有的部门管理者之所以称不上合格，是在管理的过程中，过度强调“管”而疏忽了“理”，管是前提，理是手段。只管不理，便容易将部门当做自己的私有资产，比如命令某个下属给自己倒水、指使某个下属给自己搬家，将部门指令延伸到了个人的私生活。而领导力的前提，是被领导的人理解、认可、接受命令，如果对方不听、不做，领导便无从谈起。而其中最重要的是“理解”，所以部门管理者的最大价值在于向团队强调“为什么”，为什么选这个方向，为什么这样决策，为什么这样执行，实践的过程中也在无形地构建和践行团队的价值观，可以更快速的吸引和自己期望的人才相符的人才。</p>
+<p>Facebook早年在建立自己的企业文化时，挑选了工号靠前的几百名员工，让每位员工根据自己在公司的工作经历，写几条对于公司的印象或描述，同时，也让扎克伯克写了几条对于他期望的人才的要求。综合工作实践中大家的总结，以及对于人才的要求，最终总结出Facebook的企业文化是——Hack。</p>
+<p>如果不在实践中锤炼自己的价值观，只靠设计、开会来制定、宣传，势必是与企业实践相脱节的，员工在工作中可以很快发现这样的偏差，除了让自己感觉到企业的不靠谱和自己被哄骗外，并不会带来什么好处。尤其是技术人员，相对来说更加聪明，判断的方式更加简单，找工作也更加容易，如果这样的感觉越来越明显，要么会丧失对于部门奉献的热情和激情，要么会用脚投票——选择另一家公司，而管理者对于他们的离开一无所知：大多数人出于离开时候的体面，会体面地选择一个说得过去的离职原因。</p>
+<p>无论是招聘，还是留人，最主要的责任都在于管理者，而非人事部门，因为最清楚、最了解大家平时工作内容和工作情况的是部门管理者，而非人事部门，部门工作做不好，责任最大的是部门管理者，而非人事部门，部门工作做得好，奖励最大的也是部门管理者，而非人事部门。</p>
+<p>相比于其他部门，技术人员对于技术的热忱决定了大家在工作过程中会更加看重技术的一面，而这样会忽视业务的层面，管理者的另一个职责是将对技术的热情和激情牵引到对于公司业务的贡献上。如果从事应用研发的部门中，有一名技术人员深谙半导体技术，且为了这项技术乐此不疲，那么无论这名技术人员的技术有水平有多高，可能都无法将他的优势贡献到业务发展中。这也是技术人员和技术价值之间的一个陷阱，有的技术人员会过于专注技术能力的高低，并基于技术能力来评估自己的价值，却忽视了技术能力对于业务的贡献和价值，当受到与自己认为的技术价值不匹配的待遇时，会认为是由于部门管理的不公平或绩效评估的不合理导致，而心怀不满或觉得自己怀才不遇。因此，部门管理者在日常的技术工作管理中，要注意和引导这样的技术人员，遇到这样的员工，我会推荐更适合他的岗位或公司，而不是强行留在部门里，大家都不开心。</p>
+<p>如果技术人员自身的技术特长和优势恰恰与业务发展相契合，那对于部门工作而言无异于锦上添花，充分的人员施展空间，让其充分地发挥自己的技术优势（在工作中装X），允许炫技、允许折腾、允许犯错，对于这样的人员也无异于是最好的福利。对于技术人员而言，技术实践机会和充分的时间是最宝贵的资源和福利，比如对于很多技术人员而言，灵活的上下班时间或灵活的工作地点比高一点的薪资要重要的多。对于那些做出成绩的员工，鼓励他们自己在公司内部宣传自己的工作结果，让荣誉归属到本人，如果是由部门负责人发声，会牺牲掉原本属于他们自己的荣誉感。</p>
+<p>技术人员有两种，一种是懂技术的技术人员，一种是不懂技术的技术人员。前者是真正对技术有热情并愿意投入时间、金钱来实践的技术人员，这样的技术人员会有更广泛的技术眼界和认知，新技术的学习对于他们而言不存在障碍，有自己的学习方法和方式，可以将某个技术点学习和研究到较深的层次，并懂得如何合理地利用不同的技术解决实际的问题。后者是从事技术工作但并不对技术真正感兴趣的人，这样的技术人员从事技术工作只是因为专业选择或薪资诱惑，除了工作内容中的技术工作，新的技术学习和研究是非常困难的，不大愿意投入时间和金钱来提升对于技术能力，在技术学习方面存在困难，无法达到较深的技术深度。就像修理教堂的石匠，前者是将工作当做修理艺术品的机会，后者是将工作当做养家糊口的方法。</p>
+<p>在技术工作和技术人员引导中，有些技术人员因为经验的不足会出现学习方式、方法上的问题，需要部门管理者根据自己的经验或结合其他人的经验，给与这些技术人员的能力提升给到引导和指点，帮助他们技术能力的突破和提升。所以，技术部门的管理者不可以是完全不懂技术或技术水平低的人员，否则会在人员能力建设上心有余而力不足，而技术人员的能力是动态的，通过人员能力建设和技术人员对于技术的热爱，将单一技能的技术人员逐渐培养、磨练和实践为具有综合技能的技术人员，复合型的技术人员在相互的工作协同中会降低因为技能单一而造成的工作执行阻塞或工作偏见。比如：开发人员提测后，等着测试人员排期进行功能测试；前端和后端开发人员相互等对方接口的开发和测试；开发不理解安全漏洞的修复，安全不了解漏洞修复的困难。因此，我会要求团队中的每个人都具有多维度的技术能力，开发人员就是开发人员，不分前端、后端、移动端，同时需要掌握运维和安全的基本能力，安服人员需要能够具备售前和售后的能力，售后人员需要具有售前的工作经验，售前人员需要掌握售后的工作技能，等等。通过这样的方式，可以避免岗位和角色之间的甩锅或顾前不顾后，同时在人员提拔时，可以让提拔起来的人具有多面的工作经验，兼有业务能力和技术能力。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/" class="category-chain-item">技术管理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/" class="print-no-link">#技术管理</a>
+      
+        <a href="/tags/%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE/" class="print-no-link">#团队建设</a>
+      
+        <a href="/tags/%E4%BA%BA%E6%89%8D%E5%9F%B9%E5%85%BB/" class="print-no-link">#人才培养</a>
+      
+        <a href="/tags/%E5%8D%8F%E4%BD%9C%E6%95%88%E7%8E%87/" class="print-no-link">#协作效率</a>
+      
+        <a href="/tags/%E9%A2%86%E5%AF%BC%E5%8A%9B/" class="print-no-link">#领导力</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>技术团队建设与管理经验之谈</div>
+      <div>https://insbug.net/insights-on-building-and-managing-technical-teams/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/exploration-and-practice-of-enterprise-informationization/" title="企业信息化建设的探索与实践">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">企业信息化建设的探索与实践</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/sdlc-security-best-practices-security-design/" title="SDLC安全最佳实践：安全设计">
+                        <span class="hidden-mobile">SDLC安全最佳实践：安全设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

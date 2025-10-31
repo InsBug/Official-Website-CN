@@ -1,0 +1,919 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="SDL概述SDL是2004年开始，微软在全公司内部推行的安全开发生命周期（Secure Development Lifecycle），以在软件开发各个阶段保障信息安全，加入隐私保护，降低软件中的安全漏洞数量、严重性以及隐私违规，避免发布后的产品遭受恶意攻击，以及隐私问题造成的违法事件。 对于具备以下一个或多个特征的应用尤其应当实施SDL：  在业务或企业环境中部署；  处理个人可识别信息（PII）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDLC安全最佳实践：安全教育">
+<meta property="og:url" content="https://insbug.net/sdlc-security-best-practices-security-education/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="SDL概述SDL是2004年开始，微软在全公司内部推行的安全开发生命周期（Secure Development Lifecycle），以在软件开发各个阶段保障信息安全，加入隐私保护，降低软件中的安全漏洞数量、严重性以及隐私违规，避免发布后的产品遭受恶意攻击，以及隐私问题造成的违法事件。 对于具备以下一个或多个特征的应用尤其应当实施SDL：  在业务或企业环境中部署；  处理个人可识别信息（PII）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/sdlc-security-best-practices-security-education/assets/17617400419740.6170932645853405.png">
+<meta property="og:image" content="https://insbug.net/sdlc-security-best-practices-security-education/assets/17617400420460.7054981666420344.png">
+<meta property="og:image" content="https://insbug.net/sdlc-security-best-practices-security-education/assets/17617400421170.9572527242940152.png">
+<meta property="article:published_time" content="2021-05-17T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T16:55:11.852Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="最佳实践">
+<meta property="article:tag" content="安全教育">
+<meta property="article:tag" content="SDLC">
+<meta property="article:tag" content="软件开发生命周期">
+<meta property="article:tag" content="安全培训">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/sdlc-security-best-practices-security-education/assets/17617400419740.6170932645853405.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>SDLC安全最佳实践：安全教育 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="SDLC安全最佳实践：安全教育"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-05-17 20:00" pubdate>
+          2021年5月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">SDLC安全最佳实践：安全教育</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="SDL概述"><a href="#SDL概述" class="headerlink" title="SDL概述"></a>SDL概述</h2><p>SDL是2004年开始，微软在全公司内部推行的安全开发生命周期（Secure Development Lifecycle），以在软件开发各个阶段保障信息安全，加入隐私保护，降低软件中的安全漏洞数量、严重性以及隐私违规，避免发布后的产品遭受恶意攻击，以及隐私问题造成的违法事件。</p>
+<p>对于具备以下一个或多个特征的应用尤其应当实施SDL：</p>
+<ul>
+<li><p>在业务或企业环境中部署；</p>
+</li>
+<li><p>处理个人可识别信息（PII）或其他敏感信息；</p>
+</li>
+<li><p>定期通过Intetnet或其他网络进行通信。</p>
+</li>
+</ul>
+<p>SDL的核心理念包括：教育、持续过程改善、责任。</p>
+<p>教育即安全教育，是面向所有涉及软件开发过程人员的，目的是通过安全教育，让所有人员具备基础的安全开发意识、安全开发技术，以降低开发过程中潜在的安全风险和安全漏洞，并应对技术和威胁的变化。</p>
+<p>信息安全本质上是人和人的对抗，技术和威胁始终是动态发展和演变的，因此需要在SDL实践过程中，基于新的技术和新的威胁，不断修正和改善已有措施，应对新的威胁，达到降低安全漏洞数量和严重性的目的。</p>
+<p>即便是发布后的软件，也无法确保完全没有安全漏洞和风险，必要的安全应急响应计划以及内部沟通，可以确保安全和研发团队从容应对安全事件，将安全事件影响降至最低，并根据事件数据和记录，持续改善SDL实践过程。</p>
+<p>SDL基于五个功能领域进行构建：</p>
+<ul>
+<li><p>培训、政策和组织功能</p>
+</li>
+<li><p>要求和设计</p>
+</li>
+<li><p>实施</p>
+</li>
+<li><p>验证</p>
+</li>
+<li><p>发布和响应</p>
+</li>
+</ul>
+<p><img src="/./sdlc-security-best-practices-security-education/assets/17617400419740.6170932645853405.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p>根据微软对于SDL的成熟度划分，包括基本、标准化、高级和动态，其中基本成熟度不包含任何培训、过程和工具，动态成熟度包含高效的研发过程、专业的工具、训练有素的人员、有责任心的团队或组织。</p>
+<p>安全（security）是附属于其他事物或过程的属性，并非单独的功能或特性。因此，为保障软件开发过程的安全，需要将安全动作融入到软件开发过程中，按照软件开发过程的阶段进行划分，并确保在各个阶段确保对原本的研发过程和阶段动作产生最小的影响和干扰，过度的干扰和影响会阻碍软件开发过程（如：威胁建模需要研发团队专门腾出两周时间和安全团队一起进行，而两周已是一到两个完整的研发迭代周期），影响研发团队成员对于安全的认知和印象（如：不愿意配合SDL中的各项工作，认为安全团队只是耍嘴皮子的技术人员），并最终影响业务目标的达成和SDL的落地（安全具有滞后性，因此一定是业务优先）。</p>
+<p>基于研发过程的各阶段，SDL模型各阶段及阶段动作如下：</p>
+<p><img src="/./sdlc-security-best-practices-security-education/assets/17617400420460.7054981666420344.png" srcset="/img/bg/loading.gif" lazyload></p>
+<p><img src="/./sdlc-security-best-practices-security-education/assets/17617400421170.9572527242940152.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="安全教育"><a href="#安全教育" class="headerlink" title="安全教育"></a>安全教育</h2><p>本文重点描述SDL中的第一个阶段：安全教育，并结合笔者以往的安全建设经验和安全项目经验，介绍SDL的安全教育阶段的最佳实践。</p>
+<p>由于部门结构和职责划分原因，安全教育首先需要得到企业最高层的认可或首肯，方能确保安全教育顺利进行，没有高层授意的安全教育无法得到彻底的贯彻和执行，比如安全培训无法覆盖全员。</p>
+<p>安全教育从教育方式和切入角度，同时确保人员参与的全面覆盖，包括但不限于：</p>
+<ul>
+<li><p>入职培训</p>
+</li>
+<li><p>专项培训</p>
+</li>
+<li><p>安全分享</p>
+</li>
+<li><p>安全演练</p>
+</li>
+<li><p>安全活动</p>
+</li>
+</ul>
+<p>从安全教育面向的对象划分，包括技术人员（如研发人员、运维人员、测试人员、架构师）和非技术人员（产品经理、产品运营、项目经理），安全教育内容包括：</p>
+<p><strong>安全意识教育：</strong> 面向全体人员的教育，旨在增强人员的信息安全观念和防范意识。</p>
+<p><strong>安全技术教育：</strong> 面向技术人员的教育，旨在让技术人员了解、掌握安全防范技术的操作和手段，不涉及安全攻击技术。</p>
+<p>按照安全教育中的培训内容划分，基础的安全培训内容包括但不限于：</p>
+<ul>
+<li><p><strong>安全事件及影响；</strong></p>
+</li>
+<li><p><strong>员工安全守则；</strong></p>
+</li>
+<li><p><strong>安全概念：</strong> 包括安全测试和功能测试的区别、风险评估方法、安全测试流程、攻击面、杀伤链等；</p>
+</li>
+<li><p><strong>安全设计原则：</strong> 包括减小攻击面、最小权限、默认安全、纵深防御；</p>
+</li>
+<li><p><strong>威胁建模模型：</strong> 包括攻击树、STRIDE；</p>
+</li>
+<li><p><strong>安全漏洞示例：</strong> 包括漏洞原理、利用细节、漏洞危害、漏洞影响；</p>
+</li>
+<li><p><strong>安全漏洞类型：</strong> 如OWASP TOP10漏洞原理及解决方案；</p>
+</li>
+<li><p><strong>安全编码：</strong> 安全编码方式，如注入漏洞、缓冲区溢出等；</p>
+</li>
+<li><p><strong>安全加密：</strong> 包括安全的哈希算法和加密算法，以及已不安全的哈希算法和加密算法；</p>
+</li>
+<li><p><strong>隐私防护：</strong> 包括隐私概念（如PII、数据保护等级划分）、隐私设计最佳实践、隐私开发最佳实践、隐写泄漏风险评估；</p>
+</li>
+<li><p><strong>法律法规：</strong> 包括网络安全法、数据安全法、GDPR等；</p>
+</li>
+<li><p><strong>合规要求：</strong> 包括等级保护、ISO27001、SOC2、PCI-DSS等。</p>
+</li>
+</ul>
+<p>安全教育的方式包含线上、线下两种模式，其中安全培训以线下的小规模人员培训为主，线上培训无法与参与者进行足够的互动，大规模人员的培训无法确保所有人能够集中注意力参与培训。线上培训可专门录制安全培训内容，方便人员复观看或遗漏人员参与，以及设计线上的安全意识和安全技术考题，方便安全培训后的安全能力测试。</p>
+<p>另外，由于技术和威胁的发展，所有培训内容和教育内容，都需要定期更新，落后的培训内容无法让其他人员信服，并可能会质疑安全工作的专业性。</p>
+<h3 id="入职培训"><a href="#入职培训" class="headerlink" title="入职培训"></a>入职培训</h3><p>为了确保全员进行安全培训，并确保人员尽快熟悉、掌握安全意识和安全防范技术，最佳的实践之一，是对所有入职人员进行安全培训。该项工作需要人事部门的配合和协作，与其他入职培训课程一起设置，对于办公地点分散的企业，为保证培训效果，可派培训讲师到当地进行培训。同时，入职培训由于其周期性和频繁性，可以确保参与人数不太多，以至于影响培训效果。</p>
+<p>入职安全培训面向所有人员，因此培训内容需要覆盖上文中的所有安全培训内容。如果条件允许，可以将参与人员按照技术岗位和非技术岗位分开培训，其中非技术岗位培训内容中不包含安全漏洞示例、安全漏洞类型、安全编码、安全加密以及隐私防护的技术实践部分，安全设计和威胁建模，可以应用到诸如产品设计、产品运营等日常工作中，因此非技术岗位的人员需要进行相关培训。</p>
+<p>由于入职培训内容覆盖面广，因此最佳的培训讲师是安全负责人，其次是具备有安全技术背景的安全工程师（在技术培训过程中，可能会收到来自其他技术人员的问题甚至挑战），最后是专门的安全培训讲师或安全运营人员，但前提都是培训讲师能够将培训的内容讲的足够明白和清晰，特别是安全设计和安全漏洞修复，大多数的渗透测试或安全测试工程师通常都缺乏对于安全架构和安全设计足够的认识，以及对于漏洞修复方案足够透彻的理解。</p>
+<p>由于入职培训的时长和方式由人事部门统一安排和限定，因此入职安全培训没有固定的时长和方式，如培训时间长，则可侧重安全技术，如培训时间短，则需侧重安全意识，让人员对安全部门、安全工作、信息安全有初步的认知和了解。每次入职培训后，都需要对参与人员进行必要的考核，确保入职人员了解并掌握了培训内容。</p>
+<h3 id="专项培训"><a href="#专项培训" class="headerlink" title="专项培训"></a>专项培训</h3><p>入职培训可能由于培训时长限制，或人员规模限制，无法针对不同岗位的人员进行足够深入的培训，因此，安全部门需要每年定期对不同岗位的部门和团队进行专项培训，至少每年一次，包括架构团队、研发部门、测试部门、运维部门、产品部门等。研发等技术部门侧重培训安全防护，包括：</p>
+<ul>
+<li><p>安全事件及影响：培训对象角色相关的安全事件及影响，比如运维安全事件；</p>
+</li>
+<li><p>员工安全守则；</p>
+</li>
+<li><p>安全概念；</p>
+</li>
+<li><p>安全设计原则；</p>
+</li>
+<li><p>威胁建模模型；</p>
+</li>
+<li><p>安全漏洞示例；</p>
+</li>
+<li><p>安全漏洞类型；</p>
+</li>
+<li><p>安全编码；</p>
+</li>
+<li><p>安全加密；</p>
+</li>
+<li><p>隐私防护；</p>
+</li>
+<li><p>法律法规；</p>
+</li>
+<li><p>合规要求。</p>
+</li>
+</ul>
+<p>产品等非技术部门侧重安全设计，包括：</p>
+<ul>
+<li><p>安全事件及影响：培训对象角色相关的安全事件及影响，比如人员失误；</p>
+</li>
+<li><p>员工安全守则；</p>
+</li>
+<li><p>安全概念；</p>
+</li>
+<li><p>安全设计原则；</p>
+</li>
+<li><p>威胁建模模型；</p>
+</li>
+<li><p>隐私防护；</p>
+</li>
+<li><p>法律法规；</p>
+</li>
+<li><p>合规要求。</p>
+</li>
+</ul>
+<p>安全工作极其依赖研发和运维部门的工作过程和结果，因此，在面向研发和运维的培训中，需要特别强调从公司和业务角度安全合规的重要性。对于测试部门的专项培训，可以增加安全测试相关工具使用及漏洞测试的技巧和经验，通过测试部门的功能测试工作，发现产品的安全漏洞，一方面可以一定程度上降低安全工作的工作量，另一方面可以避免由于安全部门不知情导致漏掉业务或产品的安全测试。</p>
+<p>专项培训内容的一部分与入职培训是相同或类似的，目的是为了加深人员安全意识，正如重要的事情说三遍，但并非连续说三遍（连续三遍和一遍没差），而是在不同时期说三遍，就像飞机起飞时每次都会有的安全提示和指示。</p>
+<p>专项培训不建议设置培训后的考核，对于培训人员而言，能够抽出时间参与安全培训很可能已然是尽力而为了，额外的考核会另专项培训成为不受人欢迎的形式化工作。</p>
+<h3 id="安全分享"><a href="#安全分享" class="headerlink" title="安全分享"></a>安全分享</h3><p>由于对信息安全的愈加重视，新闻或媒体中的安全事件的报道也逐渐增多，利用蹭热点的方式，安全部门可以将就近发生的安全事件中的内容进行展开和深入分析，并结合入职培训和专项培训内容，在公司范围内进行安全分享。比如某某公司数据丢失事件，可以单独或与运维部门协作，对架构设计、安全开发、数据运营、人员安全守则进行分享。</p>
+<p>安全分享不强制要求参加，除了分享热点事件的分析，还可以分享安全工作中发现的业务或产品线中存在的安全漏洞及修复方案，以及安全工作最近的成果，一方面用于科普安全防范技术，通过安全分享发掘对安全技术有兴致的非安全部门人员（这些人员是安全运营工作中潜在的安全对接人），一方面用于展示安全人员的专业性，增加其他部门及人员的信赖程度，一方面用于展示安全工作的价值，避免被其他部门认为安全部门或团队是太监部门。</p>
+<h3 id="安全演练"><a href="#安全演练" class="headerlink" title="安全演练"></a>安全演练</h3><p>安全培训和分享，还会受限于讲师的互动能力，单纯的培训和分享是不够的，通过安全演练，可以直接检验人员对于安全意识和安全技术的掌握和应用情况。常见的安全演练是钓鱼攻击演练，安全部门在事先获得企业高层允许的前提下，对企业内部人员进行钓鱼攻击，检验各部门、各人员中招的情况，根据演练的结果，需要对未通过演练的人员进行单独的、集中的安全意识培训。</p>
+<p>比如，某互联网公司曾经在自家办公楼下贴出某商家的打折优惠活动，并在其活动海报上贴出钓鱼二维码，用于检验员工的安全意识，对于最终成功被钓的员工，进行相应的处罚。</p>
+<h3 id="安全活动"><a href="#安全活动" class="headerlink" title="安全活动"></a>安全活动</h3><p>安全活动是内部安全运营的一部分，方式不一而足，可以是通过办公用品上的信息安全提示，可以是公司配发电脑中的默认电脑桌面，可以是公司不处不在的安全教育海报，也可以是专门举办的网络安全周（日），又或者是自愿参与的安全测试，成绩优胜者给与奖励。</p>
+<p>比如，在公司内部开展安全意识大测验，得分超过一定分数的人可以获得相应的奖品；定期通过漫画或小视频的方式，面向公司内部宣传网络安全。</p>
+<p>活跃、有趣的安全活动，可以让安全部门和安全工作不至于显得严肃和紧张，起到缓和和其他部门人员关系的作用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>安全教育是SDL中的第一个阶段，也是日常安全建设中最为重要，也最容易被忽视的工作，以上是笔者总结出的安全教育最佳实践内容，五种安全教育实践中，其优先级和重要性从上往下排列。其中，入职培训和专项培训是强制要求参加的培训，为避免事后培训人员参与与否的扯皮，该类培训需要有培训签到表做留证和存档。</p>
+<p>另外，安全教育应以奖励为主，处罚为辅，且所有的惩罚机制需要事先在人员安全守则中声明（需要建立必要的安全红线），并在入职等培训中进行再次声明（总会有人以不知情为由不接受安全处罚，在无明确证据的情况下，场面会非常尴尬，且会伤害安全工作的权威）。安全教育和意识普及阶段，惩罚会让大多数人感到反感和不易接受，除非，是在安全教育之后出现的安全漏洞或安全事件，比如开发人员在参加入职培训后仍然将源代码泄漏在GitHub，此种情况则按安全制度进行开除处理或罚钱处理，惩罚需要即时且公开，以起到杀一儆百的效果。</p>
+<p>员工安全守则中的常见的安全红线包括：</p>
+<ul>
+<li><p>员工故意或无意泄漏公司机密信息；</p>
+</li>
+<li><p>员工将公司代码泄漏至公司外的其他系统或平台；</p>
+</li>
+<li><p>故意或无意将公司信息泄漏，并造成公司损失的；</p>
+</li>
+<li><p>在办公环境中进行恶意网络攻击或网络监听的；</p>
+</li>
+<li><p>在办公环境中私自搭建无线热点的；</p>
+</li>
+<li><p>未销毁公司机密信息，造成信息泄漏的；</p>
+</li>
+<li><p>未妥善保管自己公司账户，导致被利用造成公司损失的.</p>
+</li>
+</ul>
+<p>好的安全教育，不仅仅需要通过正式工作展开，也需要通过私下交往（并非指谈恋爱）进行。正式工作的场景中，交流往往是严肃的，而私下的交往是放松的，交流安全技术、事件、漏洞、意识会成为潜移默化，同时也可以搞好安全和其他部门及人员的关系。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8/" class="category-chain-item">应用安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="print-no-link">#最佳实践</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E6%95%99%E8%82%B2/" class="print-no-link">#安全教育</a>
+      
+        <a href="/tags/SDLC/" class="print-no-link">#SDLC</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="print-no-link">#软件开发生命周期</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E5%9F%B9%E8%AE%AD/" class="print-no-link">#安全培训</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>SDLC安全最佳实践：安全教育</div>
+      <div>https://insbug.net/sdlc-security-best-practices-security-education/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年5月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/differences-between-client-and-vendor-security/" title="甲方安全工作和乙方安全工作的区别">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">甲方安全工作和乙方安全工作的区别</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/cio-insights-breaking-the-efficiency-ceiling-in-tech-management/" title="CIO启示录：技术管理如何突破效率天花板">
+                        <span class="hidden-mobile">CIO启示录：技术管理如何突破效率天花板</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

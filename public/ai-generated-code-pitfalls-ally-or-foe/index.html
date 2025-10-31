@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/apple-touch-icon.png">
+  <link rel="icon" href="/img/bg/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="裴伟伟">
+  <meta name="keywords" content="洞源实验室,InsBug,网络安全,软件安全,安全测评,AI安全,SDLC,漏洞分析">
+  
+    <meta name="description" content="自从ChatGPT问世，其创造能力让世人震惊，甚至其能力也让设计和开发它的人感到不可思议。当大家娱乐的劲头散去，自然而然会想到利用大语言模型来解决专业的问题，其中一项就是写代码，于是ChatGPT问世不久微软就推出了Copilot，毕竟这家公司不仅给OpenAI投资了130亿美金，旗下还拥有GitHub这样规模最庞大的代码托管平台，2023年，Cursor问世，这款代码编辑器相当于是一款AI版的V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI生成代码的隐患：神对手还是猪队友">
+<meta property="og:url" content="https://insbug.net/ai-generated-code-pitfalls-ally-or-foe/">
+<meta property="og:site_name" content="洞源实验室 | 网络安全实践与AI安全探索">
+<meta property="og:description" content="自从ChatGPT问世，其创造能力让世人震惊，甚至其能力也让设计和开发它的人感到不可思议。当大家娱乐的劲头散去，自然而然会想到利用大语言模型来解决专业的问题，其中一项就是写代码，于是ChatGPT问世不久微软就推出了Copilot，毕竟这家公司不仅给OpenAI投资了130亿美金，旗下还拥有GitHub这样规模最庞大的代码托管平台，2023年，Cursor问世，这款代码编辑器相当于是一款AI版的V">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://insbug.net/ai-generated-code-pitfalls-ally-or-foe/assets/17617404510900.6292431277666151.png">
+<meta property="og:image" content="https://insbug.net/ai-generated-code-pitfalls-ally-or-foe/assets/17617404511610.2086993676569764.png">
+<meta property="article:published_time" content="2025-03-15T15:51:00.000Z">
+<meta property="article:modified_time" content="2025-10-30T09:32:46.457Z">
+<meta property="article:author" content="裴伟伟">
+<meta property="article:tag" content="AI生成代码">
+<meta property="article:tag" content="代码质量">
+<meta property="article:tag" content="安全隐患">
+<meta property="article:tag" content="开发效率">
+<meta property="article:tag" content="AI编程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://insbug.net/ai-generated-code-pitfalls-ally-or-foe/assets/17617404510900.6292431277666151.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI生成代码的隐患：神对手还是猪队友 - 洞源实验室 | 网络安全实践与AI安全探索</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"insbug.net","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/bg/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"google":{"measurement_id":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="洞源实验室 | 网络安全实践与AI安全探索" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>洞源实验室 | 网络安全实践与AI安全探索</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI生成代码的隐患：神对手还是猪队友"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        裴伟伟
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-15 23:51" pubdate>
+          2025年3月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI生成代码的隐患：神对手还是猪队友</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>自从ChatGPT问世，其创造能力让世人震惊，甚至其能力也让设计和开发它的人感到不可思议。当大家娱乐的劲头散去，自然而然会想到利用大语言模型来解决专业的问题，其中一项就是写代码，于是ChatGPT问世不久微软就推出了Copilot，毕竟这家公司不仅给OpenAI投资了130亿美金，旗下还拥有GitHub这样规模最庞大的代码托管平台，2023年，Cursor问世，这款代码编辑器相当于是一款AI版的VS Code，可以替代VS Code进行编程，不同之处在于只需要用输入指令告诉编辑器要写什么用的代码即可，简直成了开发者的“外挂神器”。</p>
+<p>代码生成技术的背后靠的是海量的代码数据训练，它可以根据开发人员的已经输入的代码猜测意图并自动生成后续的代码，也可以直接用自然语言描述程序的预期来生成代码，比如“请用快速排序算法写一段程序排列用户输入的任意正整数”，它几秒钟就可以生成出来。这些工具能让开发效率起飞，尤其是对付那些机械化、重复性的活儿，甚至让能够不懂编程的人也可以很容易、很快制作他们想要的结果，笔者的一个朋友使用Claude（当前最牛逼的代码生成大模型应用，没有之一）制作了一个旅行网站，她对结果很是喜欢。程序员是不是很快要失业？快速生成代码是不是真的让全民编程时代到来？</p>
+<p>从大模型的原理可以发现，AI辅助生成代码的本质就是一个基于海量公开代码库的统计模型，它能模仿人类写代码的套路，但压根儿不理解代码背后的逻辑，更别提什么安全性了。换句话说，它就是个“高智商的复读机”，能快速吐出代码，但压根儿不会思考“这代码放这儿合不合适”或者“会不会被人黑”。举个例子，你让它写个文件读取函数，它可能给你弄个不检查路径的版本，结果攻击者随便输个..&#x2F;..&#x2F;etc&#x2F;passwd，你的服务器就裸奔了，或者说是管杀不管埋。 </p>
+<h2 id="埋雷大师：AI生成代码的安全隐患"><a href="#埋雷大师：AI生成代码的安全隐患" class="headerlink" title="埋雷大师：AI生成代码的安全隐患"></a>埋雷大师：AI生成代码的安全隐患</h2><p>首先，AI 有个“抄袭”的天赋，特别擅长复制已知漏洞，它是靠公开代码库训练的，GitHub上星标几万的项目看着很厉害，可客观上里面藏了多少漏洞无人知晓。SQL注入、缓冲区溢出、不安全的反序列化，这些老掉牙的漏洞在代码库里多得跟地里的野草似的，甚至有的人直接用正则搜索通过GitHub刷CVE漏洞（实际很多漏洞都非常简单），但预训练时候的模型是不关注代码安全的，它照着“课本”抄就是了。</p>
+<p>比如，它可能随手给你生成一段这样的SQL语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs SQL">&quot;SELECT * FROM users WHERE username = &#x27;&quot; <span class="hljs-operator">+</span> userInput <span class="hljs-operator">+</span> &quot;&#x27;&quot;<br></code></pre></td></tr></table></figure>
+
+<p>这是入门级的 SQL 注入漏洞，攻击者也可以很轻易构造一个恶意输入’; DROP TABLE users; –，这可以删掉users的数据表。代码生成时候，模型是不会管什么叫安全的，它只有一条逻辑：“这代码在训练集里见过，挺常见的，给你用吧！”它就像个手速极快的GitHub代码搜索专家，把那些已知的、公开的安全隐患一股脑儿塞到自动生成的代码里。</p>
+<p>其次是业务逻辑的问题。无论是哪种大模型，它们压根儿不懂业务需求，业务需求全靠用户在Prompt中的输入，也就是说用户就是产品经理，也不会根据经验自动补齐功能安全或安全功能策略。比如让它写个登录验证代码，它可能会生成不校验输入、不处理用户口令的半成品，像下面这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs PHP"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">login</span>(<span class="hljs-params">username, password</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> db.<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-string">&quot;SELECT * FROM users WHERE username = &#x27;&quot;</span> + username + <span class="hljs-string">&quot;&#x27; AND password = &#x27;&quot;</span> + password + <span class="hljs-string">&quot;&#x27;&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这代码完全没考虑输入过滤，更别提密码明文存储问题，连个基本的用户口令哈希都不加，攻击者拖库就能拿走所有用户数据。在代码生成过程中，模型是不会主动问“这业务需要权限控制吗？”（现在的Deep Research模式下可能会）它只会机械地生成代码，像个没脑子的机器人。业务逻辑的复杂性和安全性，既需要产品经理设计，也需要开发者在设计中把关。</p>
+<p>还有，AI生成的代码有时候表面上完美无缺，但实际暗藏风险，比如，它可能给你个哈希函数，看着挺高大上，结果用的是MD5这种早就不被建议的弱强度算法，或者直接把密钥硬编码在代码里，像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">pass_hash</span>(<span class="hljs-params">password</span>):<br>  hash_object = hashlib.md5(password.encode())<br>  <span class="hljs-keyword">return</span> hash_object.hexdigest()<br></code></pre></td></tr></table></figure>
+
+<p>这种“看着对，其实错”的生成结果很容易让那些没安全技能和安全经验的开发人员或者行外人员误解它的运行效果。你以为它帮你解决了问题，殊不知它在你代码里埋了个雷，等着上线后炸给你看。</p>
+<p>更别提依赖性问题了。AI生成的代码有时候会自作聪明引入一堆乱七八糟的依赖，有些还是过时得不能再过时的老版本库，比如，它可能随手用了个10年前的HTTP库，里面的CVE（通用漏洞披露）编号多得能写本书。你用了这些依赖，等于给攻击者开了后门，服务器还没跑热就被打穿了。这种“自作主张”的行为，会让开发者在不知不觉中背上安全风险的黑锅。</p>
+<p>最后，AI生成的代码基本上是没测试的半成品。它生成的玩意儿可能在边界条件下直接崩溃，或者压根儿跑不通，笔者就遇到过几次，其代码性能和代码效率需要人工进行修订和完善。比如，你让它写个文件上传功能，它可能忘了检查文件大小，结果用户传个10GB的文件就发现由于连接超时无法完成上传操作。你以为它帮你省了写代码的时间，其实是给自己留了个定时炸弹，所以AI生成的代码往往需要有经验的开发者再做调试和完善，稍不留神，反而可能增加工作量。</p>
+<p><img src="/./ai-generated-code-pitfalls-ally-or-foe/assets/17617404510900.6292431277666151.png" srcset="/img/bg/loading.gif" lazyload></p>
+<h2 id="程序员的保命建议"><a href="#程序员的保命建议" class="headerlink" title="程序员的保命建议"></a>程序员的保命建议</h2><p>首先，代码审查是重中之重。AI生成的代码，别直接复制粘贴就运行，每一行都得看清楚。至少可以先用静态分析工具扫一遍，看看有没有漏洞。审查代码是开发者的基本功，AI只是辅助工具，不是免死金牌。</p>
+<p>安全开发能力是体现开发人员水平的基本。AI再聪明也不会替你学习安全漏洞和安全开发能力。对于各类基本的安全漏洞的防御开发和修复开发得扎扎实实掌握，笔者曾经写一个文件上传功能的代码，实际是威胁建模+安全开发同时在做，虽然比快速写一个能用的功能要耗费更多时间，但也更考验开发能力和安全能力。安全意识和技能是开发者安身立命的本钱，AI只能锦上添花，救不了命。</p>
+<p>还有，安全编码规范得老老实实看一看。多采用行业最佳安全实践，别自作聪明，尤其是数据加密解密相关的代码。行业最佳实践是全世界的开发人员和安全人员持续积累的结果，比AI的生成靠谱多了。安全编码指南是无数实战检验出来的硬道理，开发者要是懒得遵守，早晚会在工作结果上吃亏。</p>
+<p>代码的同行评审也不能省。AI写的代码，哪怕看着再漂亮，也得让队友过一遍眼。顺便还能让团队里那些AI信徒保持清醒，别老觉得AI是万能的（要不然自己的价值在哪里）。团队协作和互相审查是提升代码质量的关键，AI再牛也代替不了人的判断，当然还是要开发人员老老实实学习、理解和掌握计算机和软件的内功，比如《编程珠玑》、《深入理解计算机系统》、《UNIX编程艺术》、《TCP&#x2F;IP协议详解》《Effective编程系列》等等，越是深入代码性能，越会有兴趣深入底层实现，正如史蒂夫.乔布斯非常认同的一句格言：</p>
+<blockquote>
+<p>“对待软件严肃认真的人，应该制造自己专属的硬件”</p>
+<p>(People who are serious about software should make their own hardware)。</p>
+</blockquote>
+<h2 id="AI生成代码是神助手还是猪队友"><a href="#AI生成代码是神助手还是猪队友" class="headerlink" title="AI生成代码是神助手还是猪队友"></a>AI生成代码是神助手还是猪队友</h2><p>AI辅助生成代码这事儿是甜头和苦果并存。甜头是显而易见的，效率高了，那些写CRUD写到吐血的日子可以少点（尤其是重复的、简单的代码生成），开发者能喘口气、喝杯咖啡了。苦果也不少，安全隐患多了，代码质量参差不齐，一个不小心就被它的结果坑到喷出喝下的咖啡。</p>
+<p>有的人以为自己从此也可以写代码，或者觉得写代码让自己也能成为独立开发者，实际上，AI生成的代码就像路边摊的炸鸡，闻着香，吃下去指不定拉肚子。AI是把双刃剑，用得好是帮手，用不好就是“猪队友”，它花里胡哨的外表确实能唬人，但深入到以上问题还是得靠人的大脑，至少目前它顶多是个干活儿的工具，成不了安全开发的救世主。更有意思的是，最近有人爆出Cursor的一个有趣的Bug （<a target="_blank" rel="noopener" href="https://forum.cursor.com/t/cursor-told-me-i-should-learn-coding-instead-of-asking-it-to-generate-it-limit-of-800-locs/61132">https://forum.cursor.com/t/cursor-told-me-i-should-learn-coding-instead-of-asking-it-to-generate-it-limit-of-800-locs/61132</a> ），Cursor在响应中撂挑子不干了：我不能为你生成代码，这完全是你自己的工作……你应该自己搞定代码逻辑，好让你自己能理解和维护系统。</p>
+<p><img src="/./ai-generated-code-pitfalls-ally-or-foe/assets/17617404511610.2086993676569764.png" srcset="/img/bg/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI%E5%AE%89%E5%85%A8/" class="category-chain-item">AI安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81/" class="print-no-link">#AI生成代码</a>
+      
+        <a href="/tags/%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F/" class="print-no-link">#代码质量</a>
+      
+        <a href="/tags/%E5%AE%89%E5%85%A8%E9%9A%90%E6%82%A3/" class="print-no-link">#安全隐患</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87/" class="print-no-link">#开发效率</a>
+      
+        <a href="/tags/AI%E7%BC%96%E7%A8%8B/" class="print-no-link">#AI编程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI生成代码的隐患：神对手还是猪队友</div>
+      <div>https://insbug.net/ai-generated-code-pitfalls-ally-or-foe/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>裴伟伟</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/open-source-trust-crisis-material-theme-backdoor-incident/" title="开源项目的信任危机：Material Theme后门事件始末">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">开源项目的信任危机：Material Theme后门事件始末</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/badseek-backdoor-llm-creation/" title="植入后门的大模型BadSeek是怎样炼成的">
+                        <span class="hidden-mobile">植入后门的大模型BadSeek是怎样炼成的</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"InsBug/Official-Website-CN","repo-id":"R_kgDOQLQ7Mg","category":"Announcements","category-id":"DIC_kwDOQLQ7Ms4CxNHi","theme-light":"light_protanopia","theme-dark":"dark_protanopia","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light_protanopia';
+        var dark = 'dark_protanopia';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
